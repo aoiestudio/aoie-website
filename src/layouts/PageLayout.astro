@@ -1,0 +1,52 @@
+---
+import SiteFooter from '../components/SiteFooter.astro'
+import SiteHeader from '../components/SiteHeader.astro'
+import Layout from './Layout.astro'
+
+interface Props {
+  title: string
+}
+
+const { title } = Astro.props
+---
+
+<Layout title={title}>
+  <div class="page">
+    <SiteHeader />
+    <slot />
+    <SiteFooter />
+  </div>
+</Layout>
+
+<style>
+  .page {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: var(--32-lh);
+  }
+
+  @media (--mobile) {
+    .page {
+      gap: var(--16-lh);
+    }
+  }
+
+  @media (--tablet) {
+    .page {
+      gap: var(--24-lh);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.hire-btn').forEach((btn) => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault()
+      navigator.clipboard.writeText('hello@aoie.studio').catch(() => { /* ignore clipboard errors */ })
+      const original = btn.textContent
+      btn.textContent = 'Copied'
+      setTimeout(() => { btn.textContent = original }, 2000)
+    })
+  })
+</script>

@@ -1,0 +1,77 @@
+---
+---
+
+<div class="debugger" id="debugger">
+  <div class="debugger-cols" id="debugger-cols"></div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const debugger_ = document.querySelector('#debugger') as HTMLElement
+    const debuggerCols = document.querySelector('#debugger-cols') as HTMLElement
+
+    const mqTablet = window.matchMedia('(min-width: 769px)')
+    const mqDesktop = window.matchMedia('(min-width: 1025px)')
+    const mqWide = window.matchMedia('(min-width: 1441px)')
+
+    function updateCols() {
+      let cols = 4
+      if (mqTablet.matches) { cols = 8 }
+      if (mqDesktop.matches) { cols = 14 }
+      if (mqWide.matches) { cols = 18 }
+      debuggerCols.innerHTML = Array.from({ length: cols }).map(() => '<div></div>').join('')
+    }
+
+    function updateHeight() {
+      debugger_.style.height = document.documentElement.scrollHeight + 'px'
+    }
+
+    mqTablet.addEventListener('change', updateCols)
+    mqDesktop.addEventListener('change', updateCols)
+    mqWide.addEventListener('change', updateCols)
+    new ResizeObserver(() => { updateHeight(); updateCols() }).observe(document.documentElement)
+
+    updateHeight()
+    updateCols()
+
+    document.addEventListener('keydown', (e) => {
+      const tag = (e.target as HTMLElement).tagName
+      if (tag === 'INPUT' || tag === 'TEXTAREA') { return }
+      if (e.code === 'KeyG' && e.ctrlKey && !e.metaKey && !e.altKey) {
+        debugger_.classList.toggle('--active')
+      }
+    })
+  })
+</script>
+
+<style>
+  .debugger {
+    background-image: linear-gradient(180deg, grey .5px, transparent 0);
+    background-size: var(--lh) var(--lh);
+    display: none;
+    left: 0;
+    pointer-events: none;
+    position: absolute;
+    right: 0;
+    top: 0;
+    z-index: 999999;
+  }
+
+  .debugger.--active {
+    display: block;
+  }
+
+  .debugger-cols {
+    display: flex;
+    height: 100%;
+    opacity: 0.15;
+    /* outer border = page padding, inner col borders = half col-gap each side */
+    border: var(--lh) solid var(--color-bg);
+  }
+
+  :global(.debugger-cols > div) {
+    background: red;
+    border: var(--lh) solid var(--color-bg);
+    flex: 1;
+  }
+</style>

@@ -1,0 +1,21 @@
+.text-heading {
+  font-family: var(--font-family);
+  font-style: normal;
+  font-weight: 600;
+  font-size: var(--font-size-heading);
+  line-height: var(--line-height-heading);
+  letter-spacing: var(--letter-spacing-heading);
+  font-feature-settings: 'ss03', 'ss02';
+}
+
+.text-body {
+  font-family: var(--font-family);
+  font-weight: 500;
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  letter-spacing: 0;
+}
+
+p.text-body {
+  padding-right: var(--col-gap);
+}

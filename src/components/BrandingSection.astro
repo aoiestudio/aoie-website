@@ -1,0 +1,82 @@
+---
+import PageSection from './PageSection.astro'
+---
+
+<PageSection title="Do you want to talk about branding?" mode="bottom">
+  <a slot="subtitle" href="mailto:hello@aoie.studio" class="text-heading footer-email">hello@aoie.studio</a>
+  <div class="footer-bar section-grid">
+    <p class="text-body footer-legal">We're open for business and new collaborations from May 2026</p>
+    <div class="footer-links">
+      <a href="#" class="text-body footer-book">Book a call</a>
+      <a href="#" class="text-body footer-hire hire-btn">Hire us</a>
+    </div>
+    <span class="text-body footer-copy">©</span>
+  </div>
+</PageSection>
+
+<style>
+  .footer-email {
+    display: block;
+    color: var(--color-text-muted);
+  }
+
+  .footer-email:hover,
+  .footer-book:hover,
+  .footer-hire:hover {
+    color: var(--color-white);
+  }
+
+  .footer-bar {
+    align-items: end;
+  }
+
+  .footer-legal {
+    color: var(--color-text);
+    grid-column: 1 / 4;
+  }
+
+  .footer-links {
+    display: flex;
+    gap: var(--col-gap);
+    grid-column: 5 / 8;
+    align-self: end;
+  }
+
+  .footer-book,
+  .footer-hire {
+    color: var(--color-text-secondary);
+  }
+
+  .footer-copy {
+    color: var(--color-text);
+    grid-column: 4 / 5;
+    text-align: right;
+  }
+
+  @media (--sm) {
+    .footer-copy {
+      grid-column: 8 / 9;
+    }
+  }
+
+  @media (--md) {
+    .footer-copy {
+      grid-column: 14 / 15;
+    }
+  }
+
+  @media (--lg) {
+    .footer-copy {
+      grid-column: 18 / 19;
+    }
+  }
+
+  @media (--mobile) {
+    .footer-bar {
+      display: flex;
+      flex-direction: column;
+      gap: var(--2-lh);
+      align-items: flex-start;
+    }
+  }
+</style>

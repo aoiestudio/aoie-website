@@ -1,0 +1,78 @@
+---
+interface Props {
+  title: string
+  mode?: 'half-width' | 'full-width' | 'bottom'
+  class?: string
+}
+
+const { title, mode = 'half-width', class: className } = Astro.props
+---
+
+{mode === 'bottom' ? (
+  <section class:list={['page-section', 'page-section--bottom', 'page-wrap', className]}>
+    <div class="page-section__head">
+      <hr class="page-section__divider" />
+      <h2 class="text-heading page-section__title">{title}</h2>
+      <slot name="subtitle" />
+    </div>
+    <slot />
+  </section>
+) : mode === 'full-width' ? (
+  <section class:list={['page-section', 'page-section--full', 'page-wrap', className]}>
+    <hr class="page-section__divider" />
+    <div class="section-grid">
+      <h2 class="col-label text-heading page-section__title">{title}</h2>
+    </div>
+    <slot />
+  </section>
+) : (
+  <section class:list={['page-section', 'page-section--half', 'page-wrap', className]}>
+    <hr class="page-section__divider" />
+    <div class="section-grid">
+      <h2 class="col-label text-heading page-section__title">{title}</h2>
+      <div class="col-content page-section__slot">
+        <slot />
+      </div>
+    </div>
+  </section>
+)}
+
+<style>
+  .page-section {
+  }
+
+  .page-section__divider {
+    border: none;
+    height: 1px;
+    background: var(--color-gray-30);
+    margin: 0 0 calc(var(--2-lh) - 1px);
+  }
+
+  .page-section__title {
+    color: var(--color-text);
+  }
+
+  .page-section__slot {
+  }
+
+  /* bottom: divider+title at top, slot at bottom */
+  .page-section--bottom {
+    min-height: var(--42-lh);
+    padding-bottom: var(--2-lh);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  @media (--mobile) {
+    .page-section--bottom {
+      min-height: 0;
+    }
+  }
+
+  @media (--tablet) {
+    .page-section--bottom {
+      min-height: var(--32-lh);
+    }
+  }
+</style>

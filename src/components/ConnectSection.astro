@@ -1,0 +1,88 @@
+---
+import PageSection from './PageSection.astro'
+---
+
+<PageSection title="Connect" class="section-connect">
+  <div class="connect-grid">
+    <div class="connect-col">
+      <span class="text-body connect-label">Contact</span>
+      <div class="connect-item">
+        <span class="text-body connect-key">Business enquiries</span>
+        <a href="mailto:hello@aoie.studio" class="text-body connect-val">hello@aoie.studio</a>
+      </div>
+      <div class="connect-item">
+        <span class="text-body connect-key">Careers</span>
+        <a href="mailto:careers@aoie.studio" class="text-body connect-val">careers@aoie.studio</a>
+      </div>
+    </div>
+    <div class="connect-col">
+      <span class="text-body connect-label">Follow</span>
+      <div class="connect-links">
+        <a href="#" class="text-body connect-val">LinkedIn</a>
+        <a href="https://instagram.com/aoie.studio" class="text-body connect-val">Instagram</a>
+        <a href="https://behance.net/aoie" class="text-body connect-val">Behance</a>
+        <a href="#" class="text-body connect-val">X</a>
+      </div>
+    </div>
+  </div>
+</PageSection>
+
+<style>
+  :global(.section-connect) {
+    min-height: var(--42-lh);
+  }
+
+  .connect-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--col-gap);
+  }
+
+  .connect-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--2-lh);
+  }
+
+  .connect-label {
+    color: var(--color-text);
+  }
+
+  .connect-item {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .connect-key {
+    color: var(--color-text);
+  }
+
+  .connect-val {
+    color: var(--color-text-secondary);
+  }
+
+  .connect-val:hover {
+    color: var(--color-white);
+  }
+
+  .connect-links {
+    display: flex;
+    flex-direction: column;
+  }
+
+  @media (--mobile) {
+    :global(.section-connect) {
+      min-height: 0;
+    }
+
+    .connect-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (--tablet) {
+    :global(.section-connect) {
+      min-height: var(--32-lh);
+    }
+  }
+</style>

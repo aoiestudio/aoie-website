@@ -1,0 +1,18 @@
+<span id="info-clock-time"></span>
+
+<script>
+  const el = document.querySelector('#info-clock-time')
+
+  function update() {
+    if (!el) { return }
+    el.textContent = new Date().toLocaleTimeString('en-GB', {
+      timeZone: 'Europe/Paris',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+    })
+  }
+
+  update()
+  setInterval(update, 1000)
+</script>

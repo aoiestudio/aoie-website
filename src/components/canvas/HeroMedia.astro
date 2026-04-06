@@ -1,0 +1,176 @@
+---
+interface Props {
+  images: string[]
+}
+
+const { images } = Astro.props
+---
+
+<div class="hero-stage" id="hero-stage" data-images={JSON.stringify(images)}>
+  <canvas id="hero-canvas"></canvas>
+</div>
+
+<style>
+  .hero-stage {
+    position: relative;
+    width: 100%;
+    height: var(--66-lh);
+    overflow: hidden;
+    cursor: crosshair;
+  }
+
+  canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+</style>
+
+<script>
+  import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl'
+  import vert from './hero-media.vert?raw'
+  import frag from './hero-media.frag?raw'
+
+  const CELL = 22
+  const STRIP = 1
+  const MAX_ROWS = 64
+  const DECAY = 0.97
+
+  const stage = document.querySelector<HTMLElement>('#hero-stage')!
+  const canvas = document.querySelector<HTMLCanvasElement>('#hero-canvas')!
+  const srcs: string[] = JSON.parse(stage.dataset.images || '[]')
+
+  function loadImg(src: string): Promise<HTMLImageElement> {
+    return new Promise((resolve, reject) => {
+      const img = new Image()
+      img.crossOrigin = 'anonymous'
+      img.addEventListener('load', () => resolve(img))
+      img.addEventListener('error', reject)
+      img.src = src
+    })
+  }
+
+  const renderer = new Renderer({
+    canvas,
+    alpha: true,
+    depth: false,
+    stencil: false,
+    antialias: false,
+    premultipliedAlpha: true,
+    dpr: Math.min(devicePixelRatio || 1, 2),
+  })
+  const gl = renderer.gl
+
+  const geometry = new Triangle(gl)
+  const rowEnergy = new Float32Array(MAX_ROWS)
+  const energyTex = new Texture(gl, {
+    image: rowEnergy,
+    width: MAX_ROWS,
+    height: 1,
+    internalFormat: (gl as WebGL2RenderingContext).R32F,
+    format: (gl as WebGL2RenderingContext).RED,
+    type: gl.FLOAT,
+    generateMipmaps: false,
+    minFilter: gl.NEAREST,
+    magFilter: gl.NEAREST,
+  })
+
+  const imgs = await Promise.all(srcs.map(loadImg))
+  if (!imgs.length) { throw new Error('HeroMedia: no images loaded') }
+
+  const texA = new Texture(gl, {
+    image: imgs[0]!,
+    generateMipmaps: false,
+    minFilter: gl.LINEAR,
+  })
+  const texB = new Texture(gl, {
+    image: imgs[imgs.length > 1 ? 1 : 0]!,
+    generateMipmaps: false,
+    minFilter: gl.LINEAR,
+  })
+
+  const program = new Program(gl, {
+    vertex: vert,
+    fragment: frag,
+    uniforms: {
+      uRes:    { value: [0, 0] },
+      uDpr:    { value: renderer.dpr },
+      uCell:   { value: CELL },
+      uStrip:  { value: STRIP },
+      uFade:   { value: 0 },
+      uEnergy: { value: energyTex },
+      uTexA:   { value: texA },
+      uTexB:   { value: texB },
+    },
+    depthTest: false,
+    depthWrite: false,
+  })
+
+  const mesh = new Mesh(gl, { geometry, program })
+
+  new ResizeObserver((entries) => {
+    const { width, height } = entries[0]!.contentRect
+    if (!width || !height) { return }
+    renderer.setSize(width, height)
+    Object.assign(canvas.style, { width: '', height: '' })
+    program.uniforms.uRes.value = [width, height]
+    program.uniforms.uDpr.value = renderer.dpr
+  }).observe(stage)
+
+  let hovering = false, my = 0, prevMy = 0
+  let busy = false, curIdx = 0, fade = 0, nxtIdx = 0, tgtFade = 0
+
+  if (imgs.length > 1) {
+    canvas.addEventListener('click', () => {
+      if (busy) { return }
+      nxtIdx = (curIdx + 1) % imgs.length
+      busy = true
+      const back = program.uniforms.uTexB.value as Texture
+      back.image = imgs[nxtIdx]!
+      back.needsUpdate = true
+      tgtFade = 1
+    })
+  }
+
+  canvas.addEventListener('mousemove', (e) => {
+    const r = canvas.getBoundingClientRect()
+    prevMy = my
+    my = e.clientY - r.top
+    hovering = true
+  })
+
+  canvas.addEventListener('mouseleave', () => { hovering = false })
+
+  function render() {
+    for (let i = 0; i < MAX_ROWS; i++) { rowEnergy[i] *= DECAY }
+
+    if (hovering) {
+      const r0 = Math.min(Math.floor(prevMy / CELL), MAX_ROWS - 1)
+      const r1 = Math.min(Math.floor(my / CELL), MAX_ROWS - 1)
+      const lo = Math.min(r0, r1)
+      const hi = Math.max(r0, r1)
+      for (let i = lo; i <= hi; i++) { rowEnergy[i] = 1 }
+    }
+
+    if (tgtFade > 0) {
+      fade += (1 - fade) * 0.08
+      if (fade > 0.995) {
+        const tmp = program.uniforms.uTexA.value
+        program.uniforms.uTexA.value = program.uniforms.uTexB.value
+        program.uniforms.uTexB.value = tmp
+        fade = 0
+        tgtFade = 0
+        curIdx = nxtIdx
+        busy = false
+      }
+    }
+
+    energyTex.needsUpdate = true
+    program.uniforms.uFade.value = fade
+    renderer.render({ scene: mesh })
+    requestAnimationFrame(render)
+  }
+
+  render()
+</script>

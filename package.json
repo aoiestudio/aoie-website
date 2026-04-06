@@ -1,0 +1,41 @@
+{
+  "name": "aoie",
+  "private": true,
+  "license": "MIT",
+  "author": "Eduard Aksamitov <e@euaaaio.ru>",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test:types": "astro check",
+    "test:oxlint": "oxlint --config oxlint.config.ts",
+    "test:oxfmt": "oxfmt --check",
+    "test:dedupe": "pnpm dedupe --check",
+    "test": "pnpm run /^test:/",
+    "format": "oxfmt",
+    "astro": "astro",
+    "prepare": "simple-git-hooks"
+  },
+  "dependencies": {
+    "ogl": "^1.0.11"
+  },
+  "devDependencies": {
+    "@astrojs/check": "catalog:",
+    "@csstools/postcss-global-data": "^4.0.0",
+    "@types/node": "catalog:",
+    "astro": "catalog:",
+    "nano-staged": "catalog:",
+    "oxc-config-fans": "^0.0.4",
+    "oxfmt": "catalog:",
+    "oxlint": "catalog:",
+    "postcss-custom-media": "catalog:",
+    "simple-git-hooks": "catalog:",
+    "typescript": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.0.0"
+  },
+  "packageManager": "pnpm@10.33.2+sha512.a90faf6feeab71ad6c6e57f94e0fe1a12f5dcc22cd754db40ae9593eb6a3e0b6b12e3540218bb37ae083404b1f2ce6db2a4121e979829b4aff94b99f49da1cf8"
+}

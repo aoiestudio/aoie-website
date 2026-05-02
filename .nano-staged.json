@@ -1,4 +1,4 @@
 {
   "*.{astro,js,ts}": "pnpm oxlint --config oxlint.config.ts",
-  "*.{astro,js,ts,css,json}": "oxfmt"
+  "*.{js,ts,css,json}": "oxfmt"
 }

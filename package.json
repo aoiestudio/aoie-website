@@ -26,7 +26,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "catalog:",
-    "@csstools/postcss-global-data": "^4.0.0",
+    "@csstools/postcss-global-data": "catalog:",
     "@types/node": "catalog:",
     "astro": "catalog:",
     "nano-staged": "catalog:",
@@ -36,7 +36,7 @@
     "postcss-custom-media": "catalog:",
     "simple-git-hooks": "catalog:",
     "typescript": "catalog:",
-    "wrangler": "^4.87.0"
+    "wrangler": "catalog:"
   },
   "overrides": {
     "vite": "^7"

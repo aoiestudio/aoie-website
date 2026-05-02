@@ -1,5 +1,6 @@
 catalog:
   '@astrojs/check': ^0.9.9
+  '@csstools/postcss-global-data': ^4.0.0
   '@types/node': ^25.6.0
   astro: ^6.2.1
   nano-staged: ^1.0.2
@@ -9,6 +10,7 @@ catalog:
   postcss-custom-media: ^12.0.1
   simple-git-hooks: ^2.13.1
   typescript: ^6.0.3
+  wrangler: ^4.87.0
 
 onlyBuiltDependencies:
   - esbuild

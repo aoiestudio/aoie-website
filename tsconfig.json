@@ -16,6 +16,5 @@
       "@/*": ["./src/*"]
     },
     "lib": ["esnext", "dom"]
-  },
-  "include": ["./worker-configuration.d.ts"]
+  }
 }

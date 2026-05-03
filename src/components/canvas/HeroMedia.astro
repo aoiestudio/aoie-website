@@ -28,6 +28,7 @@ const { images } = Astro.props
 </style>
 
 <script>
+// oxlint-disable no-console
   import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl'
   import vert from './hero-media.vert?raw'
   import frag from './hero-media.frag?raw'
@@ -35,7 +36,7 @@ const { images } = Astro.props
   const CELL = 22
   const STRIP = 1
   const MAX_ROWS = 64
-  const DECAY = 0.97
+  const DECAY = 0.9
 
   const stage = document.querySelector<HTMLElement>('#hero-stage')!
   const canvas = document.querySelector<HTMLCanvasElement>('#hero-canvas')!
@@ -79,13 +80,23 @@ const { images } = Astro.props
   const imgs = await Promise.all(srcs.map(loadImg))
   if (!imgs.length) { throw new Error('HeroMedia: no images loaded') }
 
+  const symbol = await loadImg("/mac-command.png")
+  const symbolTex = new Texture(gl, {
+    image: symbol,
+    generateMipmaps: true,
+    minFilter: gl.LINEAR,
+    magFilter: gl.LINEAR,
+    wrapS: gl.CLAMP_TO_EDGE,
+    wrapT: gl.CLAMP_TO_EDGE,
+  })
+
   const texA = new Texture(gl, {
     image: imgs[0]!,
     generateMipmaps: false,
     minFilter: gl.LINEAR,
   })
   const texB = new Texture(gl, {
-    image: imgs[imgs.length > 1 ? 1 : 0]!,
+    image: imgs.at(-1)!,
     generateMipmaps: false,
     minFilter: gl.LINEAR,
   })
@@ -102,6 +113,7 @@ const { images } = Astro.props
       uEnergy: { value: energyTex },
       uTexA:   { value: texA },
       uTexB:   { value: texB },
+      uSymbol: { value: symbolTex },
     },
     depthTest: false,
     depthWrite: false,
@@ -118,18 +130,19 @@ const { images } = Astro.props
     program.uniforms.uDpr.value = renderer.dpr
   }).observe(stage)
 
-  let hovering = false, my = 0, prevMy = 0
-  let busy = false, curIdx = 0, fade = 0, nxtIdx = 0, tgtFade = 0
+  let hovering = false, my = 0, prevMy = 0, prevMyTimeout = 0
+  let curIdx = 0, fade = 1
 
   if (imgs.length > 1) {
     canvas.addEventListener('click', () => {
-      if (busy) { return }
-      nxtIdx = (curIdx + 1) % imgs.length
-      busy = true
-      const back = program.uniforms.uTexB.value as Texture
-      back.image = imgs[nxtIdx]!
-      back.needsUpdate = true
-      tgtFade = 1
+      curIdx = (curIdx + 1) % imgs.length
+        const current = program.uniforms.uTexA.value
+        const next = program.uniforms.uTexB.value
+        program.uniforms.uTexA.value = next
+        program.uniforms.uTexB.value = current
+        next.image = imgs[curIdx]!
+        next.needsUpdate = true
+        fade = 0
     })
   }
 
@@ -138,6 +151,10 @@ const { images } = Astro.props
     prevMy = my
     my = e.clientY - r.top
     hovering = true
+    if (prevMyTimeout <= 0) {
+      prevMy = my
+    }
+    prevMyTimeout = 10
   })
 
   canvas.addEventListener('mouseleave', () => { hovering = false })
@@ -153,18 +170,13 @@ const { images } = Astro.props
       for (let i = lo; i <= hi; i++) { rowEnergy[i] = 1 }
     }
 
-    if (tgtFade > 0) {
-      fade += (1 - fade) * 0.08
-      if (fade > 0.995) {
-        const tmp = program.uniforms.uTexA.value
-        program.uniforms.uTexA.value = program.uniforms.uTexB.value
-        program.uniforms.uTexB.value = tmp
-        fade = 0
-        tgtFade = 0
-        curIdx = nxtIdx
-        busy = false
-      }
+    if (prevMyTimeout > 0) {
+      prevMyTimeout -= 1
     }
+
+    const dt = 0.016
+    const animationSpeed = 4
+    fade += (1 - fade) * (-Math.expm1(- animationSpeed * dt))
 
     energyTex.needsUpdate = true
     program.uniforms.uFade.value = fade

@@ -15,6 +15,8 @@ uniform sampler2D uEnergy;
 uniform sampler2D uTexA;
 uniform sampler2D uTexB;
 
+uniform sampler2D uSymbol;
+
 vec2 cover(vec2 uv, vec2 ts) {
   float ca = uRes.x / uRes.y;
   float ta = ts.x / ts.y;
@@ -32,23 +34,23 @@ void main() {
   vec2 fc = gl_FragCoord.xy / uDpr;
   fc.y = uRes.y - fc.y;
 
-  vec2 ci = floor(fc / uCell);
-  vec2 cl = mod(fc, uCell);
+  vec2 cellSize = vec2(1.0, 1.0) * uCell;
 
-  if (mod(ci.x, 2.0) > 0.5) discard;
+  vec2 ci = floor(fc / cellSize);
+  vec2 cl = mod(fc, cellSize);
 
   float ex = texture(uEnergy, vec2((ci.y + 0.5) / 64.0, 0.5)).r;
 
-  float tk   = mix(uStrip, uCell, ex);
-  float lo   = uCell * 0.5 - tk * 0.5;
-  float hi   = lo + tk;
-  float soft = mix(0.3, 1.5, ex);
+  if (mod(ci.x, 2.0) > 0.5) discard;
+  // if (mod(ci.y, 2.0) > 0.5) discard;
 
-  float mask =
-    smoothstep(lo - soft, lo + soft, cl.y) *
-    (1.0 - smoothstep(hi - soft, hi + soft, cl.y));
+  float symbolPadding = 0.17;
 
-  if (mask < 0.005) discard;
+  float sdfSample = (texture(uSymbol, mix(vec2(symbolPadding), vec2(1.0 - symbolPadding), cl / uCell)).r * 2.0 - 1.0);
+  float sdfAa = fwidth(sdfSample) * 1.2;
+  float sdfTarget = -ex;
+  float sdfFactor = smoothstep(sdfTarget - sdfAa, sdfTarget + sdfAa, sdfSample)
+    * mix(0.5, 1.0, ex);
 
   vec2 tsA = vec2(textureSize(uTexA, 0));
   vec2 tsB = vec2(textureSize(uTexB, 0));
@@ -58,6 +60,5 @@ void main() {
     uFade
   );
 
-  float a = mix(0.3, 1.0, ex) * mask;
-  fragColor = vec4(col.rgb * a, a);
+  fragColor = vec4(col.rgb * sdfFactor, sdfFactor);
 }

@@ -80,6 +80,30 @@ import PageSection from '../components/PageSection.astro'
   <PageSection title="Approach" mode="full-width">
     <p class="text-heading approach-text">Acting at the intersection of strategy and visual design, our work spans from research to finished product and everything in between. An officeless team where every project is led by those who create it. And beyond — through implementation, until the identity becomes reality. The client has a business, ambitions, a chaos of ideas and references. We ask questions, dig deep, strip away the excess — until only what works remains. From noise comes clarity that lasts for years. This is the distillation of essence.</p>
     <ApproachCanvas />
+    <div class="section-grid">
+      <div class="col-content approach-content">
+        <div class="approach-row">
+          <div class="approach-item">
+            <h3 class="text-body approach-item-title">Sense</h3>
+            <p class="text-body approach-item-desc">Before anything takes shape, we need to understand what we're actually solving. We ask questions about your business, your audience, and the gap between where you are and where you want to be. Sometimes that's a single conversation. Sometimes it's a structured session. Either way, it ends with something most projects skip: clarity you can actually build from.</p>
+          </div>
+          <div class="approach-item">
+            <h3 class="text-body approach-item-title">Shape</h3>
+            <p class="text-body approach-item-desc">This is where the brand gets its form — the mark, the system, the visual language. We build from intention, not intuition alone. Every decision has a reason, and the result is something that holds together under pressure: across formats, across teams, across time. We work from scratch or on top of what exists — in full or with precision.</p>
+          </div>
+        </div>
+        <div class="approach-row">
+          <div class="approach-item">
+            <h3 class="text-body approach-item-title">Press</h3>
+            <p class="text-body approach-item-desc">Design doesn't end at the file handoff. We see it through — guiding developers, tightening details, catching what gets lost between intent and implementation. And when the brand needs to exist beyond the screen, we know how to get it there. We work closely with print production, understand material constraints, and make sure what was designed survives contact with the real world.</p>
+          </div>
+          <div class="approach-item">
+            <h3 class="text-body approach-item-title">Stay</h3>
+            <p class="text-body approach-item-desc">Some clients need a partner who's just there. For questions, reviews, small refinements, and strategic moments — even after another studio's work. We're available on retainer, hourly, or by the task. No long commitments required. We stay as long as we're useful.</p>
+          </div>
+        </div>
+      </div>
+    </div>
   </PageSection>
 
   <!-- Offers -->
@@ -216,6 +240,38 @@ import PageSection from '../components/PageSection.astro'
     margin-bottom: var(--12-lh);
   }
 
+  .approach-content {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: var(--12-lh);
+  }
+
+  .approach-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--col-gap);
+    padding: var(--2-lh) 0 calc(var(--lh) * 10);
+    box-shadow: inset 0 1px 0 0 var(--color-gray-30);
+  }
+
+  .approach-row:last-child {
+    padding-bottom: 0;
+  }
+
+  .approach-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--2-lh);
+  }
+
+  .approach-item-title {
+    color: var(--color-text);
+  }
+
+  .approach-item-desc {
+    color: var(--color-text-secondary);
+  }
+
   /* Offers */
   .offers-intro {
     text-indent: calc(var(--col-indent) * (100% + var(--col-gap)) / var(--cols));
@@ -264,6 +320,7 @@ import PageSection from '../components/PageSection.astro'
     }
 
     .info-row,
+    .approach-row,
     .offers-row {
       grid-template-columns: 1fr;
     }
@@ -280,6 +337,7 @@ import PageSection from '../components/PageSection.astro'
     }
 
     .info-row,
+    .approach-row,
     .offers-row {
       grid-template-columns: 1fr 1fr;
     }

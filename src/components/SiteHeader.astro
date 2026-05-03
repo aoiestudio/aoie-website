@@ -3,7 +3,7 @@
   <div class="col-content nav-right text-body">
     <nav class="nav-links" aria-label="Main">
       <a href="/">Studio</a>
-      <a href="/work">Work</a>
+      <a href="/work" aria-disabled="true" tabindex="-1" class="nav-link--disabled">Work</a>
     </nav>
     <a href="#" class="nav-hire hire-btn">Hire us</a>
     <button type="button" class="nav-burger" aria-label="Open menu">
@@ -93,6 +93,15 @@
   .nav-links {
     display: flex;
     gap: var(--2-lh);
+  }
+
+  .nav-links a:hover {
+    color: var(--color-gray-50);
+  }
+
+  .nav-link--disabled {
+    pointer-events: none;
+    color: var(--color-gray-40);
   }
 
   @media (--mobile) {

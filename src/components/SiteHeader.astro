@@ -4,6 +4,7 @@
     <nav class="nav-links" aria-label="Main">
       <a href="/">Studio</a>
       <a href="/work" aria-disabled="true" tabindex="-1" class="nav-link--disabled">Work</a>
+      <a href="#connect" class="nav-link--connect">Connect</a>
     </nav>
     <a href="#" class="nav-hire hire-btn link">Hire us</a>
     <button type="button" class="nav-burger" aria-label="Open menu">
@@ -99,6 +100,14 @@
   .nav-link--disabled {
     pointer-events: none;
     color: var(--color-gray-40);
+  }
+
+  .nav-link--connect {
+    color: var(--color-gray-50);
+  }
+
+  .nav-link--connect:hover {
+    color: var(--color-white);
   }
 
   @media (--mobile) {

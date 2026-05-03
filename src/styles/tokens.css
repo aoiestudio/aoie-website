@@ -40,6 +40,7 @@
   --lh: max(8px, round(nearest, calc(7.2066px + 0.1845vw), 1px));
 
   --2-lh: round(nearest, calc(var(--lh) * 2), 1px);
+  --9-lh: round(nearest, calc(var(--lh) * 9), 1px);
   --12-lh: round(nearest, calc(var(--lh) * 12), 1px);
   --16-lh: round(nearest, calc(var(--lh) * 16), 1px);
   --24-lh: round(nearest, calc(var(--lh) * 24), 1px);

@@ -2,7 +2,7 @@
 import PageSection from './PageSection.astro'
 ---
 
-<PageSection title="Connect" class="section-connect">
+<PageSection title="Connect" id="connect" class="section-connect">
   <div class="connect-grid">
     <div class="connect-col">
       <span class="text-body connect-label">Contact</span>
@@ -60,6 +60,7 @@ import PageSection from './PageSection.astro'
 
   :global(.section-connect) {
     min-height: var(--42-lh);
+    scroll-margin-top: var(--9-lh);
   }
 
   @media (--mobile) {

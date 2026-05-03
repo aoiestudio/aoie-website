@@ -3,13 +3,14 @@ interface Props {
   title: string
   mode?: 'half-width' | 'full-width' | 'bottom'
   class?: string
+  id?: string
 }
 
-const { title, mode = 'half-width', class: className } = Astro.props
+const { title, mode = 'half-width', class: className, id } = Astro.props
 ---
 
 {mode === 'bottom' ? (
-  <section class:list={['page-section', 'page-section--bottom', 'page-wrap', className]}>
+  <section id={id} class:list={['page-section', 'page-section--bottom', 'page-wrap', className]}>
     <div class="page-section__head">
       <hr class="page-section__divider" />
       <h2 class="text-heading page-section__title">{title}</h2>
@@ -18,7 +19,7 @@ const { title, mode = 'half-width', class: className } = Astro.props
     <slot />
   </section>
 ) : mode === 'full-width' ? (
-  <section class:list={['page-section', 'page-section--full', 'page-wrap', className]}>
+  <section id={id} class:list={['page-section', 'page-section--full', 'page-wrap', className]}>
     <hr class="page-section__divider" />
     <div class="section-grid">
       <h2 class="col-label text-heading page-section__title">{title}</h2>
@@ -26,7 +27,7 @@ const { title, mode = 'half-width', class: className } = Astro.props
     <slot />
   </section>
 ) : (
-  <section class:list={['page-section', 'page-section--half', 'page-wrap', className]}>
+  <section id={id} class:list={['page-section', 'page-section--half', 'page-wrap', className]}>
     <hr class="page-section__divider" />
     <div class="section-grid">
       <h2 class="col-label text-heading page-section__title">{title}</h2>

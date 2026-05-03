@@ -12,7 +12,7 @@ const { title, description, tight = false } = Astro.props
   <span class="text-body item-card-title">{title}</span>
   {description
     ? <p class="text-body item-card-content">{description}</p>
-    : <div class="text-body item-card-content"><slot /></div>
+    : <div class="item-card-content"><slot /></div>
   }
 </div>
 

@@ -3,12 +3,12 @@ import PageSection from './PageSection.astro'
 ---
 
 <PageSection title="Do you want to talk about branding?" mode="bottom">
-  <a slot="subtitle" href="mailto:hello@aoie.studio" class="text-heading footer-email">hello@aoie.studio</a>
+  <a slot="subtitle" href="mailto:hello@aoie.studio" class="text-heading footer-email link">hello@aoie.studio</a>
   <div class="footer-bar section-grid">
     <p class="text-body footer-legal">We're open for business and new collaborations from May 2026</p>
     <div class="footer-links">
-      <a href="#" class="text-body footer-book">Book a call</a>
-      <a href="#" class="text-body footer-hire hire-btn">Hire us</a>
+      <a href="#" class="text-body footer-book link">Book a call</a>
+      <a href="#" class="text-body footer-hire hire-btn link">Hire us</a>
     </div>
     <span class="text-body footer-copy">©</span>
   </div>
@@ -17,13 +17,6 @@ import PageSection from './PageSection.astro'
 <style>
   .footer-email {
     display: block;
-    color: var(--color-text-muted);
-  }
-
-  .footer-email:hover,
-  .footer-book:hover,
-  .footer-hire:hover {
-    color: var(--color-white);
   }
 
   .footer-bar {
@@ -40,11 +33,6 @@ import PageSection from './PageSection.astro'
     gap: var(--col-gap);
     grid-column: 5 / 8;
     align-self: end;
-  }
-
-  .footer-book,
-  .footer-hire {
-    color: var(--color-text-secondary);
   }
 
   .footer-copy {

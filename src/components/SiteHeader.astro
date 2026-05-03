@@ -5,7 +5,7 @@
       <a href="/">Studio</a>
       <a href="/work" aria-disabled="true" tabindex="-1" class="nav-link--disabled">Work</a>
     </nav>
-    <a href="#" class="nav-hire hire-btn">Hire us</a>
+    <a href="#" class="nav-hire hire-btn link">Hire us</a>
     <button type="button" class="nav-burger" aria-label="Open menu">
       <!-- 49×6 “pill dash” line ×3, 5px gap (node 44:2 euaaaio-design) -->
       <svg
@@ -95,10 +95,6 @@
     gap: var(--2-lh);
   }
 
-  .nav-links a:hover {
-    color: var(--color-gray-50);
-  }
-
   .nav-link--disabled {
     pointer-events: none;
     color: var(--color-gray-40);
@@ -129,12 +125,4 @@
     }
   }
 
-  .nav-hire {
-    color: var(--color-text-secondary);
-  }
-
-  .nav-hire:hover,
-  .hire-btn:hover {
-    color: var(--color-white);
-  }
 </style>

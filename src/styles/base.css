@@ -29,6 +29,14 @@ a {
   transition: color 0.15s;
 }
 
+.link {
+  color: var(--color-text-secondary);
+}
+
+.link:hover {
+  color: var(--color-white);
+}
+
 img,
 video {
   display: block;

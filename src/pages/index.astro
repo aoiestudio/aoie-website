@@ -75,11 +75,11 @@ import PageSection from '../components/PageSection.astro'
     <ApproachCanvas />
     <div class="section-grid">
       <div class="col-content approach-content">
-        <ItemRow padBottom>
+        <ItemRow>
           <ItemCard title="Sense" description="Before anything takes shape, we need to understand what we're actually solving. We ask questions about your business, your audience, and the gap between where you are and where you want to be. Sometimes that's a single conversation. Sometimes it's a structured session. Either way, it ends with something most projects skip: clarity you can actually build from." />
           <ItemCard title="Shape" description="This is where the brand gets its form — the mark, the system, the visual language. We build from intention, not intuition alone. Every decision has a reason, and the result is something that holds together under pressure: across formats, across teams, across time. We work from scratch or on top of what exists — in full or with precision." />
         </ItemRow>
-        <ItemRow padBottom>
+        <ItemRow>
           <ItemCard title="Press" description="Design doesn't end at the file handoff. We see it through — guiding developers, tightening details, catching what gets lost between intent and implementation. And when the brand needs to exist beyond the screen, we know how to get it there. We work closely with print production, understand material constraints, and make sure what was designed survives contact with the real world." />
           <ItemCard title="Stay" description="Some clients need a partner who's just there. For questions, reviews, small refinements, and strategic moments — even after another studio's work. We're available on retainer, hourly, or by the task. No long commitments required. We stay as long as we're useful." />
         </ItemRow>
@@ -92,11 +92,11 @@ import PageSection from '../components/PageSection.astro'
     <p class="text-heading offers-intro">We don't do rush jobs or undefined scopes. Good design takes time, and good collaboration takes structure. Depending on what you need, we work one of two ways — both designed to keep things clear, calm, and moving forward.</p>
     <div class="section-grid">
       <div class="col-content offers-content">
-        <ItemRow padBottom>
+        <ItemRow>
           <ItemCard title="Retainers" description="In close collaboration with you and your internal team, we work a set number of days per week over an extended period, where the length of it varies according to needs and deliverables. Through conversations tasks are defined and planned weekly." />
           <ItemCard title="Projects" description="One project at a time with a fixed total cost based on deliverables. The project is planned, estimated, and deliverables specified before the project starts up." />
         </ItemRow>
-        <ItemRow padBottom>
+        <ItemRow>
           <ItemCard title="Consultancy" description="A focused conversation, not a deliverable. We help you understand a problem, evaluate a direction, or get unstuck. One or several sessions, depending on what you need. Suitable when you have a team but need an outside perspective, or when you're not sure yet what kind of help you actually need." />
           <div></div>
         </ItemRow>
@@ -174,6 +174,7 @@ import PageSection from '../components/PageSection.astro'
   .approach-content {
     display: flex;
     flex-direction: column;
+    gap: calc(var(--lh) * 10);
     margin-bottom: var(--12-lh);
   }
 
@@ -185,6 +186,7 @@ import PageSection from '../components/PageSection.astro'
   .offers-content {
     display: flex;
     flex-direction: column;
+    gap: calc(var(--lh) * 10);
   }
 
   /* Mobile (≤768px) */

@@ -1,13 +1,12 @@
 ---
 interface Props {
-  padBottom?: boolean
   borderTop?: boolean
 }
 
-const { padBottom = false, borderTop = true } = Astro.props
+const { borderTop = true } = Astro.props
 ---
 
-<div class:list={['item-row', { 'item-row--pad-bottom': padBottom, 'item-row--no-border': !borderTop }]}>
+<div class:list={['item-row', { 'item-row--no-border': !borderTop }]}>
   <slot />
 </div>
 
@@ -23,14 +22,6 @@ const { padBottom = false, borderTop = true } = Astro.props
   .item-row--no-border {
     box-shadow: none;
     padding-top: 0;
-  }
-
-  .item-row--pad-bottom {
-    padding-bottom: calc(var(--lh) * 10);
-  }
-
-  .item-row--pad-bottom:last-child {
-    padding-bottom: 0;
   }
 
   @media (--mobile) {

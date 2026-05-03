@@ -1,13 +1,22 @@
 ---
 import BrandingSection from './BrandingSection.astro'
+import ConnectSection from './ConnectSection.astro'
 ---
 
 <footer class="footer">
-  <BrandingSection />
+  <div class="footer-sections">
+    <ConnectSection />
+    <BrandingSection />
+  </div>
   <div class="footer-canvas"></div>
 </footer>
 
 <style>
+  .footer-sections {
+    display: flex;
+    flex-direction: column;
+  }
+
   .footer-canvas {
     height: var(--66-lh);
     background: var(--color-surface);

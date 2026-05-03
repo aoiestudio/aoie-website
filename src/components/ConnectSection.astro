@@ -28,10 +28,6 @@ import PageSection from './PageSection.astro'
 </PageSection>
 
 <style>
-  :global(.section-connect) {
-    min-height: var(--42-lh);
-  }
-
   .connect-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -68,6 +64,10 @@ import PageSection from './PageSection.astro'
   .connect-links {
     display: flex;
     flex-direction: column;
+  }
+
+  :global(.section-connect) {
+    min-height: var(--42-lh);
   }
 
   @media (--mobile) {

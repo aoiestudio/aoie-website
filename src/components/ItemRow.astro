@@ -1,0 +1,47 @@
+---
+interface Props {
+  padBottom?: boolean
+  borderTop?: boolean
+}
+
+const { padBottom = false, borderTop = true } = Astro.props
+---
+
+<div class:list={['item-row', { 'item-row--pad-bottom': padBottom, 'item-row--no-border': !borderTop }]}>
+  <slot />
+</div>
+
+<style>
+  .item-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 var(--col-gap);
+    padding-top: var(--2-lh);
+    box-shadow: inset 0 1px 0 0 var(--color-gray-30);
+  }
+
+  .item-row--no-border {
+    box-shadow: none;
+    padding-top: 0;
+  }
+
+  .item-row--pad-bottom {
+    padding-bottom: calc(var(--lh) * 10);
+  }
+
+  .item-row--pad-bottom:last-child {
+    padding-bottom: 0;
+  }
+
+  @media (--mobile) {
+    .item-row {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (--tablet) {
+    .item-row {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+</style>

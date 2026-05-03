@@ -2,6 +2,8 @@
 import ApproachCanvas from '../components/canvas/ApproachCanvas.astro'
 import HeroMedia from '../components/canvas/HeroMedia.astro'
 import InfoClock from '../components/InfoClock.astro'
+import ItemCard from '../components/ItemCard.astro'
+import ItemRow from '../components/ItemRow.astro'
 import PageLayout from '../layouts/PageLayout.astro'
 import PageSection from '../components/PageSection.astro'
 ---
@@ -21,31 +23,23 @@ import PageSection from '../components/PageSection.astro'
   <!-- Information -->
   <PageSection title="Information">
     <div class="info-content">
-      <div class="info-row">
-        <div class="info-block">
-          <div class="info-item">
-            <span class="text-body info-key">Working globally</span>
-            <span class="text-body info-val" id="info-clock">
+      <ItemRow borderTop={false}>
+        <div class="info-block info-block--first">
+          <ItemCard title="Working globally">
+            <span id="info-clock">
               <InfoClock />
               <span class="info-clock-tz">CET</span>
             </span>
-          </div>
+          </ItemCard>
         </div>
-        <div class="info-block">
-          <div class="info-item">
-            <span class="text-body info-key">Ownership</span>
-            <span class="text-body info-val">Independent</span>
-          </div>
-          <div class="info-item">
-            <span class="text-body info-key">Founded</span>
-            <span class="text-body info-val">2025</span>
-          </div>
+        <div class="info-block info-block--first">
+          <ItemCard title="Ownership" description="Independent" />
+          <ItemCard title="Founded" description="2025" />
         </div>
-      </div>
-      <div class="info-row">
-        <div class="info-item">
-          <span class="text-body info-key info-key--pad-line">Capabilities</span>
-          <ul class="text-body info-list">
+      </ItemRow>
+      <ItemRow>
+        <ItemCard title="Capabilities">
+          <ul class="info-list">
             <li>Creative Direction</li>
             <li>Strategy</li>
             <li>Visual Identity</li>
@@ -55,24 +49,23 @@ import PageSection from '../components/PageSection.astro'
             <li>Campaign</li>
             <li>Narrative</li>
           </ul>
-        </div>
-        <div class="info-item">
-          <span class="text-body info-key info-key--pad-line">Experience</span>
-          <p class="text-body info-val">With over 12 years of experience, we collaborate with e-commerce, art foundations, and media platforms. Based in Barcelona, work worldwide. We are eager to partner with international brands and share our passion for creating extraordinary things.</p>
-        </div>
-      </div>
-      <div class="info-row info-row--people">
+        </ItemCard>
+        <ItemCard title="Experience" description="With over 12 years of experience, we collaborate with e-commerce, art foundations, and media platforms. Based in Barcelona, work worldwide. We are eager to partner with international brands and share our passion for creating extraordinary things." />
+      </ItemRow>
+      <ItemRow>
         <div class="info-person">
-          <span class="text-body info-key">Anna Sharapova</span>
-          <span class="text-body info-val">Co-Founder, Designer Director<br />16 years experience</span>
-          <div class="info-photo"></div>
+          <ItemCard title="Anna Sharapova">
+            <span class="text-body">Co-Founder, Designer Director<br />16 years experience</span>
+            <div class="info-photo"></div>
+          </ItemCard>
         </div>
         <div class="info-person">
-          <span class="text-body info-key">Eduard Aksamitov</span>
-          <span class="text-body info-val">Co-Founder, Art Director<br />10 years experience</span>
-          <div class="info-photo"></div>
+          <ItemCard title="Eduard Aksamitov">
+            <span class="text-body">Co-Founder, Art Director<br />10 years experience</span>
+            <div class="info-photo"></div>
+          </ItemCard>
         </div>
-      </div>
+      </ItemRow>
     </div>
   </PageSection>
 
@@ -82,26 +75,14 @@ import PageSection from '../components/PageSection.astro'
     <ApproachCanvas />
     <div class="section-grid">
       <div class="col-content approach-content">
-        <div class="approach-row">
-          <div class="approach-item">
-            <h3 class="text-body approach-item-title">Sense</h3>
-            <p class="text-body approach-item-desc">Before anything takes shape, we need to understand what we're actually solving. We ask questions about your business, your audience, and the gap between where you are and where you want to be. Sometimes that's a single conversation. Sometimes it's a structured session. Either way, it ends with something most projects skip: clarity you can actually build from.</p>
-          </div>
-          <div class="approach-item">
-            <h3 class="text-body approach-item-title">Shape</h3>
-            <p class="text-body approach-item-desc">This is where the brand gets its form — the mark, the system, the visual language. We build from intention, not intuition alone. Every decision has a reason, and the result is something that holds together under pressure: across formats, across teams, across time. We work from scratch or on top of what exists — in full or with precision.</p>
-          </div>
-        </div>
-        <div class="approach-row">
-          <div class="approach-item">
-            <h3 class="text-body approach-item-title">Press</h3>
-            <p class="text-body approach-item-desc">Design doesn't end at the file handoff. We see it through — guiding developers, tightening details, catching what gets lost between intent and implementation. And when the brand needs to exist beyond the screen, we know how to get it there. We work closely with print production, understand material constraints, and make sure what was designed survives contact with the real world.</p>
-          </div>
-          <div class="approach-item">
-            <h3 class="text-body approach-item-title">Stay</h3>
-            <p class="text-body approach-item-desc">Some clients need a partner who's just there. For questions, reviews, small refinements, and strategic moments — even after another studio's work. We're available on retainer, hourly, or by the task. No long commitments required. We stay as long as we're useful.</p>
-          </div>
-        </div>
+        <ItemRow padBottom>
+          <ItemCard title="Sense" description="Before anything takes shape, we need to understand what we're actually solving. We ask questions about your business, your audience, and the gap between where you are and where you want to be. Sometimes that's a single conversation. Sometimes it's a structured session. Either way, it ends with something most projects skip: clarity you can actually build from." />
+          <ItemCard title="Shape" description="This is where the brand gets its form — the mark, the system, the visual language. We build from intention, not intuition alone. Every decision has a reason, and the result is something that holds together under pressure: across formats, across teams, across time. We work from scratch or on top of what exists — in full or with precision." />
+        </ItemRow>
+        <ItemRow padBottom>
+          <ItemCard title="Press" description="Design doesn't end at the file handoff. We see it through — guiding developers, tightening details, catching what gets lost between intent and implementation. And when the brand needs to exist beyond the screen, we know how to get it there. We work closely with print production, understand material constraints, and make sure what was designed survives contact with the real world." />
+          <ItemCard title="Stay" description="Some clients need a partner who's just there. For questions, reviews, small refinements, and strategic moments — even after another studio's work. We're available on retainer, hourly, or by the task. No long commitments required. We stay as long as we're useful." />
+        </ItemRow>
       </div>
     </div>
   </PageSection>
@@ -111,23 +92,14 @@ import PageSection from '../components/PageSection.astro'
     <p class="text-heading offers-intro">We don't do rush jobs or undefined scopes. Good design takes time, and good collaboration takes structure. Depending on what you need, we work one of two ways — both designed to keep things clear, calm, and moving forward.</p>
     <div class="section-grid">
       <div class="col-content offers-content">
-        <div class="offers-row">
-          <div class="offer">
-            <h3 class="text-body offer-title">Retainers</h3>
-            <p class="text-body offer-desc">In close collaboration with you and your internal team, we work a set number of days per week over an extended period, where the length of it varies according to needs and deliverables. Through conversations tasks are defined and planned weekly.</p>
-          </div>
-          <div class="offer">
-            <h3 class="text-body offer-title">Projects</h3>
-            <p class="text-body offer-desc">One project at a time with a fixed total cost based on deliverables. The project is planned, estimated, and deliverables specified before the project starts up.</p>
-          </div>
-        </div>
-        <div class="offers-row">
-          <div class="offer">
-            <h3 class="text-body offer-title">Consultancy</h3>
-            <p class="text-body offer-desc">A focused conversation, not a deliverable. We help you understand a problem, evaluate a direction, or get unstuck. One or several sessions, depending on what you need. Suitable when you have a team but need an outside perspective, or when you're not sure yet what kind of help you actually need.</p>
-          </div>
+        <ItemRow padBottom>
+          <ItemCard title="Retainers" description="In close collaboration with you and your internal team, we work a set number of days per week over an extended period, where the length of it varies according to needs and deliverables. Through conversations tasks are defined and planned weekly." />
+          <ItemCard title="Projects" description="One project at a time with a fixed total cost based on deliverables. The project is planned, estimated, and deliverables specified before the project starts up." />
+        </ItemRow>
+        <ItemRow padBottom>
+          <ItemCard title="Consultancy" description="A focused conversation, not a deliverable. We help you understand a problem, evaluate a direction, or get unstuck. One or several sessions, depending on what you need. Suitable when you have a team but need an outside perspective, or when you're not sure yet what kind of help you actually need." />
           <div></div>
-        </div>
+        </ItemRow>
       </div>
     </div>
   </PageSection>
@@ -157,24 +129,6 @@ import PageSection from '../components/PageSection.astro'
     gap: var(--12-lh);
   }
 
-  .info-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 var(--col-gap);
-    padding-top: var(--2-lh);
-    box-shadow: inset 0 1px 0 0 var(--color-gray-30);
-  }
-
-  .info-row:first-child {
-    box-shadow: none;
-    padding-top: 0;
-  }
-
-  .info-row:first-child .info-block {
-    box-shadow: none;
-    padding-top: 0;
-  }
-
   .info-block {
     display: flex;
     flex-direction: column;
@@ -183,22 +137,9 @@ import PageSection from '../components/PageSection.astro'
     padding-top: var(--lh);
   }
 
-  .info-item {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  .info-key {
-    color: var(--color-text);
-  }
-
-  .info-key--pad-line {
-    padding-bottom: var(--2-lh);
-  }
-
-  .info-val {
-    color: var(--color-text-secondary);
+  .info-block--first {
+    box-shadow: none;
+    padding-top: 0;
   }
 
   #info-clock {
@@ -206,10 +147,6 @@ import PageSection from '../components/PageSection.astro'
     align-items: baseline;
     gap: 11px;
     font-variant-numeric: lining-nums tabular-nums;
-  }
-
-  .info-list {
-    color: var(--color-text-secondary);
   }
 
   .info-list li {
@@ -240,32 +177,6 @@ import PageSection from '../components/PageSection.astro'
     margin-bottom: var(--12-lh);
   }
 
-  .approach-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 var(--col-gap);
-    padding: var(--2-lh) 0 calc(var(--lh) * 10);
-    box-shadow: inset 0 1px 0 0 var(--color-gray-30);
-  }
-
-  .approach-row:last-child {
-    padding-bottom: 0;
-  }
-
-  .approach-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--2-lh);
-  }
-
-  .approach-item-title {
-    color: var(--color-text);
-  }
-
-  .approach-item-desc {
-    color: var(--color-text-secondary);
-  }
-
   .offers-intro {
     text-indent: calc(var(--col-indent) * (100% + var(--col-gap)) / var(--cols));
     margin-bottom: var(--12-lh);
@@ -274,32 +185,6 @@ import PageSection from '../components/PageSection.astro'
   .offers-content {
     display: flex;
     flex-direction: column;
-  }
-
-  .offers-row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0 var(--col-gap);
-    padding: var(--2-lh) 0 calc(var(--lh) * 10);
-    box-shadow: inset 0 1px 0 0 var(--color-gray-30);
-  }
-
-  .offers-row:last-child {
-    padding-bottom: 0;
-  }
-
-  .offer {
-    display: flex;
-    flex-direction: column;
-    gap: var(--2-lh);
-  }
-
-  .offer-title {
-    color: var(--color-text);
-  }
-
-  .offer-desc {
-    color: var(--color-text-secondary);
   }
 
   /* Mobile (≤768px) */
@@ -311,12 +196,6 @@ import PageSection from '../components/PageSection.astro'
     .hero {
       padding-top: var(--12-lh);
     }
-
-    .info-row,
-    .approach-row,
-    .offers-row {
-      grid-template-columns: 1fr;
-    }
   }
 
   /* Tablet (769–1024px) */
@@ -327,12 +206,6 @@ import PageSection from '../components/PageSection.astro'
 
     .hero {
       padding-top: calc(var(--lh) * 18);
-    }
-
-    .info-row,
-    .approach-row,
-    .offers-row {
-      grid-template-columns: 1fr 1fr;
     }
   }
 </style>

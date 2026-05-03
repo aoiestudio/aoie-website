@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string
+  description?: string
+}
+
+const { title, description } = Astro.props
+---
+
+<div class="item-card">
+  <span class="text-body item-card-title">{title}</span>
+  {description
+    ? <p class="text-body item-card-content">{description}</p>
+    : <div class="text-body item-card-content"><slot /></div>
+  }
+</div>
+
+<style>
+  .item-card {
+    display: flex;
+    flex-direction: column;
+    gap: var(--2-lh);
+  }
+
+  .item-card-title {
+    color: var(--color-text);
+  }
+
+  .item-card-content {
+    color: var(--color-text-secondary);
+  }
+</style>

@@ -1,0 +1,51 @@
+---
+---
+
+<div class="mobile-block">
+  <p class="mobile-block__emoji">🚧</p>
+  <p class="mobile-block__title">Desktop only (for now)</p>
+  <p class="mobile-block__sub">
+    We're still figuring out how to make this look good on a tiny screen.<br />
+    Grab a laptop — it's worth it.
+  </p>
+</div>
+
+<style>
+  .mobile-block {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    background: var(--color-black, #000);
+    color: var(--color-white, #fff);
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+  }
+
+  .mobile-block__emoji {
+    font-size: 3rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .mobile-block__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin: 0 0 0.75rem;
+  }
+
+  .mobile-block__sub {
+    font-size: 0.9rem;
+    opacity: 0.55;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  @media (--mobile), (--tablet) {
+    .mobile-block {
+      display: flex;
+    }
+  }
+</style>

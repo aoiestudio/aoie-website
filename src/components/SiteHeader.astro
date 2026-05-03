@@ -1,3 +1,7 @@
+---
+import HireButton from './HireButton.astro'
+---
+
 <header class="nav page-wrap section-grid">
   <a href="/" class="col-label nav-logo text-heading">aoie</a>
   <div class="col-content nav-right text-body">
@@ -6,7 +10,7 @@
       <a href="/work" aria-disabled="true" tabindex="-1" class="nav-link--disabled">Work</a>
       <a href="#connect" class="nav-link--connect">Connect</a>
     </nav>
-    <a href="#" class="nav-hire hire-btn link">Hire us</a>
+    <HireButton class="nav-hire link" />
     <button type="button" class="nav-burger" aria-label="Open menu">
       <!-- 49×6 “pill dash” line ×3, 5px gap (node 44:2 euaaaio-design) -->
       <svg

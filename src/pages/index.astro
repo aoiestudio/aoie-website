@@ -25,7 +25,7 @@ import PageSection from '../components/PageSection.astro'
     <div class="info-content">
       <ItemRow borderTop={false}>
         <div class="info-block info-block--first">
-          <ItemCard title="Working globally">
+          <ItemCard title="Working globally" tight>
             <span id="info-clock">
               <InfoClock />
               <span class="info-clock-tz">CET</span>
@@ -33,8 +33,8 @@ import PageSection from '../components/PageSection.astro'
           </ItemCard>
         </div>
         <div class="info-block info-block--first">
-          <ItemCard title="Ownership" description="Independent" />
-          <ItemCard title="Founded" description="2025" />
+          <ItemCard title="Ownership" description="Independent" tight />
+          <ItemCard title="Founded" description="2025" tight />
         </div>
       </ItemRow>
       <ItemRow>
@@ -56,14 +56,14 @@ import PageSection from '../components/PageSection.astro'
         <div class="info-person">
           <ItemCard title="Anna Sharapova">
             <span class="text-body">Co-Founder, Designer Director<br />16 years experience</span>
-            <div class="info-photo"></div>
           </ItemCard>
+          <div class="info-photo"></div>
         </div>
         <div class="info-person">
           <ItemCard title="Eduard Aksamitov">
             <span class="text-body">Co-Founder, Art Director<br />10 years experience</span>
-            <div class="info-photo"></div>
           </ItemCard>
+          <div class="info-photo"></div>
         </div>
       </ItemRow>
     </div>
@@ -174,7 +174,7 @@ import PageSection from '../components/PageSection.astro'
   .approach-content {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--lh) * 10);
+    gap: var(--12-lh);
     margin-bottom: var(--12-lh);
   }
 
@@ -186,13 +186,13 @@ import PageSection from '../components/PageSection.astro'
   .offers-content {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--lh) * 10);
+    gap: var(--12-lh);
   }
 
   /* Mobile (≤768px) */
   @media (--mobile) {
     .hero-top {
-      gap: calc(var(--lh) * 8);
+      gap: var(--8-lh);
     }
 
     .hero {

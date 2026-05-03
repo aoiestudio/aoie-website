@@ -2,12 +2,13 @@
 interface Props {
   title: string
   description?: string
+  tight?: boolean
 }
 
-const { title, description } = Astro.props
+const { title, description, tight = false } = Astro.props
 ---
 
-<div class="item-card">
+<div class:list={['item-card', { 'item-card--tight': tight }]}>
   <span class="text-body item-card-title">{title}</span>
   {description
     ? <p class="text-body item-card-content">{description}</p>
@@ -20,6 +21,10 @@ const { title, description } = Astro.props
     display: flex;
     flex-direction: column;
     gap: var(--2-lh);
+  }
+
+  .item-card--tight {
+    gap: 0;
   }
 
   .item-card-title {

@@ -36,7 +36,6 @@ const { images } = Astro.props
   const CELL = 22
   const STRIP = 1
   const MAX_ROWS = 64
-  const DECAY = 0.9
 
   const stage = document.querySelector<HTMLElement>('#hero-stage')!
   const canvas = document.querySelector<HTMLCanvasElement>('#hero-canvas')!
@@ -80,7 +79,8 @@ const { images } = Astro.props
   const imgs = await Promise.all(srcs.map(loadImg))
   if (!imgs.length) { throw new Error('HeroMedia: no images loaded') }
 
-  const symbol = await loadImg("/mac-command.png")
+  // const symbol = await loadImg("/mac-command.png")
+  const symbol = await loadImg("/image copy 2.png")
   const symbolTex = new Texture(gl, {
     image: symbol,
     generateMipmaps: true,
@@ -132,6 +132,7 @@ const { images } = Astro.props
 
   let hovering = false, my = 0, prevMy = 0, prevMyTimeout = 0
   let curIdx = 0, fade = 1
+  let lastRender = performance.now()
 
   if (imgs.length > 1) {
     canvas.addEventListener('click', () => {
@@ -160,7 +161,13 @@ const { images } = Astro.props
   canvas.addEventListener('mouseleave', () => { hovering = false })
 
   function render() {
-    for (let i = 0; i < MAX_ROWS; i++) { rowEnergy[i] *= DECAY }
+    const now = performance.now()
+    const dt = (now - lastRender) * 0.001
+    lastRender = now
+
+    const decaySpeed = 5
+    const decayFactor = Math.exp(- dt * decaySpeed)
+    for (let i = 0; i < MAX_ROWS; i++) { rowEnergy[i] *= decayFactor }
 
     if (hovering) {
       const r0 = Math.min(Math.floor(prevMy / CELL), MAX_ROWS - 1)
@@ -172,10 +179,10 @@ const { images } = Astro.props
 
     if (prevMyTimeout > 0) {
       prevMyTimeout -= 1
+      prevMy = my
     }
 
-    const dt = 0.016
-    const animationSpeed = 4
+    const animationSpeed = 10
     fade += (1 - fade) * (-Math.expm1(- animationSpeed * dt))
 
     energyTex.needsUpdate = true

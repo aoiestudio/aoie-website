@@ -34,7 +34,14 @@ void main() {
   vec2 fc = gl_FragCoord.xy / uDpr;
   fc.y = uRes.y - fc.y;
 
-  vec2 cellSize = vec2(1.0, 1.0) * uCell;
+  float cellCount = round(uRes.x / uCell);
+  float cellSize = uRes.x / cellCount;
+
+  if (mod(cellCount, 2.0) < 0.5) {
+    fc.x -= cellSize * 0.5;
+  }
+
+  // fc.x += sin(0.25 * fc.y / cellSize) * cellSize;
 
   vec2 ci = floor(fc / cellSize);
   vec2 cl = mod(fc, cellSize);
@@ -46,7 +53,7 @@ void main() {
 
   float symbolPadding = 0.17;
 
-  float sdfSample = (texture(uSymbol, mix(vec2(symbolPadding), vec2(1.0 - symbolPadding), cl / uCell)).r * 2.0 - 1.0);
+  float sdfSample = (texture(uSymbol, mix(vec2(symbolPadding), vec2(1.0 - symbolPadding), cl / cellSize)).r * 2.0 - 1.0);
   float sdfAa = fwidth(sdfSample) * 1.2;
   float sdfTarget = -ex;
   float sdfFactor = smoothstep(sdfTarget - sdfAa, sdfTarget + sdfAa, sdfSample)

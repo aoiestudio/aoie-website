@@ -38,9 +38,6 @@
     "typescript": "catalog:",
     "wrangler": "catalog:"
   },
-  "overrides": {
-    "vite": "^7"
-  },
   "engines": {
     "node": ">=22.0.0"
   },

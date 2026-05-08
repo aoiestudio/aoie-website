@@ -1,18 +1,24 @@
 <span id="info-clock-time"></span>
 
 <script>
-  const el = document.querySelector('#info-clock-time')
-
-  function update() {
+  function startClock() {
+    const el = document.querySelector('#info-clock-time')
     if (!el) { return }
-    el.textContent = new Date().toLocaleTimeString('en-GB', {
-      timeZone: 'Europe/Paris',
-      hour: '2-digit',
-      minute: '2-digit',
-      second: '2-digit',
-    })
+
+    function update() {
+      el.textContent = new Date().toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/Paris',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit',
+      })
+    }
+
+    update()
+    const timer = setInterval(update, 1000)
+
+    document.addEventListener('astro:before-swap', () => clearInterval(timer), { once: true })
   }
 
-  update()
-  setInterval(update, 1000)
+  document.addEventListener('astro:page-load', startClock)
 </script>

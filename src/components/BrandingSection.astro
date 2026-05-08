@@ -1,6 +1,7 @@
 ---
 import PageSection from './PageSection.astro'
 import HireButton from './HireButton.astro'
+import BookCallButton from './BookCallButton.astro'
 ---
 
 <PageSection title="Do you want to talk about branding?" mode="bottom">
@@ -8,7 +9,7 @@ import HireButton from './HireButton.astro'
   <div class="footer-bar section-grid">
     <p class="text-body footer-legal">We're open for business and new collaborations from May 2026</p>
     <div class="footer-links">
-      <a href="#" class="text-body footer-book link">Book a call</a>
+      <BookCallButton class="text-body footer-book link" />
       <HireButton class="text-body footer-hire link" />
     </div>
     <span class="text-body footer-copy">©</span>
@@ -31,8 +32,8 @@ import HireButton from './HireButton.astro'
 
   .footer-links {
     display: flex;
-    gap: var(--col-gap);
-    grid-column: 5 / 8;
+    gap: var(--2-lh);
+    grid-column: 5 / 7;
     align-self: end;
   }
 

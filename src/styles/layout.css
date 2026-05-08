@@ -83,3 +83,15 @@
     display: block;
   }
 }
+
+/* Prose indent that follows the column grid on wide viewports
+   and falls back to a fixed 2/4 indent on mobile. */
+.prose-indent {
+  text-indent: calc(var(--col-indent) * (100% + var(--col-gap)) / var(--cols));
+}
+
+@media (--mobile) {
+  .prose-indent {
+    text-indent: calc(2 * (100% + var(--col-gap)) / 4);
+  }
+}

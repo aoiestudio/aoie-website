@@ -17,8 +17,14 @@ import ConnectSection from './ConnectSection.astro'
     flex-direction: column;
   }
 
+  @media (--mobile) {
+    .footer-sections {
+      gap: var(--space-3xl);
+    }
+  }
+
   .footer-canvas {
-    height: var(--66-lh);
+    height: var(--size-canvas);
     background: var(--color-surface);
     margin-inline: var(--page-pad);
   }

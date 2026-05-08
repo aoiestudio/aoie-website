@@ -13,7 +13,7 @@ import PageSection from '../components/PageSection.astro'
   <!-- Top: hero + hero-media grouped with 16lh gap (Figma "Top" node) -->
   <div class="hero-top">
     <section class="hero page-wrap">
-      <p class="text-heading hero-text">is a design studio that absorbs visual noise and builds a clear identity from concept to implementation. We are a response to a world where attention has become scarce and visual noise is the norm. Independence and flexibility over diffused responsibility. Direct dialogue over chains of approval.</p>
+      <p class="text-heading hero-text prose-indent">is a design studio that absorbs visual noise and builds a clear identity from concept to implementation. We are a response to a world where attention has become scarce and visual noise is the norm. Independence and flexibility over diffused responsibility. Direct dialogue over chains of approval.</p>
     </section>
     <div class="hero-media page-wrap">
       <HeroMedia images={['/01.png', '/02.png']} />
@@ -71,7 +71,7 @@ import PageSection from '../components/PageSection.astro'
 
   <!-- Approach -->
   <PageSection title="Approach" mode="full-width">
-    <p class="text-heading approach-text">Acting at the intersection of strategy and visual design, our work spans from research to finished product and everything in between. An officeless team where every project is led by those who create it. And beyond — through implementation, until the identity becomes reality. The client has a business, ambitions, a chaos of ideas and references. We ask questions, dig deep, strip away the excess — until only what works remains. From noise comes clarity that lasts for years. This is the distillation of essence.</p>
+    <p class="text-heading approach-text prose-indent">Acting at the intersection of strategy and visual design, our work spans from research to finished product and everything in between. An officeless team where every project is led by those who create it. And beyond — through implementation, until the identity becomes reality. The client has a business, ambitions, a chaos of ideas and references. We ask questions, dig deep, strip away the excess — until only what works remains. From noise comes clarity that lasts for years. This is the distillation of essence.</p>
     <ApproachCanvas />
     <div class="section-grid">
       <div class="col-content approach-content">
@@ -89,7 +89,7 @@ import PageSection from '../components/PageSection.astro'
 
   <!-- Offers -->
   <PageSection title="Offers" mode="full-width">
-    <p class="text-heading offers-intro">We don't do rush jobs or undefined scopes. Good design takes time, and good collaboration takes structure. Depending on what you need, we work one of two ways — both designed to keep things clear, calm, and moving forward.</p>
+    <p class="text-heading offers-intro prose-indent">We don't do rush jobs or undefined scopes. Good design takes time, and good collaboration takes structure. Depending on what you need, we work one of two ways — both designed to keep things clear, calm, and moving forward.</p>
     <div class="section-grid">
       <div class="col-content offers-content">
         <ItemRow>
@@ -98,7 +98,6 @@ import PageSection from '../components/PageSection.astro'
         </ItemRow>
         <ItemRow>
           <ItemCard title="Consultancy" description="A focused conversation, not a deliverable. We help you understand a problem, evaluate a direction, or get unstuck. One or several sessions, depending on what you need. Suitable when you have a team but need an outside perspective, or when you're not sure yet what kind of help you actually need." />
-          <div></div>
         </ItemRow>
       </div>
     </div>
@@ -111,22 +110,21 @@ import PageSection from '../components/PageSection.astro'
   .hero-top {
     display: flex;
     flex-direction: column;
-    gap: var(--16-lh);
+    gap: var(--space-xl);
   }
 
   .hero {
-    padding-top: var(--24-lh);
+    padding-top: var(--space-2xl);
   }
 
   .hero-text {
     max-width: 100%;
-    text-indent: calc(var(--col-indent) * (100% + var(--col-gap)) / var(--cols));
   }
 
   .info-content {
     display: flex;
     flex-direction: column;
-    gap: var(--12-lh);
+    gap: var(--space-lg);
   }
 
   .info-block {
@@ -166,46 +164,22 @@ import PageSection from '../components/PageSection.astro'
   }
 
   .approach-text {
-    text-indent: calc(var(--col-indent) * (100% + var(--col-gap)) / var(--cols));
-    margin-bottom: var(--12-lh);
+    margin-bottom: var(--space-lg);
   }
 
   .approach-content {
     display: flex;
     flex-direction: column;
-    gap: var(--12-lh);
+    gap: var(--space-lg);
   }
 
   .offers-intro {
-    text-indent: calc(var(--col-indent) * (100% + var(--col-gap)) / var(--cols));
-    margin-bottom: var(--12-lh);
+    margin-bottom: var(--space-lg);
   }
 
   .offers-content {
     display: flex;
     flex-direction: column;
-    gap: var(--12-lh);
-  }
-
-  /* Mobile (≤768px) */
-  @media (--mobile) {
-    .hero-top {
-      gap: var(--8-lh);
-    }
-
-    .hero {
-      padding-top: var(--12-lh);
-    }
-  }
-
-  /* Tablet (769–1024px) */
-  @media (--tablet) {
-    .hero-top {
-      gap: var(--12-lh);
-    }
-
-    .hero {
-      padding-top: calc(var(--lh) * 18);
-    }
+    gap: var(--space-lg);
   }
 </style>

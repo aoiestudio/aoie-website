@@ -3,12 +3,12 @@ import BrandingSection from './BrandingSection.astro'
 import ConnectSection from './ConnectSection.astro'
 ---
 
-<footer class="footer">
-  <div class="footer-sections">
+<footer class="footer" data-site-footer>
+  <div class="footer-sections" data-footer-sections>
     <ConnectSection />
     <BrandingSection />
   </div>
-  <div class="footer-canvas"></div>
+  <div class="footer-canvas" data-footer-canvas></div>
 </footer>
 
 <style>
@@ -24,8 +24,44 @@ import ConnectSection from './ConnectSection.astro'
   }
 
   .footer-canvas {
-    height: var(--size-canvas);
+    --footer-canvas-gap: var(--2-lh);
+    --footer-bar-h: 0px;
+    --footer-header-h: 0px;
+    height: calc(100vh - var(--footer-bar-h) - var(--footer-header-h) - var(--footer-canvas-gap));
     background: var(--color-surface);
     margin-inline: var(--page-pad);
   }
 </style>
+
+<script>
+  function setupFooterCanvas() {
+    const canvas = document.querySelector<HTMLElement>('[data-footer-canvas]')
+    const bar = document.querySelector<HTMLElement>('.footer-bar')
+    const branding = document.querySelector<HTMLElement>('.branding-section')
+    const header = document.querySelector<HTMLElement>('.nav')
+    if (!canvas || !bar || !branding || !header) { return }
+
+    function update() {
+      if (!canvas || !bar || !branding || !header) { return }
+      const barTop = bar.getBoundingClientRect().top
+      const brandingBottom = branding.getBoundingClientRect().bottom
+      canvas.style.setProperty('--footer-bar-h', `${brandingBottom - barTop}px`)
+      canvas.style.setProperty('--footer-header-h', `${header.getBoundingClientRect().height}px`)
+    }
+
+    update()
+    window.addEventListener('resize', update)
+    const ro = new ResizeObserver(update)
+    ro.observe(bar)
+    ro.observe(branding)
+    ro.observe(header)
+
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('resize', update)
+      ro.disconnect()
+    }, { once: true })
+  }
+
+  setupFooterCanvas()
+  document.addEventListener('astro:page-load', setupFooterCanvas)
+</script>

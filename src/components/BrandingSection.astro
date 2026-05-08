@@ -4,7 +4,7 @@ import HireButton from './HireButton.astro'
 import BookCallButton from './BookCallButton.astro'
 ---
 
-<PageSection title="Do you want to talk about branding?" mode="bottom">
+<PageSection title="Do you want to talk about branding?" mode="bottom" class="branding-section">
   <a slot="subtitle" href="mailto:hello@aoie.studio" class="text-heading footer-email link">hello@aoie.studio</a>
   <div class="footer-bar section-grid">
     <p class="text-body footer-legal">We're open for business and new collaborations from May 2026</p>
@@ -17,6 +17,10 @@ import BookCallButton from './BookCallButton.astro'
 </PageSection>
 
 <style>
+  :global(.page-section--bottom.branding-section) {
+    padding-bottom: var(--2-lh);
+  }
+
   .footer-email {
     display: block;
   }

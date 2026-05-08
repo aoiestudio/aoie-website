@@ -6,7 +6,8 @@
     if (!el) { return }
 
     function update() {
-      el.textContent = new Date().toLocaleTimeString(undefined, {
+      el.textContent = new Date().toLocaleTimeString('en-GB', {
+        timeZone: 'Europe/Paris',
         hour: '2-digit',
         minute: '2-digit',
         second: '2-digit',

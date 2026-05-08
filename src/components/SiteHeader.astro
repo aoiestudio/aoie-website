@@ -1,43 +1,36 @@
 ---
 import HireButton from './HireButton.astro'
+
+const pathname = Astro.url.pathname.replace(/\/$/, '') || '/'
+const isStudio = pathname === '/'
+const isWorks = pathname === '/works' || pathname.startsWith('/works/')
 ---
 
 <header class="nav page-wrap section-grid">
   <a href="/" class="col-label nav-logo text-heading">aoie</a>
   <div class="col-content nav-right text-body">
     <nav class="nav-links" aria-label="Main">
-      <a href="/">Studio</a>
-      <a href="/works">Works</a>
+      <a href="/" class:list={['nav-link', isStudio && 'is-active']}>Studio</a>
+      <a href="/works" class:list={['nav-link', isWorks && 'is-active']}>Works</a>
     </nav>
     <HireButton class="nav-hire link" />
-    <button type="button" class="nav-burger" aria-label="Open menu">
-      <!-- 49×6 “pill dash” line ×3, 5px gap (node 44:2 euaaaio-design) -->
+    <a href="/explore" class="nav-burger" aria-label="Explore">
       <svg
         class="nav-burger__icon"
         width="49"
-        height="28"
-        viewBox="0 0 49 28"
+        height="6"
+        viewBox="0 0 49 6"
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
         aria-hidden="true"
       >
         {
-          [0, 11, 22].map((y) => (
-            <g transform={`translate(0, ${y})`}>
-              {Array.from({ length: 12 }, (_, index) => (
-                <rect
-                  x={1.5 + index * 4}
-                  y="0"
-                  width="2"
-                  height="6"
-                  rx="1"
-                />
-              ))}
-            </g>
+          Array.from({ length: 12 }, (_, index) => (
+            <rect x={1.5 + index * 4} y="0" width="2" height="6" rx="1" />
           ))
         }
       </svg>
-    </button>
+    </a>
   </div>
 </header>
 
@@ -98,6 +91,19 @@ import HireButton from './HireButton.astro'
   .nav-links {
     display: flex;
     gap: var(--2-lh);
+  }
+
+  .nav-link {
+    color: var(--color-text-secondary);
+    text-decoration: none;
+  }
+
+  .nav-link.is-active {
+    color: var(--color-text-inverse);
+  }
+
+  .nav-link:hover {
+    color: var(--color-text-inverse);
   }
 
   .nav-link--disabled {

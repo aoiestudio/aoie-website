@@ -1,12 +1,13 @@
 ---
 interface Props {
   borderTop?: boolean
+  keepCols?: boolean
 }
 
-const { borderTop = true } = Astro.props
+const { borderTop = true, keepCols = false } = Astro.props
 ---
 
-<div class:list={['item-row', { 'item-row--no-border': !borderTop }]}>
+<div class:list={['item-row', { 'item-row--no-border': !borderTop, 'item-row--keep-cols': keepCols }]}>
   <slot />
 </div>
 
@@ -27,12 +28,24 @@ const { borderTop = true } = Astro.props
   @media (--mobile) {
     .item-row {
       grid-template-columns: 1fr;
+      gap: var(--space-lg) 0;
+    }
+
+    .item-row > :global(:nth-child(n + 2)) {
+      box-shadow: inset 0 1px 0 0 var(--color-gray-30);
+      padding-top: var(--2-lh);
     }
   }
 
   @media (--tablet) {
-    .item-row {
-      grid-template-columns: 1fr 1fr;
+    :global(.item-row:not(.item-row--keep-cols)) {
+      grid-template-columns: 1fr;
+      gap: var(--space-lg) 0;
+    }
+
+    :global(.item-row:not(.item-row--keep-cols)) > :global(:nth-child(n + 2)) {
+      box-shadow: inset 0 1px 0 0 var(--color-gray-30);
+      padding-top: var(--2-lh);
     }
   }
 </style>

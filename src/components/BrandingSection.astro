@@ -63,9 +63,20 @@ import HireButton from './HireButton.astro'
   @media (--mobile) {
     .footer-bar {
       display: flex;
-      flex-direction: column;
-      gap: var(--2-lh);
-      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: var(--2-lh) var(--col-gap);
+    }
+
+    .footer-legal {
+      width: 100%;
+    }
+
+    .footer-links {
+      flex: 1;
+    }
+
+    .footer-copy {
+      flex: 0;
     }
   }
 </style>

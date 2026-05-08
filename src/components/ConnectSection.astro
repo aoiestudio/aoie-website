@@ -59,23 +59,19 @@ import PageSection from './PageSection.astro'
   }
 
   :global(.section-connect) {
-    min-height: var(--42-lh);
-    scroll-margin-top: var(--9-lh);
+    min-height: var(--size-section);
+    scroll-margin-top: var(--space-md);
   }
 
   @media (--mobile) {
-    :global(.section-connect) {
-      min-height: 0;
-    }
-
     .connect-grid {
       grid-template-columns: 1fr;
+      gap: var(--space-lg) 0;
     }
-  }
 
-  @media (--tablet) {
-    :global(.section-connect) {
-      min-height: var(--32-lh);
+    .connect-col:nth-child(n + 2) {
+      box-shadow: inset 0 1px 0 0 var(--color-gray-30);
+      padding-top: var(--2-lh);
     }
   }
 </style>

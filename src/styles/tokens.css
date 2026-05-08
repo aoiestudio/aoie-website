@@ -40,9 +40,13 @@
   --lh: max(8px, round(nearest, calc(7.2066px + 0.1845vw), 1px));
 
   --2-lh: round(nearest, calc(var(--lh) * 2), 1px);
+  --4-lh: round(nearest, calc(var(--lh) * 4), 1px);
+  --6-lh: round(nearest, calc(var(--lh) * 6), 1px);
+  --8-lh: round(nearest, calc(var(--lh) * 8), 1px);
   --9-lh: round(nearest, calc(var(--lh) * 9), 1px);
   --12-lh: round(nearest, calc(var(--lh) * 12), 1px);
   --16-lh: round(nearest, calc(var(--lh) * 16), 1px);
+  --18-lh: round(nearest, calc(var(--lh) * 18), 1px);
   --24-lh: round(nearest, calc(var(--lh) * 24), 1px);
   --32-lh: round(nearest, calc(var(--lh) * 32), 1px);
   --42-lh: round(nearest, calc(var(--lh) * 42), 1px);
@@ -51,6 +55,22 @@
 
   --page-pad: var(--2-lh);
   --col-gap: var(--2-lh);
+
+  /* ─── Responsive spacing scale ─────────────────────────────────
+     Each step shifts down ~0.75× for tablet, ~0.5× for mobile.
+     Use these instead of raw --N-lh when spacing should compress. */
+  --space-3xl: var(--32-lh);
+  --space-2xl: var(--24-lh);
+  --space-xl: var(--16-lh);
+  --space-lg: var(--12-lh);
+  --space-md: var(--9-lh);
+  --space-sm: var(--2-lh);
+
+  /* Responsive sizing (heights, min-heights) */
+  --size-hero: var(--66-lh);
+  --size-section: var(--42-lh);
+  --size-canvas: var(--66-lh);
+
   /* Mobile default: 4 columns, no indent */
   --cols: 4;
   --col-indent: 0;
@@ -60,6 +80,20 @@
   :root {
     --cols: 8;
     --col-indent: 4; /* 4/8 = 50% */
+  }
+}
+
+@media (--tablet) {
+  :root {
+    --space-3xl: var(--24-lh);
+    --space-2xl: var(--18-lh);
+    --space-xl: var(--12-lh);
+    --space-lg: var(--9-lh);
+    --space-md: var(--6-lh);
+
+    --size-hero: var(--42-lh);
+    --size-section: var(--32-lh);
+    --size-canvas: var(--42-lh);
   }
 }
 
@@ -74,5 +108,19 @@
   :root {
     --cols: 18;
     --col-indent: 10; /* 10/18 ≈ 56% */
+  }
+}
+
+@media (--mobile) {
+  :root {
+    --space-3xl: var(--16-lh);
+    --space-2xl: var(--12-lh);
+    --space-xl: var(--9-lh);
+    --space-lg: var(--6-lh);
+    --space-md: var(--4-lh);
+
+    --size-hero: var(--32-lh);
+    --size-section: 0px;
+    --size-canvas: var(--32-lh);
   }
 }

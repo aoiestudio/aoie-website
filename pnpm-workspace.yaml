@@ -1,16 +1,19 @@
 catalog:
   '@astrojs/check': ^0.9.9
+  '@astrojs/node': ^10.1.0
   '@csstools/postcss-global-data': ^4.0.0
-  '@types/node': ^25.6.0
-  astro: ^6.2.2
+  '@types/node': ^25.6.2
+  astro: ^6.3.1
   nano-staged: ^1.0.2
-  oxc-config-fans: ^0.0.4
-  oxfmt: ^0.47.0
-  oxlint: ^1.62.0
+  ogl: ^1.0.11
+  oxc-config-fans: ^0.0.6
+  oxfmt: ^0.48.0
+  oxlint: ^1.63.0
+  oxlint-tsgolint: ^0.22.1
+  sharp: ^0.34.5
   postcss-custom-media: ^12.0.1
   simple-git-hooks: ^2.13.1
   typescript: ^6.0.3
-  wrangler: ^4.87.0
 
 onlyBuiltDependencies:
   - esbuild

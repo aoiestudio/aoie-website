@@ -13,83 +13,93 @@
   import vert from './approach.vert?raw'
   import frag from './approach.frag?raw'
 
-  const canvas = document.querySelector('#approach-canvas') as HTMLCanvasElement
-  if (!canvas) { throw new Error('ApproachCanvas: canvas element not found') }
+  function init() {
+    const canvas = document.querySelector<HTMLCanvasElement>('#approach-canvas')
+    if (!canvas) {return}
 
-  const BASE_A = 0.44, BASE_B = 0.11
-  const REF_ASP = 16 / 9
-  const pA = [0, 0]
-  const pB = [0, 0]
-  let aspScale = 1
+    const BASE_A = 0.44, BASE_B = 0.11
+    const REF_ASP = 16 / 9
+    const pA = [0, 0]
+    const pB = [0, 0]
+    let aspScale = 1
 
-  const renderer = new Renderer({
-    canvas,
-    alpha: true,
-    depth: false,
-    stencil: false,
-    antialias: false,
-    premultipliedAlpha: false,
-    dpr: Math.min(devicePixelRatio || 1, 2),
-  })
-  const gl = renderer.gl
+    const renderer = new Renderer({
+      canvas,
+      alpha: true,
+      depth: false,
+      stencil: false,
+      antialias: false,
+      premultipliedAlpha: false,
+      dpr: Math.min(devicePixelRatio || 1, 2),
+    })
+    const gl = renderer.gl
 
-  const program = new Program(gl, {
-    vertex: vert,
-    fragment: frag,
-    uniforms: {
-      uRes: { value: [0, 0] },
-      uPA:  { value: pA },
-      uRA:  { value: BASE_A },
-      uPB:  { value: pB },
-      uRB:  { value: BASE_B },
-      uK:   { value: 0 },
-    },
-    transparent: true,
-    depthTest: false,
-    depthWrite: false,
-  })
-  const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
+    const program = new Program(gl, {
+      vertex: vert,
+      fragment: frag,
+      uniforms: {
+        uRes: { value: [0, 0] },
+        uPA:  { value: pA },
+        uRA:  { value: BASE_A },
+        uPB:  { value: pB },
+        uRB:  { value: BASE_B },
+        uK:   { value: 0 },
+      },
+      transparent: true,
+      depthTest: false,
+      depthWrite: false,
+    })
+    const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
 
-  new ResizeObserver((entries) => {
-    const { width, height } = entries[0]!.contentRect
-    if (!width || !height) { return }
-    renderer.setSize(width, height)
-    Object.assign(canvas.style, { width: '', height: '' })
-    program.uniforms.uRes.value = [gl.drawingBufferWidth, gl.drawingBufferHeight]
-    const asp = gl.drawingBufferWidth / gl.drawingBufferHeight
-    aspScale = Math.min(1, asp / REF_ASP)
-    pA[0] = -asp / 4
-    pB[0] =  asp / 4
-  }).observe(canvas)
+    new ResizeObserver((entries) => {
+      const { width, height } = entries[0]!.contentRect
+      if (!width || !height) {return}
+      renderer.setSize(width, height)
+      Object.assign(canvas.style, { width: '', height: '' })
+      program.uniforms.uRes.value = [gl.drawingBufferWidth, gl.drawingBufferHeight]
+      const asp = gl.drawingBufferWidth / gl.drawingBufferHeight
+      aspScale = Math.min(1, asp / REF_ASP)
+      pA[0] = -asp / 4
+      pB[0] =  asp / 4
+    }).observe(canvas)
 
-  let t = 0, tgt = 0
+    let t = 0, tgt = 0
 
-  function lerp(a: number, b: number, s: number) { return a + (b - a) * s }
+    function lerp(a: number, b: number, s: number) { return a + (b - a) * s }
 
-  function updateTgt(clientX: number) {
-    const rect = canvas.getBoundingClientRect()
-    const asp = gl.drawingBufferWidth / gl.drawingBufferHeight
-    const mx = ((clientX - rect.left) / rect.width - .5) * asp
-    tgt = Math.max(0, Math.min(1, (mx - pA[0]) / (pB[0] - pA[0])))
+    function updateTgt(clientX: number) {
+      const rect = canvas!.getBoundingClientRect()
+      const asp = gl.drawingBufferWidth / gl.drawingBufferHeight
+      const mx = ((clientX - rect.left) / rect.width - .5) * asp
+      tgt = Math.max(0, Math.min(1, (mx - pA[0]) / (pB[0] - pA[0])))
+    }
+
+    canvas.addEventListener('mousemove', (e) => updateTgt(e.clientX))
+    canvas.addEventListener('mouseleave', () => { tgt = 0 })
+    canvas.addEventListener('touchmove', (e) => { e.preventDefault(); updateTgt(e.touches[0]!.clientX) }, { passive: false })
+    canvas.addEventListener('touchend', () => { tgt = 0 })
+
+    let rafId = 0
+
+    function render() {
+      t = lerp(t, tgt, 0.022)
+      const v = Math.max(0, Math.min(1, (t - 0.2) / 0.6))
+      const tRad = v * v * (3 - 2 * v)
+
+      program.uniforms.uRA.value = lerp(BASE_A, BASE_B, tRad) * aspScale
+      program.uniforms.uRB.value = lerp(BASE_B, BASE_A, tRad) * aspScale
+      program.uniforms.uK.value  = 4 * t * (1 - t) * 1.7 * aspScale
+
+      renderer.render({ scene: mesh })
+      rafId = requestAnimationFrame(render)
+    }
+
+    rafId = requestAnimationFrame(render)
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(rafId)
+    }, { once: true })
   }
 
-  canvas.addEventListener('mousemove', (e) => updateTgt(e.clientX))
-  canvas.addEventListener('mouseleave', () => { tgt = 0 })
-  canvas.addEventListener('touchmove', (e) => { e.preventDefault(); updateTgt(e.touches[0].clientX) }, { passive: false })
-  canvas.addEventListener('touchend', () => { tgt = 0 })
-
-  function render() {
-    t = lerp(t, tgt, 0.022)
-    const v = Math.max(0, Math.min(1, (t - 0.2) / 0.6))
-    const tRad = v * v * (3 - 2 * v)
-
-    program.uniforms.uRA.value = lerp(BASE_A, BASE_B, tRad) * aspScale
-    program.uniforms.uRB.value = lerp(BASE_B, BASE_A, tRad) * aspScale
-    program.uniforms.uK.value  = 4 * t * (1 - t) * 1.7 * aspScale
-
-    renderer.render({ scene: mesh })
-    requestAnimationFrame(render)
-  }
-
-  render()
+  document.addEventListener('astro:page-load', init)
 </script>

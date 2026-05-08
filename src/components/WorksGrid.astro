@@ -1,0 +1,270 @@
+---
+import { getCollection } from 'astro:content'
+import { Picture } from 'astro:assets'
+import type { ImageMetadata } from 'astro'
+
+const projects = await getCollection('projects')
+projects.sort((a, b) => a.data.order - b.data.order)
+
+const allImages = import.meta.glob<{ default: ImageMetadata }>(
+	'../../content/projects/*/images/*.{jpg,jpeg,png}',
+	{ eager: true },
+)
+
+type Row = {
+	projectId: string
+	image: ImageMetadata
+}
+
+const rows: Row[] = []
+for (const [path, mod] of Object.entries(allImages)) {
+	const match = path.match(/content\/projects\/([^/]+)\/images\//)
+	if (match) {
+		rows.push({ projectId: match[1]!, image: mod.default })
+	}
+}
+
+function seededRand(seed: number) {
+	let s = seed
+	return () => {
+		s = (s * 1_664_525 + 1_013_904_223) % 4_294_967_296
+		return s / 4_294_967_296
+	}
+}
+
+const rand = seededRand(42)
+for (let i = rows.length - 1; i > 0; i--) {
+	const j = Math.floor(rand() * (i + 1));
+	[rows[i], rows[j]] = [rows[j]!, rows[i]!]
+}
+---
+
+<div class="works-grid" aria-label="Works">
+	{[...rows, ...rows].map((row) => (
+		<div class="wg-row">
+			<a class="wg-item" href={`/works/${row.projectId}`}>
+				<Picture
+					src={row.image}
+					formats={['avif', 'webp']}
+					width={320}
+					height={180}
+					loading="lazy"
+					alt={row.projectId}
+				/>
+			</a>
+		</div>
+	))}
+</div>
+
+<script>
+	interface Item {
+		el: HTMLElement
+		card: HTMLElement
+		currentX: number
+		targetX: number
+		isSlowing: boolean
+		id: number
+	}
+
+	const STORAGE_KEY = 'works-positions'
+
+	// ── localStorage helpers ──────────────────────────────────────────────────
+	function isStorageAvailable(): boolean {
+		try {
+			const test = '__storage_test__'
+			localStorage.setItem(test, '1')
+			localStorage.removeItem(test)
+			return true
+		} catch {
+			return false
+		}
+	}
+
+	interface StoredPositions {
+		width: number
+		positions: number[]
+	}
+
+	function loadPositions(): number[] | null {
+		if (!isStorageAvailable()) {return null}
+		try {
+			const raw = localStorage.getItem(STORAGE_KEY)
+			if (!raw) {return null}
+			const data = JSON.parse(raw) as StoredPositions
+			// Invalidate if viewport width changed — positions would be out of bounds
+			if (data.width !== window.innerWidth) {return null}
+			return data.positions
+		} catch {
+			return null
+		}
+	}
+
+	function savePositions(positions: number[]): void {
+		if (!isStorageAvailable()) {return}
+		try {
+			const data: StoredPositions = { width: window.innerWidth, positions }
+			localStorage.setItem(STORAGE_KEY, JSON.stringify(data))
+		} catch {
+			// Quota exceeded or other write error — silently ignore
+		}
+	}
+
+	function init() {
+		const grid = document.querySelector('.works-grid') as HTMLElement | null
+		if (!grid) {return}
+		const rowEls = [...grid.querySelectorAll('.wg-row')] as HTMLElement[]
+
+		// ── Infinite scroll ───────────────────────────────────────────────────────
+		const totalRows = rowEls.length
+		const half = Math.floor(totalRows / 2)
+
+		function getHalfwayY(): number {
+			const halfRow = rowEls[half]
+			if (!halfRow) {return 0}
+			return halfRow.getBoundingClientRect().top + window.scrollY
+		}
+
+		function onScroll() {
+			if (!document.contains(grid)) {return}
+			if (window.scrollY >= getHalfwayY()) {
+				window.scrollTo({ top: 0, behavior: 'instant' })
+			}
+		}
+		window.addEventListener('scroll', onScroll, { passive: true })
+
+		// ── Horizontal hover effect ───────────────────────────────────────────────
+		const frameDuration = 1000 / 60
+		const activeAnimations = new Set<number>()
+		let rafId: number | null = null
+		let prevTime: number | null = null
+
+		const saved = loadPositions()
+
+		const items: Item[] = Array.from(rowEls, (el, index) => {
+			const card = el.querySelector<HTMLElement>('.wg-item')!
+			const cardWidth = card.offsetWidth || 340
+			const rowLeft = el.getBoundingClientRect().left
+			const pad = 22
+			const minX = pad - rowLeft
+			const maxX = window.innerWidth - pad - rowLeft - cardWidth
+
+			const sourceIndex = index % (totalRows / 2)
+			const startX = saved?.[sourceIndex] ?? minX + Math.random() * Math.max(0, maxX - minX)
+
+			card.style.transform = `translateX(${startX}px)`
+			return { el, card, currentX: startX, targetX: startX, isSlowing: false, id: index }
+		})
+
+		function onVisibilityChange() {
+			if (document.visibilityState === 'hidden') {
+				savePositions(items.slice(0, half).map((item) => item.currentX))
+			}
+		}
+		document.addEventListener('visibilitychange', onVisibilityChange)
+
+		function animate(time: number) {
+			if (prevTime === null) {prevTime = time}
+			const dt = (time - prevTime) / frameDuration
+			prevTime = time
+
+			for (const id of activeAnimations) {
+				const item = items[id]
+				if (!item) {continue}
+
+				const ease = item.isSlowing ? 0.15 : 0.05
+				const delta = item.targetX - item.currentX
+
+				if (Math.abs(delta) < 0.5) {
+					item.currentX = item.targetX
+					item.card.style.transform = `translateX(${item.currentX}px)`
+					activeAnimations.delete(id)
+				} else {
+					let move = delta * ease * dt
+					const minMove = delta > 0 ? 0.5 : -0.5
+					if (Math.abs(move) < Math.abs(minMove)) {move = minMove}
+					item.currentX += move
+					item.card.style.transform = `translateX(${item.currentX}px)`
+				}
+			}
+
+			if (activeAnimations.size > 0) {
+				rafId = requestAnimationFrame(animate)
+			} else {
+				savePositions(items.slice(0, half).map((item) => item.currentX))
+				rafId = null
+				prevTime = null
+			}
+		}
+
+		items.forEach((item, index) => {
+			item.el.addEventListener('mousemove', (event) => {
+				const cardWidth = item.card.offsetWidth
+				const rowLeft = item.el.getBoundingClientRect().left
+				const pad = 22
+				const minX = pad - rowLeft
+				const maxX = window.innerWidth - pad - rowLeft - cardWidth
+				const newTarget = Math.max(minX, Math.min(maxX, event.clientX - rowLeft - cardWidth / 2))
+
+				if (Math.abs(newTarget - item.targetX) < 1) {return}
+
+				item.targetX = newTarget
+				item.isSlowing = false
+				activeAnimations.add(index)
+
+				items.forEach((other, i) => {
+					if (i === index || other.isSlowing) {return}
+					other.isSlowing = true
+					const newPos = other.currentX + (other.targetX - other.currentX) * 0.2
+					if (Math.abs(newPos - other.currentX) > 0.5) {
+						other.targetX = newPos
+						activeAnimations.add(i)
+					}
+				})
+
+				if (rafId === null) {
+					prevTime = null
+					rafId = requestAnimationFrame(animate)
+				}
+			}, { passive: true })
+		})
+
+		document.addEventListener('astro:before-swap', () => {
+			if (rafId !== null) {cancelAnimationFrame(rafId)}
+			window.removeEventListener('scroll', onScroll)
+			document.removeEventListener('visibilitychange', onVisibilityChange)
+		}, { once: true })
+	}
+
+	document.addEventListener('astro:page-load', init)
+</script>
+
+<style>
+	@import '../styles/media.css';
+
+	.works-grid {
+		/* 3 columns wide using the global typographic grid tokens */
+		--col-width: calc((100% - (var(--cols) - 1) * var(--col-gap)) / var(--cols) * 3 + var(--col-gap) * 2);
+		display: grid;
+		grid-auto-rows: auto;
+		row-gap: var(--col-gap);
+		padding: var(--24-lh) var(--page-pad) 0;
+	}
+
+	.wg-row {
+		width: 100%;
+	}
+
+	.wg-item {
+		display: block;
+		width: var(--col-width);
+		will-change: transform;
+		text-decoration: none;
+	}
+
+	.wg-item :global(img) {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		display: block;
+	}
+</style>

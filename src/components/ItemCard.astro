@@ -10,9 +10,14 @@ const { title, description, tight = false } = Astro.props
 
 <div class:list={['item-card', { 'item-card--tight': tight }]}>
   <span class="text-body item-card-title">{title}</span>
-  {description
-    ? <p class="text-body item-card-content">{description}</p>
-    : <div class="item-card-content"><slot /></div>
+  {
+    description ? (
+      <p class="text-body item-card-content">{description}</p>
+    ) : (
+      <div class="item-card-content">
+        <slot />
+      </div>
+    )
   }
 </div>
 

@@ -1,4 +1,5 @@
 ---
+
 ---
 
 <div class="debugger" id="debugger">
@@ -16,10 +17,18 @@
 
     function updateCols() {
       let cols = 4
-      if (mqTablet.matches) { cols = 8 }
-      if (mqDesktop.matches) { cols = 14 }
-      if (mqWide.matches) { cols = 18 }
-      debuggerCols.innerHTML = Array.from({ length: cols }).map(() => '<div></div>').join('')
+      if (mqTablet.matches) {
+        cols = 8
+      }
+      if (mqDesktop.matches) {
+        cols = 14
+      }
+      if (mqWide.matches) {
+        cols = 18
+      }
+      debuggerCols.innerHTML = Array.from({ length: cols })
+        .map(() => '<div></div>')
+        .join('')
     }
 
     function updateHeight() {
@@ -29,14 +38,19 @@
     mqTablet.addEventListener('change', updateCols)
     mqDesktop.addEventListener('change', updateCols)
     mqWide.addEventListener('change', updateCols)
-    new ResizeObserver(() => { updateHeight(); updateCols() }).observe(document.documentElement)
+    new ResizeObserver(() => {
+      updateHeight()
+      updateCols()
+    }).observe(document.documentElement)
 
     updateHeight()
     updateCols()
 
-    document.addEventListener('keydown', (e) => {
+    document.addEventListener('keydown', e => {
       const tag = (e.target as HTMLElement).tagName
-      if (tag === 'INPUT' || tag === 'TEXTAREA') { return }
+      if (tag === 'INPUT' || tag === 'TEXTAREA') {
+        return
+      }
       if (e.code === 'KeyG' && e.ctrlKey && !e.metaKey && !e.altKey) {
         debugger_.classList.toggle('--active')
       }
@@ -46,7 +60,7 @@
 
 <style>
   .debugger {
-    background-image: linear-gradient(180deg, grey .5px, transparent 0);
+    background-image: linear-gradient(180deg, grey 0.5px, transparent 0);
     background-size: var(--lh) var(--lh);
     display: none;
     left: 0;

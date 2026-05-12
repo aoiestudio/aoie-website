@@ -11,14 +11,15 @@
     "preview": "astro preview",
     "test:types": "astro check",
     "test:lint": "oxlint --config oxlint.config.ts",
-    "test:format": "oxfmt --check",
+    "test:format": "oxfmt --check && prettier --check \"**/*.astro\"",
     "test:dedupe": "pnpm dedupe --check",
     "test": "pnpm run /^test:/",
-    "format": "oxfmt",
+    "format": "oxfmt && prettier --write \"**/*.astro\"",
     "astro": "astro",
     "prepare": "simple-git-hooks"
   },
   "dependencies": {
+    "@nanostores/persistent": "^1.3.4",
     "ogl": "catalog:"
   },
   "devDependencies": {
@@ -33,6 +34,8 @@
     "oxlint": "catalog:",
     "oxlint-tsgolint": "catalog:",
     "postcss-custom-media": "catalog:",
+    "prettier": "catalog:",
+    "prettier-plugin-astro": "catalog:",
     "sharp": "catalog:",
     "simple-git-hooks": "catalog:",
     "typescript": "catalog:"

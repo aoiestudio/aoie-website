@@ -49,7 +49,9 @@ const { images } = Astro.props
   async function init() {
     const stage = document.querySelector<HTMLElement>('#hero-stage')
     const canvas = document.querySelector<HTMLCanvasElement>('#hero-canvas')
-    if (!stage || !canvas) {return}
+    if (!stage || !canvas) {
+      return
+    }
 
     const srcs: string[] = JSON.parse(stage.dataset.images || '[]')
 
@@ -79,9 +81,11 @@ const { images } = Astro.props
     })
 
     const imgs = await Promise.all(srcs.map(loadImg))
-    if (!imgs.length) {return}
+    if (!imgs.length) {
+      return
+    }
 
-    const symbol = await loadImg("/image copy 2.png")
+    const symbol = await loadImg('/image copy 2.png')
     const symbolTex = new Texture(gl, {
       image: symbol,
       generateMipmaps: true,
@@ -91,21 +95,29 @@ const { images } = Astro.props
       wrapT: gl.CLAMP_TO_EDGE,
     })
 
-    const texA = new Texture(gl, { image: imgs[0]!, generateMipmaps: false, minFilter: gl.LINEAR })
-    const texB = new Texture(gl, { image: imgs.at(-1)!, generateMipmaps: false, minFilter: gl.LINEAR })
+    const texA = new Texture(gl, {
+      image: imgs[0]!,
+      generateMipmaps: false,
+      minFilter: gl.LINEAR,
+    })
+    const texB = new Texture(gl, {
+      image: imgs.at(-1)!,
+      generateMipmaps: false,
+      minFilter: gl.LINEAR,
+    })
 
     const program = new Program(gl, {
       vertex: vert,
       fragment: frag,
       uniforms: {
-        uRes:    { value: [0, 0] },
-        uDpr:    { value: renderer.dpr },
-        uCell:   { value: CELL },
-        uStrip:  { value: STRIP },
-        uFade:   { value: 0 },
+        uRes: { value: [0, 0] },
+        uDpr: { value: renderer.dpr },
+        uCell: { value: CELL },
+        uStrip: { value: STRIP },
+        uFade: { value: 0 },
         uEnergy: { value: energyTex },
-        uTexA:   { value: texA },
-        uTexB:   { value: texB },
+        uTexA: { value: texA },
+        uTexB: { value: texB },
         uSymbol: { value: symbolTex },
       },
       depthTest: false,
@@ -114,17 +126,23 @@ const { images } = Astro.props
 
     const mesh = new Mesh(gl, { geometry, program })
 
-    new ResizeObserver((entries) => {
+    new ResizeObserver(entries => {
       const { width, height } = entries[0]!.contentRect
-      if (!width || !height) {return}
+      if (!width || !height) {
+        return
+      }
       renderer.setSize(width, height)
       Object.assign(canvas.style, { width: '', height: '' })
       program.uniforms.uRes.value = [width, height]
       program.uniforms.uDpr.value = renderer.dpr
     }).observe(stage)
 
-    let hovering = false, my = 0, prevMy = 0, prevMyTimeout = 0
-    let curIdx = 0, fade = 1
+    let hovering = false,
+      my = 0,
+      prevMy = 0,
+      prevMyTimeout = 0
+    let curIdx = 0,
+      fade = 1
     let lastRender = performance.now()
 
     if (imgs.length > 1) {
@@ -140,16 +158,20 @@ const { images } = Astro.props
       })
     }
 
-    canvas.addEventListener('mousemove', (e) => {
+    canvas.addEventListener('mousemove', e => {
       const r = canvas.getBoundingClientRect()
       prevMy = my
       my = e.clientY - r.top
       hovering = true
-      if (prevMyTimeout <= 0) {prevMy = my}
+      if (prevMyTimeout <= 0) {
+        prevMy = my
+      }
       prevMyTimeout = 10
     })
 
-    canvas.addEventListener('mouseleave', () => { hovering = false })
+    canvas.addEventListener('mouseleave', () => {
+      hovering = false
+    })
 
     let rafId = 0
 
@@ -160,14 +182,18 @@ const { images } = Astro.props
 
       const decaySpeed = 5
       const decayFactor = Math.exp(-dt * decaySpeed)
-      for (let i = 0; i < MAX_ROWS; i++) { rowEnergy[i] *= decayFactor }
+      for (let i = 0; i < MAX_ROWS; i++) {
+        rowEnergy[i] *= decayFactor
+      }
 
       if (hovering) {
         const r0 = Math.min(Math.floor(prevMy / CELL), MAX_ROWS - 1)
         const r1 = Math.min(Math.floor(my / CELL), MAX_ROWS - 1)
         const lo = Math.min(r0, r1)
         const hi = Math.max(r0, r1)
-        for (let i = lo; i <= hi; i++) { rowEnergy[i] = 1 }
+        for (let i = lo; i <= hi; i++) {
+          rowEnergy[i] = 1
+        }
       }
 
       if (prevMyTimeout > 0) {
@@ -176,7 +202,7 @@ const { images } = Astro.props
       }
 
       const animationSpeed = 10
-      fade += (1 - fade) * (-Math.expm1(-animationSpeed * dt))
+      fade += (1 - fade) * -Math.expm1(-animationSpeed * dt)
 
       energyTex.needsUpdate = true
       program.uniforms.uFade.value = fade
@@ -186,9 +212,13 @@ const { images } = Astro.props
 
     rafId = requestAnimationFrame(render)
 
-    document.addEventListener('astro:before-swap', () => {
-      cancelAnimationFrame(rafId)
-    }, { once: true })
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        cancelAnimationFrame(rafId)
+      },
+      { once: true },
+    )
   }
 
   document.addEventListener('astro:page-load', init)

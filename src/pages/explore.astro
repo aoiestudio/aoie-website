@@ -6,148 +6,158 @@ import HireButton from '../components/HireButton.astro'
 import PageLayout from '../layouts/PageLayout.astro'
 
 const allImages = import.meta.glob<{ default: ImageMetadata }>(
-	'../../content/projects/*/images/*.{jpg,jpeg,png}',
-	{ eager: true },
+  '../../content/projects/*/images/*.{jpg,jpeg,png}',
+  { eager: true },
 )
 
-const images = Object.values(allImages).map((mod) => mod.default)
+const images = Object.values(allImages).map(mod => mod.default)
 ---
 
 <PageLayout title="Explore — aoie studio" hideFooter>
-	<section class="explore page-wrap">
-		<nav class="explore-nav" aria-label="Explore">
-			<a href="/" class="explore-link">Studio</a>
-			<a href="/works" class="explore-link">Works</a>
-		</nav>
+  <section class="explore page-wrap">
+    <nav class="explore-nav" aria-label="Explore">
+      <a href="/" class="explore-link">Studio</a>
+      <a href="/works" class="explore-link">Works</a>
+    </nav>
 
-		<div class="explore-media-wrap">
-			<div class="explore-media" id="explore-media">
-				{images.map((img, index) => (
-					<div
-						class:list={['explore-media__slide', index === 0 && 'is-active']}
-						data-explore-img
-					>
-						<Picture
-							src={img}
-							formats={['avif', 'webp']}
-							width={640}
-							height={360}
-							loading={index === 0 ? 'eager' : 'lazy'}
-							alt=""
-						/>
-					</div>
-				))}
-			</div>
-		</div>
+    <div class="explore-media-wrap">
+      <div class="explore-media" id="explore-media">
+        {
+          images.map((img, index) => (
+            <div
+              class:list={['explore-media__slide', index === 0 && 'is-active']}
+              data-explore-img
+            >
+              <Picture
+                src={img}
+                formats={['avif', 'webp']}
+                width={640}
+                height={360}
+                loading={index === 0 ? 'eager' : 'lazy'}
+                alt=""
+              />
+            </div>
+          ))
+        }
+      </div>
+    </div>
 
-		<div class="explore-actions">
-			<HireButton class="explore-link" />
-			<BookCallButton class="explore-link" />
-		</div>
-	</section>
+    <div class="explore-actions">
+      <HireButton class="explore-link" />
+      <BookCallButton class="explore-link" />
+    </div>
+  </section>
 </PageLayout>
 
 <script>
-	function init() {
-		const stage = document.querySelector<HTMLElement>('#explore-media')
-		if (!stage) {return}
-		const imgs = [...stage.querySelectorAll<HTMLElement>('[data-explore-img]')]
-		if (imgs.length < 2) {return}
+  function init() {
+    const stage = document.querySelector<HTMLElement>('#explore-media')
+    if (!stage) {
+      return
+    }
+    const imgs = [...stage.querySelectorAll<HTMLElement>('[data-explore-img]')]
+    if (imgs.length < 2) {
+      return
+    }
 
-		let idx = 0
-		const tick = () => {
-			imgs[idx]?.classList.remove('is-active')
-			let next = idx
-			while (next === idx) {
-				next = Math.floor(Math.random() * imgs.length)
-			}
-			idx = next
-			imgs[idx]?.classList.add('is-active')
-		}
-		const intervalId = window.setInterval(tick, 1000)
+    let idx = 0
+    const tick = () => {
+      imgs[idx]?.classList.remove('is-active')
+      let next = idx
+      while (next === idx) {
+        next = Math.floor(Math.random() * imgs.length)
+      }
+      idx = next
+      imgs[idx]?.classList.add('is-active')
+    }
+    const intervalId = window.setInterval(tick, 1000)
 
-		document.addEventListener('astro:before-swap', () => {
-			window.clearInterval(intervalId)
-		}, { once: true })
-	}
+    document.addEventListener(
+      'astro:before-swap',
+      () => {
+        window.clearInterval(intervalId)
+      },
+      { once: true },
+    )
+  }
 
-	document.addEventListener('astro:page-load', init)
+  document.addEventListener('astro:page-load', init)
 </script>
 
 <style>
-	.explore {
-		padding-top: var(--space-2xl);
-		padding-bottom: var(--space-xl);
-		display: flex;
-		flex-direction: column;
-		gap: var(--space-xl);
-		min-height: 100vh;
-		box-sizing: border-box;
-	}
+  .explore {
+    padding-top: var(--space-2xl);
+    padding-bottom: var(--space-xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-xl);
+    min-height: 100vh;
+    box-sizing: border-box;
+  }
 
-	.explore-nav {
-		display: flex;
-		flex-direction: column;
-	}
+  .explore-nav {
+    display: flex;
+    flex-direction: column;
+  }
 
-	.explore-link {
-		font-family: var(--font-family);
-		font-weight: 600;
-		font-size: 55px;
-		line-height: 1;
-		letter-spacing: var(--letter-spacing-heading);
-		font-feature-settings: 'ss03', 'ss02';
-		color: var(--color-text-inverse);
-		background: transparent;
-		border: 0;
-		padding: 0;
-		text-align: left;
-		cursor: pointer;
-		text-decoration: none;
-	}
+  .explore-link {
+    font-family: var(--font-family);
+    font-weight: 600;
+    font-size: 55px;
+    line-height: 1;
+    letter-spacing: var(--letter-spacing-heading);
+    font-feature-settings: 'ss03', 'ss02';
+    color: var(--color-text-inverse);
+    background: transparent;
+    border: 0;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+    text-decoration: none;
+  }
 
-	.explore-link:hover {
-		color: var(--color-text);
-	}
+  .explore-link:hover {
+    color: var(--color-text);
+  }
 
-	.explore-media-wrap {
-		display: grid;
-		grid-template-columns: repeat(var(--cols), 1fr);
-		column-gap: var(--col-gap);
-	}
+  .explore-media-wrap {
+    display: grid;
+    grid-template-columns: repeat(var(--cols), 1fr);
+    column-gap: var(--col-gap);
+  }
 
-	.explore-media {
-		position: relative;
-		grid-column: 1 / 3;
-		aspect-ratio: 16 / 9;
-		overflow: hidden;
-		background: var(--color-surface);
-	}
+  .explore-media {
+    position: relative;
+    grid-column: 1 / 3;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: var(--color-surface);
+  }
 
-	.explore-media__slide {
-		position: absolute;
-		inset: 0;
-		opacity: 0;
-	}
+  .explore-media__slide {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+  }
 
-	.explore-media__slide.is-active {
-		opacity: 1;
-	}
+  .explore-media__slide.is-active {
+    opacity: 1;
+  }
 
-	.explore-media__slide :global(img) {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		display: block;
-	}
+  .explore-media__slide :global(img) {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
 
-	.explore-actions {
-		display: flex;
-		flex-direction: column;
-		margin-top: auto;
-	}
+  .explore-actions {
+    display: flex;
+    flex-direction: column;
+    margin-top: auto;
+  }
 
-	.explore-actions :global(.explore-link) {
-		font-size: var(--font-size-heading);
-	}
+  .explore-actions :global(.explore-link) {
+    font-size: var(--font-size-heading);
+  }
 </style>

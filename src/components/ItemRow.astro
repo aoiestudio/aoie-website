@@ -7,7 +7,12 @@ interface Props {
 const { borderTop = true, keepCols = false } = Astro.props
 ---
 
-<div class:list={['item-row', { 'item-row--no-border': !borderTop, 'item-row--keep-cols': keepCols }]}>
+<div
+  class:list={[
+    'item-row',
+    { 'item-row--no-border': !borderTop, 'item-row--keep-cols': keepCols },
+  ]}
+>
   <slot />
 </div>
 

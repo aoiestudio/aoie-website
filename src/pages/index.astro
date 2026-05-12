@@ -9,11 +9,16 @@ import PageSection from '../components/PageSection.astro'
 ---
 
 <PageLayout title="aoie — design studio">
-
   <!-- Top: hero + hero-media grouped with 16lh gap (Figma "Top" node) -->
   <div class="hero-top">
     <section class="hero page-wrap">
-      <p class="text-heading hero-text prose-indent">is a design studio that absorbs visual noise and builds a clear identity from concept to implementation. We are a response to a world where attention has become scarce and visual noise is the norm. Independence and flexibility over diffused responsibility. Direct dialogue over chains of approval.</p>
+      <p class="text-heading hero-text prose-indent">
+        is a design studio that absorbs visual noise and builds a clear identity
+        from concept to implementation. We are a response to a world where
+        attention has become scarce and visual noise is the norm. Independence
+        and flexibility over diffused responsibility. Direct dialogue over
+        chains of approval.
+      </p>
     </section>
     <div class="hero-media page-wrap">
       <HeroMedia images={['/01.png', '/02.png']} />
@@ -50,18 +55,25 @@ import PageSection from '../components/PageSection.astro'
             <li>Narrative</li>
           </ul>
         </ItemCard>
-        <ItemCard title="Experience" description="With over 12 years of experience, we collaborate with e-commerce, art foundations, and media platforms. Based in Barcelona, work worldwide. We are eager to partner with international brands and share our passion for creating extraordinary things." />
+        <ItemCard
+          title="Experience"
+          description="With over 12 years of experience, we collaborate with e-commerce, art foundations, and media platforms. Based in Barcelona, work worldwide. We are eager to partner with international brands and share our passion for creating extraordinary things."
+        />
       </ItemRow>
       <ItemRow>
         <div class="info-person">
           <ItemCard title="Anna Sharapova">
-            <span class="text-body">Co-Founder, Designer Director<br />16 years experience</span>
+            <span class="text-body"
+              >Co-Founder, Designer Director<br />16 years experience</span
+            >
           </ItemCard>
           <div class="info-photo"></div>
         </div>
         <div class="info-person">
           <ItemCard title="Eduard Aksamitov">
-            <span class="text-body">Co-Founder, Art Director<br />10 years experience</span>
+            <span class="text-body"
+              >Co-Founder, Art Director<br />10 years experience</span
+            >
           </ItemCard>
           <div class="info-photo"></div>
         </div>
@@ -71,17 +83,38 @@ import PageSection from '../components/PageSection.astro'
 
   <!-- Approach -->
   <PageSection title="Approach" mode="full-width">
-    <p class="text-heading approach-text prose-indent">Acting at the intersection of strategy and visual design, our work spans from research to finished product and everything in between. An officeless team where every project is led by those who create it. And beyond — through implementation, until the identity becomes reality. The client has a business, ambitions, a chaos of ideas and references. We ask questions, dig deep, strip away the excess — until only what works remains. From noise comes clarity that lasts for years. This is the distillation of essence.</p>
+    <p class="text-heading approach-text prose-indent">
+      Acting at the intersection of strategy and visual design, our work spans
+      from research to finished product and everything in between. An officeless
+      team where every project is led by those who create it. And beyond —
+      through implementation, until the identity becomes reality. The client has
+      a business, ambitions, a chaos of ideas and references. We ask questions,
+      dig deep, strip away the excess — until only what works remains. From
+      noise comes clarity that lasts for years. This is the distillation of
+      essence.
+    </p>
     <ApproachCanvas />
     <div class="section-grid">
       <div class="col-content approach-content">
         <ItemRow>
-          <ItemCard title="Sense" description="Before anything takes shape, we need to understand what we're actually solving. We ask questions about your business, your audience, and the gap between where you are and where you want to be. Sometimes that's a single conversation. Sometimes it's a structured session. Either way, it ends with something most projects skip: clarity you can actually build from." />
-          <ItemCard title="Shape" description="This is where the brand gets its form — the mark, the system, the visual language. We build from intention, not intuition alone. Every decision has a reason, and the result is something that holds together under pressure: across formats, across teams, across time. We work from scratch or on top of what exists — in full or with precision." />
+          <ItemCard
+            title="Sense"
+            description="Before anything takes shape, we need to understand what we're actually solving. We ask questions about your business, your audience, and the gap between where you are and where you want to be. Sometimes that's a single conversation. Sometimes it's a structured session. Either way, it ends with something most projects skip: clarity you can actually build from."
+          />
+          <ItemCard
+            title="Shape"
+            description="This is where the brand gets its form — the mark, the system, the visual language. We build from intention, not intuition alone. Every decision has a reason, and the result is something that holds together under pressure: across formats, across teams, across time. We work from scratch or on top of what exists — in full or with precision."
+          />
         </ItemRow>
         <ItemRow>
-          <ItemCard title="Press" description="Design doesn't end at the file handoff. We see it through — guiding developers, tightening details, catching what gets lost between intent and implementation. And when the brand needs to exist beyond the screen, we know how to get it there. We work closely with print production, understand material constraints, and make sure what was designed survives contact with the real world." />
-          <ItemCard title="Stay" description="Some clients need a partner who's just there. For questions, reviews, small refinements, and strategic moments — even after another studio's work. We're available on retainer, hourly, or by the task. No long commitments required. We stay as long as we're useful." />
+          <ItemCard
+            title="Press"
+            description="Design doesn't end at the file handoff. We see it through — guiding developers, tightening details, catching what gets lost between intent and implementation. And when the brand needs to exist beyond the screen, we know how to get it there. We work closely with print production, understand material constraints, and make sure what was designed survives contact with the real world."
+          />
+          <ItemCard
+            title="Stay"
+            description="Some clients need a partner who's just there. For questions, reviews, small refinements, and strategic moments — even after another studio's work. We're available on retainer, hourly, or by the task. No long commitments required. We stay as long as we're useful."
+          />
         </ItemRow>
       </div>
     </div>
@@ -89,21 +122,33 @@ import PageSection from '../components/PageSection.astro'
 
   <!-- Offers -->
   <PageSection title="Offers" mode="full-width">
-    <p class="text-heading offers-intro prose-indent">We don't do rush jobs or undefined scopes. Good design takes time, and good collaboration takes structure. Depending on what you need, we work one of two ways — both designed to keep things clear, calm, and moving forward.</p>
+    <p class="text-heading offers-intro prose-indent">
+      We don't do rush jobs or undefined scopes. Good design takes time, and
+      good collaboration takes structure. Depending on what you need, we work
+      one of two ways — both designed to keep things clear, calm, and moving
+      forward.
+    </p>
     <div class="section-grid">
       <div class="col-content offers-content">
         <ItemRow>
-          <ItemCard title="Retainers" description="In close collaboration with you and your internal team, we work a set number of days per week over an extended period, where the length of it varies according to needs and deliverables. Through conversations tasks are defined and planned weekly." />
-          <ItemCard title="Projects" description="One project at a time with a fixed total cost based on deliverables. The project is planned, estimated, and deliverables specified before the project starts up." />
+          <ItemCard
+            title="Retainers"
+            description="In close collaboration with you and your internal team, we work a set number of days per week over an extended period, where the length of it varies according to needs and deliverables. Through conversations tasks are defined and planned weekly."
+          />
+          <ItemCard
+            title="Projects"
+            description="One project at a time with a fixed total cost based on deliverables. The project is planned, estimated, and deliverables specified before the project starts up."
+          />
         </ItemRow>
         <ItemRow>
-          <ItemCard title="Consultancy" description="A focused conversation, not a deliverable. We help you understand a problem, evaluate a direction, or get unstuck. One or several sessions, depending on what you need. Suitable when you have a team but need an outside perspective, or when you're not sure yet what kind of help you actually need." />
+          <ItemCard
+            title="Consultancy"
+            description="A focused conversation, not a deliverable. We help you understand a problem, evaluate a direction, or get unstuck. One or several sessions, depending on what you need. Suitable when you have a team but need an outside perspective, or when you're not sure yet what kind of help you actually need."
+          />
         </ItemRow>
       </div>
     </div>
   </PageSection>
-
-
 </PageLayout>
 
 <style>

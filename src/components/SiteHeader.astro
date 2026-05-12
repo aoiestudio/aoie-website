@@ -11,7 +11,9 @@ const isWorks = pathname === '/works' || pathname.startsWith('/works/')
   <div class="col-content nav-right text-body">
     <nav class="nav-links" aria-label="Main">
       <a href="/" class:list={['nav-link', isStudio && 'is-active']}>Studio</a>
-      <a href="/works" class:list={['nav-link', isWorks && 'is-active']}>Works</a>
+      <a href="/works" class:list={['nav-link', isWorks && 'is-active']}
+        >Works</a
+      >
     </nav>
     <HireButton class="nav-hire link" />
     <a href="/explore" class="nav-burger" aria-label="Explore">
@@ -139,5 +141,4 @@ const isWorks = pathname === '/works' || pathname.startsWith('/works/')
       display: inline-flex;
     }
   }
-
 </style>

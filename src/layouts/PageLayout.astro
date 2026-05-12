@@ -30,15 +30,21 @@ const { title, hideFooter = false } = Astro.props
 
 <script>
   function bindHireButtons() {
-    document.querySelectorAll<HTMLElement>('.hire-btn').forEach((btn) => {
-      if (btn.dataset.hireBound) { return }
+    document.querySelectorAll<HTMLElement>('.hire-btn').forEach(btn => {
+      if (btn.dataset.hireBound) {
+        return
+      }
       btn.dataset.hireBound = 'true'
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', e => {
         e.preventDefault()
-        navigator.clipboard.writeText('hello@aoie.studio').catch(() => { /* ignore clipboard errors */ })
+        navigator.clipboard.writeText('hello@aoie.studio').catch(() => {
+          /* ignore clipboard errors */
+        })
         const original = btn.textContent
         btn.textContent = 'Copied'
-        setTimeout(() => { btn.textContent = original }, 2000)
+        setTimeout(() => {
+          btn.textContent = original
+        }, 2000)
       })
     })
   }

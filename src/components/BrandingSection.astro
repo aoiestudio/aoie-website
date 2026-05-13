@@ -27,8 +27,13 @@ import BookCallButton from './BookCallButton.astro'
 </PageSection>
 
 <style>
-  :global(.page-section--bottom.branding-section) {
+  :global(.branding-section) {
+    padding-bottom: var(--2-lh) !important;
+    min-height: var(--size-section);
     padding-bottom: var(--2-lh);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
   .footer-email {
@@ -76,6 +81,10 @@ import BookCallButton from './BookCallButton.astro'
   }
 
   @media (--mobile) {
+    :global(.branding-section) {
+      gap: var(--space-3xl);
+    }
+
     .footer-bar {
       display: flex;
       flex-wrap: wrap;

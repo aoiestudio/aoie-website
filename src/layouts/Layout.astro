@@ -51,9 +51,8 @@ const { title } = Astro.props
               cal.loaded = true
             }
             if (ar[0] === L) {
-              const api = function () {
-                p(api, arguments)
-              }
+              /** @type {any} */
+              const api = (...args) => p(api, args)
               const namespace = ar[1]
               api.q = api.q || []
               if (typeof namespace === 'string') {

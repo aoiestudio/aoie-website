@@ -1,4 +1,5 @@
 {
   "*.{astro,js,ts}": "pnpm oxlint --config oxlint.config.ts",
-  "*.{js,ts,css,json}": "oxfmt"
+  "*.{js,ts,css,json,md,mdx}": "oxfmt",
+  "*.astro": "prettier --write"
 }

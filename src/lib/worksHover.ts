@@ -13,8 +13,7 @@ export function initHover(
   grid: HTMLElement,
   rows: HTMLElement[],
   saved: number[] | null,
-  onSave: (positions: number[]) => void,
-): { destroy(): void; saveCurrentPositions(): void } {
+): { destroy(): void; getCurrentPositions(): number[] } {
   const hoverMap = new WeakMap<HTMLElement, HoverState>()
   const cardMap = new WeakMap<HTMLElement, HTMLElement>()
   // Keyed by row so destroy() can removeEventListener with the exact same ref
@@ -29,8 +28,8 @@ export function initHover(
     }
   }
 
-  function saveCurrentPositions() {
-    onSave(rows.map(row => hoverMap.get(row)?.currentX ?? 0))
+  function getCurrentPositions(): number[] {
+    return rows.map(row => hoverMap.get(row)?.currentX ?? 0)
   }
 
   function scheduleAnimate(row: HTMLElement, state: HoverState) {
@@ -61,7 +60,6 @@ export function initHover(
       card.style.transform = `translateX(${state.currentX}px)`
       state.rafId = null
       state.prevTime = null
-      saveCurrentPositions()
     } else {
       let move = delta * ease * dt
       const minMove = delta > 0 ? 0.5 : -0.5
@@ -157,6 +155,6 @@ export function initHover(
       })
       mousemoveHandlers.clear()
     },
-    saveCurrentPositions,
+    getCurrentPositions,
   }
 }

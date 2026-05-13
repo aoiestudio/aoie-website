@@ -11,15 +11,7 @@ const { title, mode = 'half-width', class: className, id } = Astro.props
 
 {
   mode === 'bottom' ? (
-    <section
-      id={id}
-      class:list={[
-        'page-section',
-        'page-section--bottom',
-        'page-wrap',
-        className,
-      ]}
-    >
+    <section id={id} class:list={['page-section', 'page-wrap', className]}>
       <div class="page-section__head">
         <hr class="page-section__divider" />
         <h2 class="text-heading page-section__title">{title}</h2>
@@ -82,15 +74,6 @@ const { title, mode = 'half-width', class: className, id } = Astro.props
   .page-section__slot {
   }
 
-  /* bottom: divider+title at top, slot at bottom */
-  .page-section--bottom {
-    min-height: var(--size-section);
-    padding-bottom: var(--2-lh);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
   @media (--mobile) {
     .page-section--half .page-section__title {
       height: var(--space-xl);
@@ -102,11 +85,6 @@ const { title, mode = 'half-width', class: className, id } = Astro.props
 
     .page-section--full .page-section__title {
       margin-bottom: 0;
-    }
-
-    .page-section--bottom {
-      justify-content: flex-start;
-      gap: var(--space-md);
     }
   }
 </style>

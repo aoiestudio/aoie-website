@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from 'astro:content'
+import Layout from '../../layouts/PageLayout.astro'
+import ProjectSingle from '../../components/ProjectSingle.astro'
+
+const { id } = Astro.params
+const projects = await getCollection('projects')
+const project = projects.find(p => p.id === id)
+
+if (!project) {
+  // eslint-disable-next-line unicorn/prefer-module
+  return Astro.redirect('/works')
+}
+
+const { Content } = await render(project)
+const { title, description, year } = project.data
+---
+
+<Layout title={`${title} — aoie`}>
+  <div class="project-page">
+    <div class="project-header">
+      <hr class="project-divider page-wrap" />
+      <div class="project-meta page-wrap section-grid">
+        <span class="col-label text-body project-meta__title">{title}</span>
+        <div class="col-content project-meta__right text-body">
+          {description && <span class="project-meta__desc">{description}</span>}
+          {year && <span class="project-meta__year">{year}</span>}
+        </div>
+      </div>
+    </div>
+
+    <main class="project-content page-wrap">
+      <Content components={{ Single: ProjectSingle }} />
+    </main>
+  </div>
+</Layout>
+
+<style>
+  @import '../../styles/media.css';
+
+  .project-page {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .project-header {
+    display: flex;
+    flex-direction: column;
+    margin-top: var(--space-2xl);
+    height: var(--space-2xl);
+  }
+
+  .project-divider {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 0 var(--page-pad) var(--2-lh);
+  }
+
+  .project-meta {
+    align-items: baseline;
+  }
+
+  .project-meta__right {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: var(--2-lh);
+  }
+
+  .project-content {
+    padding-top: var(--4-lh);
+    padding-bottom: var(--space-3xl);
+    display: flex;
+    flex-direction: column;
+    gap: var(--col-gap);
+  }
+
+  @media (--mobile) {
+    .project-meta {
+      display: flex;
+      flex-direction: column;
+      gap: var(--lh);
+    }
+
+    .project-meta__right {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+  }
+</style>

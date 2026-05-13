@@ -53,7 +53,10 @@ void main() {
 
   float symbolPadding = 0.17;
 
-  float sdfSample = (texture(uSymbol, mix(vec2(symbolPadding), vec2(1.0 - symbolPadding), cl / cellSize)).r * 2.0 - 1.0);
+  vec2 uvPadMin = vec2(symbolPadding, mix(symbolPadding, 0.5 - 0.01, ex));
+  vec2 uvPadMax = vec2(1.0 - symbolPadding, mix(1.0 - symbolPadding, 0.5 + 0.01, ex));
+  float sdfSample = (texture(uSymbol, mix(uvPadMin, uvPadMax, cl / cellSize)).r * 2.0 - 1.0);
+  // float sdfSample = (texture(uSymbol, mix(vec2(symbolPadding), vec2(1.0 - symbolPadding), cl / cellSize)).r * 2.0 - 1.0);
   float sdfAa = fwidth(sdfSample) * 1.2;
   float sdfTarget = -ex;
   float sdfFactor = smoothstep(sdfTarget - sdfAa, sdfTarget + sdfAa, sdfSample)

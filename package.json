@@ -32,6 +32,7 @@
     "@csstools/postcss-global-data": "catalog:",
     "@types/node": "catalog:",
     "astro": "catalog:",
+    "autoprefixer": "catalog:",
     "nano-staged": "catalog:",
     "oxc-config-fans": "catalog:",
     "oxfmt": "catalog:",

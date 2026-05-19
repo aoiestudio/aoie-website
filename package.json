@@ -19,7 +19,9 @@
     "format:prettier": "prettier --write \"**/*.astro\"",
     "format": "pnpm run /^format:/",
     "astro": "astro",
-    "prepare": "simple-git-hooks"
+    "prepare": "simple-git-hooks",
+    "images:push": "sh scripts/images-push.sh",
+    "images:pull": "sh scripts/images-pull.sh"
   },
   "dependencies": {
     "@astrojs/mdx": "catalog:",

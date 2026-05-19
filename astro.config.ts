@@ -3,7 +3,7 @@ import node from '@astrojs/node'
 import { defineConfig } from 'astro/config'
 
 export default defineConfig({
-  output: 'server',
+  output: 'static',
   integrations: [mdx()],
   server: {
     host: '0.0.0.0',
@@ -11,6 +11,14 @@ export default defineConfig({
 
   devToolbar: {
     enabled: false,
+  },
+
+  // Sharp image processing is disabled — images are served via imgproxy in prod
+  // and via the /_img/[...path].ts endpoint in dev.
+  image: {
+    service: {
+      entrypoint: 'astro/assets/services/noop',
+    },
   },
 
   adapter: node({ mode: 'standalone' }),

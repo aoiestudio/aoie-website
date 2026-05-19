@@ -3,14 +3,14 @@ import { getCollection, render } from 'astro:content'
 import Layout from '../../layouts/PageLayout.astro'
 import ProjectSingle from '../../components/ProjectSingle.astro'
 
+export async function getStaticPaths() {
+  const projects = await getCollection('projects')
+  return projects.map(project => ({ params: { id: project.id } }))
+}
+
 const { id } = Astro.params
 const projects = await getCollection('projects')
-const project = projects.find(p => p.id === id)
-
-if (!project) {
-  // eslint-disable-next-line unicorn/prefer-module
-  return Astro.redirect('/works')
-}
+const project = projects.find(p => p.id === id)!
 
 const { Content } = await render(project)
 const { title, description, year } = project.data

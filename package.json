@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "catalog:",
+    "@imgproxy/imgproxy-node": "catalog:",
     "@nanostores/persistent": "catalog:",
     "ogl": "catalog:"
   },

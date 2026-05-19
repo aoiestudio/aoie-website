@@ -20,8 +20,8 @@
     "format": "pnpm run /^format:/",
     "astro": "astro",
     "prepare": "simple-git-hooks",
-    "images:push": "sh scripts/images-push.sh",
-    "images:pull": "sh scripts/images-pull.sh"
+    "images:push": "node --env-file=.env --experimental-strip-types scripts/images-push.ts",
+    "images:pull": "node --env-file=.env --experimental-strip-types scripts/images-pull.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "catalog:",
@@ -32,6 +32,7 @@
   "devDependencies": {
     "@astrojs/check": "catalog:",
     "@astrojs/node": "catalog:",
+    "@aws-sdk/client-s3": "^3.1048.0",
     "@csstools/postcss-global-data": "catalog:",
     "@types/node": "catalog:",
     "astro": "catalog:",
@@ -44,6 +45,7 @@
     "postcss-custom-media": "catalog:",
     "prettier": "catalog:",
     "prettier-plugin-astro": "catalog:",
+    "s3-sync-client": "^4.3.1",
     "sharp": "catalog:",
     "simple-git-hooks": "catalog:",
     "typescript": "catalog:"

@@ -6,6 +6,7 @@ ENV PATH="$PNPM_HOME:$PATH"
 WORKDIR /app
 
 COPY package.json ./package.json
+RUN npm install -g corepack
 RUN corepack enable pnpm
 RUN corepack install
 

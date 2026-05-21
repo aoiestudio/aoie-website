@@ -19,7 +19,7 @@ ENV SKIP_INSTALL_SIMPLE_GIT_HOOKS=1
 
 WORKDIR /app
 
-COPY pnpm-lock.yaml ./
+COPY pnpm-lock.yaml pnpm-workspace.yaml ./
 RUN pnpm fetch
 RUN pnpm install --offline --frozen-lockfile
 

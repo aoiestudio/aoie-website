@@ -9,6 +9,7 @@ export async function getStaticPaths() {
 }
 
 const { id } = Astro.params
+Astro.locals.project = id
 const projects = await getCollection('projects')
 const project = projects.find(p => p.id === id)!
 

@@ -14,9 +14,12 @@ const MIME: Record<string, string> = {
 }
 
 export const GET: APIRoute = async ({ params }) => {
-  // Guard: this endpoint must never be reachable in production builds.
-  // In production, /_img/* is routed by Caddy → imgproxy.
-  if (import.meta.env.PUBLIC_IMAGE_MODE !== 'local') {
+  // Guard: serve files only in local mode (no imgproxy configured).
+  // Mirrors isLocalMode() in imgproxy-service.ts.
+  if (
+    import.meta.env.PUBLIC_IMAGE_MODE === 'imgproxy' &&
+    import.meta.env.IMGPROXY_ENDPOINT
+  ) {
     return new Response('Not found', { status: 404 })
   }
 

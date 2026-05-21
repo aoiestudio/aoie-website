@@ -1,16 +1,14 @@
 ---
-import type { ImageMetadata } from 'astro'
+import { getCollection } from 'astro:content'
 import { Picture } from 'astro:assets'
 import BookCallButton from '../components/BookCallButton.astro'
 import HireButton from '../components/HireButton.astro'
 import PageLayout from '../layouts/PageLayout.astro'
 
-const allImages = import.meta.glob<{ default: ImageMetadata }>(
-  '../../content/projects/*/images/*.{jpg,jpeg,png}',
-  { eager: true },
+const projects = await getCollection('projects')
+const allImages = projects.flatMap(entry =>
+  entry.data.images.map(filename => ({ projectId: entry.id, filename })),
 )
-
-const images = Object.values(allImages).map(mod => mod.default)
 ---
 
 <PageLayout title="Explore — aoie studio" hideFooter>
@@ -23,16 +21,15 @@ const images = Object.values(allImages).map(mod => mod.default)
     <div class="explore-media-wrap">
       <div class="explore-media" id="explore-media">
         {
-          images.map((img, index) => (
+          allImages.map((item, index) => (
             <div
               class:list={['explore-media__slide', index === 0 && 'is-active']}
               data-explore-img
             >
               <Picture
-                src={img}
+                src={`projects/${item.projectId}/images/${item.filename}`}
                 formats={['avif', 'webp']}
-                width={640}
-                height={360}
+                sizes="640px"
                 loading={index === 0 ? 'eager' : 'lazy'}
                 alt=""
               />

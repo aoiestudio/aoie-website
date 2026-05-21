@@ -1,27 +1,17 @@
 ---
 import { getCollection } from 'astro:content'
 import { Picture } from 'astro:assets'
-import type { ImageMetadata } from 'astro'
 import { seededShuffle } from '../lib/seededShuffle'
 
 const projects = await getCollection('projects')
 projects.sort((a, b) => a.data.order - b.data.order)
 
-const allImages = import.meta.glob<{ default: ImageMetadata }>(
-  '../../content/projects/*/images/*.{jpg,jpeg,png}',
-  { eager: true },
-)
-
-type Row = {
-  projectId: string
-  image: ImageMetadata
-}
+type Row = { projectId: string; filename: string }
 
 const rows: Row[] = []
-for (const [path, mod] of Object.entries(allImages)) {
-  const match = path.match(/content\/projects\/([^/]+)\/images\//)
-  if (match) {
-    rows.push({ projectId: match[1]!, image: mod.default })
+for (const entry of projects) {
+  for (const filename of entry.data.images) {
+    rows.push({ projectId: entry.id, filename })
   }
 }
 
@@ -34,12 +24,10 @@ const shuffledRows = seededShuffle(rows, 42)
       <div class="wg-row">
         <a class="wg-item" href={`/works/${row.projectId}`}>
           <Picture
-            src={row.image}
+            src={`projects/${row.projectId}/images/${row.filename}`}
             formats={['avif', 'webp']}
-            width={320}
-            height={180}
-            loading="lazy"
             alt={row.projectId}
+            sizes="320px"
           />
         </a>
       </div>

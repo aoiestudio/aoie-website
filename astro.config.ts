@@ -13,11 +13,9 @@ export default defineConfig({
     enabled: false,
   },
 
-  // Sharp image processing is disabled — images are served via imgproxy in prod
-  // and via the /_img/[...path].ts endpoint in dev.
   image: {
     service: {
-      entrypoint: 'astro/assets/services/noop',
+      entrypoint: './src/lib/imgproxy-service.ts',
     },
   },
 

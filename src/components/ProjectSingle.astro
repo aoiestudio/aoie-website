@@ -15,6 +15,8 @@ const { filename, alt = '', project = Astro.locals.project ?? '' } = Astro.props
   <Picture
     src={`projects/${project}/images/${filename}`}
     formats={['avif', 'webp']}
+    width={1200}
+    height={800}
     alt={alt}
   />
 </div>

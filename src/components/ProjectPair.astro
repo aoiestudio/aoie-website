@@ -13,13 +13,20 @@ const { left, right, altLeft = '', altRight = '' } = Astro.props
 
 <div class="project-pair">
   <div class="project-pair__item">
-    <Picture src={left} formats={['avif', 'webp']} width={800} alt={altLeft} />
+    <Picture
+      src={left}
+      formats={['avif', 'webp']}
+      width={800}
+      height={533}
+      alt={altLeft}
+    />
   </div>
   <div class="project-pair__item">
     <Picture
       src={right}
       formats={['avif', 'webp']}
       width={800}
+      height={533}
       alt={altRight}
     />
   </div>

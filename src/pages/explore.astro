@@ -29,6 +29,8 @@ const allImages = projects.flatMap(entry =>
               <Picture
                 src={`projects/${item.projectId}/images/${item.filename}`}
                 formats={['avif', 'webp']}
+                width={640}
+                height={360}
                 sizes="640px"
                 loading={index === 0 ? 'eager' : 'lazy'}
                 alt=""

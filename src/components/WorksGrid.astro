@@ -26,6 +26,8 @@ const shuffledRows = seededShuffle(rows, 42)
           <Picture
             src={`projects/${row.projectId}/images/${row.filename}`}
             formats={['avif', 'webp']}
+            width={320}
+            height={180}
             alt={row.projectId}
             sizes="320px"
           />

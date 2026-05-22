@@ -42,9 +42,13 @@ RUN pnpm run build
 
 FROM base
 
+RUN apt-get update && apt-get install -y --no-install-recommends curl && rm -rf /var/lib/apt/lists/*
+
 WORKDIR /app
 
 COPY --from=builder /app/dist /app/dist
 COPY --from=builder /app/package.json /app/package.json
+
+HEALTHCHECK CMD curl -f http://localhost:4321 || exit 1
 
 CMD ["node", "./dist/server/entry.mjs"]

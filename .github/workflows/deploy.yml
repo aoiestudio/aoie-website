@@ -83,12 +83,12 @@ jobs:
           username: ${{ secrets.DEPLOY_USER }}
           key: ${{ secrets.DEPLOY_SSH_KEY }}
           script: >-
-            docker service update aoie_web
+            docker service update aoie-website
             --image ghcr.io/${{ github.repository }}:${{ github.sha }}
             --with-registry-auth
             &&
             docker stack ps aoie
             -f "desired-state=running"
-            -f "name=aoie_web"
+            -f "name=aoie-website"
             | grep "${{ github.sha }}"
             || exit 127

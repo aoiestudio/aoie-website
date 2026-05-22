@@ -10,8 +10,6 @@ RUN npm install -g corepack
 RUN corepack enable pnpm
 RUN corepack install
 
-RUN apt-get update && apt-get install -y wget
-
 
 FROM base AS installer
 
@@ -48,7 +46,5 @@ WORKDIR /app
 
 COPY --from=builder /app/dist /app/dist
 COPY --from=builder /app/package.json /app/package.json
-
-HEALTHCHECK CMD wget -q -O /dev/null http://localhost:3000 || exit 1
 
 CMD ["node", "./dist/server/entry.mjs"]

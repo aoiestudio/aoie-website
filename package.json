@@ -27,7 +27,8 @@
     "@astrojs/mdx": "catalog:",
     "@imgproxy/imgproxy-node": "catalog:",
     "@nanostores/persistent": "catalog:",
-    "ogl": "catalog:"
+    "ogl": "catalog:",
+    "typograf": "^7.7.0"
   },
   "devDependencies": {
     "@astrojs/check": "catalog:",

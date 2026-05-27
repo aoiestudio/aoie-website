@@ -1,10 +1,11 @@
 import mdx from '@astrojs/mdx'
 import node from '@astrojs/node'
 import { defineConfig } from 'astro/config'
+import typograf from './src/integrations/typograf'
 
 export default defineConfig({
   output: 'static',
-  integrations: [mdx()],
+  integrations: [mdx(), typograf()],
   server: {
     host: '0.0.0.0',
   },

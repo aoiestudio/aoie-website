@@ -113,6 +113,12 @@ const isWorks = pathname === '/works' || pathname.startsWith('/works/')
     color: var(--color-gray-40);
   }
 
+  @media (prefers-color-scheme: light) {
+    .nav {
+      mix-blend-mode: normal;
+    }
+  }
+
   @media (--mobile) {
     .nav {
       display: flex;

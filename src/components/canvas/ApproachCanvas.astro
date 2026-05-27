@@ -13,6 +13,22 @@
   import vert from './approach.vert?raw'
   import frag from './approach.frag?raw'
 
+  function hexToVec3(hex: string): [number, number, number] {
+    const clean = hex.trim().replace('#', '')
+    return [
+      Number.parseInt(clean.slice(0, 2), 16) / 255,
+      Number.parseInt(clean.slice(2, 4), 16) / 255,
+      Number.parseInt(clean.slice(4, 6), 16) / 255,
+    ]
+  }
+
+  function getCircleColor(): [number, number, number] {
+    const val = getComputedStyle(document.documentElement)
+      .getPropertyValue('--color-gray-90')
+      .trim()
+    return hexToVec3(val)
+  }
+
   function init() {
     const canvas = document.querySelector<HTMLCanvasElement>('#approach-canvas')
     if (!canvas) {
@@ -47,6 +63,7 @@
         uPB: { value: pB },
         uRB: { value: BASE_B },
         uK: { value: 0 },
+        uColor: { value: getCircleColor() },
       },
       transparent: true,
       depthTest: false,
@@ -117,6 +134,11 @@
     }
 
     rafId = requestAnimationFrame(render)
+
+    const mq = window.matchMedia('(prefers-color-scheme: light)')
+    mq.addEventListener('change', () => {
+      program.uniforms.uColor.value = getCircleColor()
+    })
 
     document.addEventListener(
       'astro:before-swap',

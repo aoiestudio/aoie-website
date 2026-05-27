@@ -10,6 +10,8 @@ uniform vec2  uPB;
 uniform float uRB;
 uniform float uK;
 
+uniform vec3  uColor;
+
 float smin(float a, float b, float k) {
   float h = clamp(.5 + .5 * (b - a) / k, 0., 1.);
   return mix(b, a, h) - k * h * (1. - h);
@@ -26,7 +28,7 @@ void main() {
 
   float rim  = smoothstep(0., -0.025, d);
   float core = smoothstep(0., -0.10,  d);
-  vec3 col = vec3(0.93, 0.91, 0.87)
+  vec3 col = uColor
            + vec3(0.06, 0.06, 0.07) * core
            - vec3(0.08, 0.09, 0.10) * rim * 0.3;
 

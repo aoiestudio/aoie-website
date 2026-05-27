@@ -1,7 +1,7 @@
 .text-heading {
   font-family: var(--font-family);
   font-style: normal;
-  font-weight: 600;
+  font-weight: var(--font-weight-heading, 600);
   font-size: var(--font-size-heading);
   line-height: var(--line-height-heading);
   letter-spacing: var(--letter-spacing-heading);

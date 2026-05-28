@@ -5,7 +5,22 @@ import typograf from './src/integrations/typograf'
 
 export default defineConfig({
   output: 'static',
+  adapter: node({ mode: 'standalone' }),
   integrations: [mdx(), typograf()],
+
+  server: {
+    host: '0.0.0.0',
+  },
+  devToolbar: {
+    enabled: false,
+  },
+
+  image: {
+    service: {
+      entrypoint: './src/lib/imgproxy-service.ts',
+    },
+  },
+
   fonts: [
     {
       provider: fontProviders.local(),
@@ -24,19 +39,4 @@ export default defineConfig({
       },
     },
   ],
-  server: {
-    host: '0.0.0.0',
-  },
-
-  devToolbar: {
-    enabled: false,
-  },
-
-  image: {
-    service: {
-      entrypoint: './src/lib/imgproxy-service.ts',
-    },
-  },
-
-  adapter: node({ mode: 'standalone' }),
 })

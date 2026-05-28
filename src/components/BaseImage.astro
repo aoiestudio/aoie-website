@@ -1,15 +1,13 @@
 ---
 import { Picture } from 'astro:assets'
+import { readImageMeta } from '../lib/image-meta'
 
 interface Props {
   src: string
   priority?: boolean
-  layout?: 'full-width'
   width?: number
-  /** Defaults to 0; service computes proportional height from metadata.json. */
   height?: number
   densities?: number[]
-  widths?: number[]
   sizes?: string
   class?: string
 }
@@ -17,42 +15,36 @@ interface Props {
 const {
   src,
   priority,
-  layout,
-  width,
-  height = 0,
+  width: inputWidth,
+  height: inputHeight,
   densities,
-  widths,
   sizes,
   class: className,
 } = Astro.props
+
+const meta = await readImageMeta(src)
+const blurhash = meta?.blurhash
+
+// Resolve dimensions: explicit props take priority, then metadata.
+const width = inputWidth ?? meta?.width ?? 1920
+let height = inputHeight
+if (meta && !height) {
+  height = Math.round((width * meta.height) / meta.width)
+}
 ---
 
 <div data-blurhash-container class:list={['base-image', className]}>
-  {
-    width !== undefined ? (
-      <Picture
-        src={src}
-        formats={['avif', 'webp']}
-        alt=""
-        width={width!}
-        height={height}
-        densities={densities}
-        sizes={sizes}
-        priority={priority}
-      />
-    ) : (
-      <Picture
-        src={src}
-        formats={['avif', 'webp']}
-        alt=""
-        layout={layout}
-        inferSize
-        widths={widths}
-        sizes={sizes}
-        priority={priority}
-      />
-    )
-  }
+  <Picture
+    src={src}
+    formats={['avif', 'webp']}
+    alt=""
+    width={width}
+    height={height ?? 0}
+    densities={densities}
+    sizes={sizes}
+    priority={priority}
+    data-blurhash={blurhash}
+  />
 </div>
 
 <style>

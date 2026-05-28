@@ -3,7 +3,6 @@ import { generateImageUrl } from '@imgproxy/imgproxy-node'
 import { baseService } from 'astro/assets'
 
 // Last-resort fallback when imageConfig.service.config.sizes is not set.
-// Configure via astro.config.ts: image.service.config.sizes
 const DEFAULT_SIZES = [640, 750, 828, 1080, 1200, 1920, 2048, 3840] as const
 
 // Astro uses 'jpeg'; imgproxy uses 'jpg' — normalise here.
@@ -43,16 +42,17 @@ const service: ExternalImageService = {
 
   getHTMLAttributes: baseService.getHTMLAttributes,
 
-  getURL(options) {
+  getURL(options, imageConfig) {
+    const config = imageConfig.service.config
     const src = typeof options.src === 'string' ? options.src : options.src.src
     const width = options.width ?? 1920
     const format = toImgproxyFormat(options.format)
 
     return generateImageUrl({
-      endpoint: import.meta.env.IMGPROXY_ENDPOINT,
-      key: import.meta.env.IMGPROXY_KEY,
-      salt: import.meta.env.IMGPROXY_SALT,
-      url: `s3://${import.meta.env.S3_BUCKET}/${src}`,
+      endpoint: config.endpoint,
+      key: config.key,
+      salt: config.salt,
+      url: `${config.baseUrl}/${src}`,
       options: {
         resize: { width, height: 0, resizing_type: 'fill' },
         format,
@@ -63,7 +63,6 @@ const service: ExternalImageService = {
   getSrcSet(options, imageConfig) {
     const { widths, densities } = options
 
-    // densities: e.g. <Image densities={[1, 2, 3]} /> → 1x 2x 3x descriptors
     if (densities) {
       const base = options.width ?? 1920
       const parsed = densities
@@ -75,8 +74,6 @@ const service: ExternalImageService = {
       }))
     }
 
-    // widths: e.g. <Image widths={[400, 800, 1200]} /> → 400w 800w 1200w descriptors
-    // fallback: configured sizes, then built-in defaults
     const configSizes = imageConfig.service.config?.sizes
     const fallback: number[] = Array.isArray(configSizes)
       ? configSizes

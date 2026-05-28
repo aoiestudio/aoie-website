@@ -14,7 +14,7 @@
   --color-text-muted: var(--color-gray-40);
   --color-text-inverse: var(--color-white);
 
-  --font-family: 'Geist Variable', 'Geist', sans-serif;
+  --font-family: var(--font-geist);
 
   /* 430px → 25px, 2056px → 55px
      slope = (55-25)/(2056-430) = 30/1626 = 1.845018vw

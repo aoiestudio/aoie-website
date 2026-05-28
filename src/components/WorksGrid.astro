@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content'
-import { Picture } from 'astro:assets'
+import BaseImage from './BaseImage.astro'
 import { seededShuffle } from '../lib/seededShuffle'
 
 const projects = await getCollection('projects')
@@ -23,13 +23,10 @@ const shuffledRows = seededShuffle(rows, 42)
     shuffledRows.map(row => (
       <div class="wg-row">
         <a class="wg-item" href={`/works/${row.projectId}`}>
-          <Picture
+          <BaseImage
             src={`projects/${row.projectId}/images/${row.filename}`}
-            formats={['avif', 'webp']}
             width={320}
-            height={180}
-            alt={row.projectId}
-            sizes="320px"
+            densities={[1, 2]}
           />
         </a>
       </div>
@@ -151,7 +148,6 @@ const shuffledRows = seededShuffle(rows, 42)
     width: 100%;
     aspect-ratio: 16 / 9;
     object-fit: cover;
-    display: block;
   }
 
   /* Spacer: in normal flow, sets scrollHeight for virtual scroll */

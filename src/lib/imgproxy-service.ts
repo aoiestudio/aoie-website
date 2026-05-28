@@ -88,12 +88,18 @@ const service: ExternalImageService = {
         'Cannot use both `widths` and `densities` on the same image.',
       )
     }
-    if (!options.width && !options.height && typeof options.src === 'string') {
+    if (typeof options.src === 'string') {
       const meta = await readLocalMeta(options.src)
       if (meta) {
-        options.width = meta.width
-        options.height = meta.height
         blurhashMap.set(options.src, meta.blurhash)
+        if (!options.width && !options.height) {
+          options.width = meta.width
+          options.height = meta.height
+        } else if (options.width && !options.height) {
+          options.height = Math.round(
+            (options.width * meta.height) / meta.width,
+          )
+        }
       }
     }
     return {

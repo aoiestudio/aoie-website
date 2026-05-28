@@ -1,5 +1,5 @@
 ---
-import { Picture } from 'astro:assets'
+import BaseImage from './BaseImage.astro'
 
 interface Props {
   filename: string
@@ -15,89 +15,15 @@ const {
 } = Astro.props
 ---
 
-<div class="project-single">
-  <Picture
-    src={`projects/${project}/images/${filename}`}
-    formats={['avif', 'webp']}
-    layout="full-width"
-    inferSize
-    priority={priority}
-    alt=""
-  />
-</div>
+<BaseImage
+  class="project-single"
+  src={`projects/${project}/images/${filename}`}
+  layout="full-width"
+  priority={priority}
+/>
 
 <style>
-  .project-single {
+  :global(.project-single) {
     width: 100%;
-    background-size: cover;
-    background-position: center;
-  }
-
-  .project-single :global(img) {
-    display: block;
-    transition: opacity 0.4s ease;
   }
 </style>
-
-<script>
-  import { decode } from 'blurhash'
-
-  function initBlurhash(scope: Document | Element = document) {
-    scope
-      .querySelectorAll<HTMLImageElement>('img[data-blurhash]')
-      .forEach(img => {
-        if (img.dataset.blurhashDone) {
-          return
-        }
-        img.dataset.blurhashDone = 'true'
-
-        const hash = img.dataset.blurhash!
-        const container = img.closest<HTMLElement>('.project-single')
-        if (!container) {
-          return
-        }
-
-        const origW = Number(img.getAttribute('width')) || 16
-        const origH = Number(img.getAttribute('height')) || 9
-        const ratio = origH / origW
-        const canvasW = 32
-        const canvasH = Math.max(1, Math.round(canvasW * ratio))
-
-        const pixels = decode(hash, canvasW, canvasH)
-        const canvas = document.createElement('canvas')
-        canvas.width = canvasW
-        canvas.height = canvasH
-        const ctx = canvas.getContext('2d')!
-        ctx.putImageData(
-          new ImageData(new Uint8ClampedArray(pixels), canvasW, canvasH),
-          0,
-          0,
-        )
-        container.style.backgroundImage = `url(${canvas.toDataURL()})`
-
-        if (img.complete) {
-          // already loaded (priority image or cached)
-          container.style.backgroundImage = ''
-        } else {
-          img.style.opacity = '0'
-          img.addEventListener(
-            'load',
-            () => {
-              img.style.opacity = '1'
-              img.addEventListener(
-                'transitionend',
-                () => {
-                  container.style.backgroundImage = ''
-                },
-                { once: true },
-              )
-            },
-            { once: true },
-          )
-        }
-      })
-  }
-
-  initBlurhash()
-  document.addEventListener('astro:page-load', () => initBlurhash())
-</script>

@@ -1,0 +1,130 @@
+---
+import { Picture } from 'astro:assets'
+
+interface Props {
+  src: string
+  priority?: boolean
+  layout?: 'full-width'
+  width?: number
+  /** Defaults to 0; service computes proportional height from metadata.json. */
+  height?: number
+  densities?: number[]
+  widths?: number[]
+  sizes?: string
+  class?: string
+}
+
+const {
+  src,
+  priority,
+  layout,
+  width,
+  height = 0,
+  densities,
+  widths,
+  sizes,
+  class: className,
+} = Astro.props
+---
+
+<div data-blurhash-container class:list={['base-image', className]}>
+  {
+    width !== undefined ? (
+      <Picture
+        src={src}
+        formats={['avif', 'webp']}
+        alt=""
+        width={width!}
+        height={height}
+        densities={densities}
+        sizes={sizes}
+        priority={priority}
+      />
+    ) : (
+      <Picture
+        src={src}
+        formats={['avif', 'webp']}
+        alt=""
+        layout={layout}
+        inferSize
+        widths={widths}
+        sizes={sizes}
+        priority={priority}
+      />
+    )
+  }
+</div>
+
+<style>
+  .base-image {
+    background-size: cover;
+    background-position: center;
+  }
+
+  .base-image :global(img) {
+    display: block;
+    transition: opacity 0.4s ease;
+  }
+</style>
+
+<script>
+  import { decode } from 'blurhash'
+
+  function initBlurhash(scope: Document | Element = document) {
+    scope
+      .querySelectorAll<HTMLImageElement>('img[data-blurhash]')
+      .forEach(img => {
+        if (img.dataset.blurhashDone) {
+          return
+        }
+        img.dataset.blurhashDone = 'true'
+
+        const hash = img.dataset.blurhash!
+        const container = img.closest<HTMLElement>('[data-blurhash-container]')
+        if (!container) {
+          return
+        }
+
+        const origW = Number(img.getAttribute('width')) || 16
+        const origH = Number(img.getAttribute('height')) || 9
+        const ratio = origH / origW
+        const canvasW = 32
+        const canvasH = Math.max(1, Math.round(canvasW * ratio))
+
+        const pixels = decode(hash, canvasW, canvasH)
+        const canvas = document.createElement('canvas')
+        canvas.width = canvasW
+        canvas.height = canvasH
+        const ctx = canvas.getContext('2d')!
+        ctx.putImageData(
+          new ImageData(new Uint8ClampedArray(pixels), canvasW, canvasH),
+          0,
+          0,
+        )
+        container.style.backgroundImage = `url(${canvas.toDataURL()})`
+
+        if (img.complete) {
+          container.style.backgroundImage = ''
+        } else {
+          img.style.opacity = '0'
+          img.addEventListener(
+            'load',
+            () => {
+              img.style.opacity = '1'
+              img.addEventListener(
+                'transitionend',
+                () => {
+                  container.style.backgroundImage = ''
+                },
+                { once: true },
+              )
+            },
+            { once: true },
+          )
+        }
+      })
+  }
+
+  initBlurhash()
+  document.addEventListener('astro:page-load', () => initBlurhash())
+</script>

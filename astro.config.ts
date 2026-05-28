@@ -8,6 +8,10 @@ export default defineConfig({
   adapter: node({ mode: 'standalone' }),
   integrations: [mdx(), typograf()],
 
+  prefetch: {
+    defaultStrategy: 'hover',
+  },
+
   server: {
     host: '0.0.0.0',
   },

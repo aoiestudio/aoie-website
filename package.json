@@ -33,7 +33,7 @@
   "devDependencies": {
     "@astrojs/check": "catalog:",
     "@astrojs/node": "catalog:",
-    "@aws-sdk/client-s3": "^3.1053.0",
+    "@aws-sdk/client-s3": "^3.1054.0",
     "@csstools/postcss-global-data": "catalog:",
     "@types/node": "catalog:",
     "astro": "catalog:",

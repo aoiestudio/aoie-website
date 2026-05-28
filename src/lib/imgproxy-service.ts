@@ -1,6 +1,8 @@
 import type { ExternalImageService, ImageTransform } from 'astro'
 import { generateImageUrl } from '@imgproxy/imgproxy-node'
 import { baseService } from 'astro/assets'
+import { readFile } from 'node:fs/promises'
+import { resolve } from 'node:path'
 
 // Last-resort fallback when imageConfig.service.config.sizes is not set.
 // Configure via astro.config.ts: image.service.config.sizes
@@ -31,6 +33,25 @@ function isLocalMode(): boolean {
   )
 }
 
+// Reads actual image dimensions from disk at build time so that <img> gets
+// correct width/height attributes (CLS prevention) without hardcoding them.
+async function inferLocalSize(
+  src: string,
+): Promise<{ width: number; height: number } | undefined> {
+  const filePath = resolve(process.cwd(), 'content', src)
+  try {
+    const { imageMetadata } = await import('astro/assets/utils')
+    const data = await readFile(filePath)
+    const meta = await imageMetadata(new Uint8Array(data), src)
+    if (meta?.width && meta?.height) {
+      return { width: meta.width, height: meta.height }
+    }
+  } catch {
+    // file missing or unreadable — dimensions stay unknown
+  }
+  return undefined
+}
+
 const service: ExternalImageService = {
   // baseService.validateOptions calls verifyOptions() which rejects src strings that
   // are not remote URLs or don't start with '/'. Our src is an internal path like
@@ -38,11 +59,19 @@ const service: ExternalImageService = {
   //   — widths + densities together → error (incompatible descriptors)
   //   — set format default (webp) when omitted
   //   — round width/height to integers
-  validateOptions(options: ImageTransform): ImageTransform {
+  //   — infer width/height from disk when omitted (enables CLS prevention)
+  async validateOptions(options: ImageTransform): Promise<ImageTransform> {
     if (options.widths && options.densities) {
       throw new Error(
         'Cannot use both `widths` and `densities` on the same image.',
       )
+    }
+    if (!options.width && !options.height && typeof options.src === 'string') {
+      const size = await inferLocalSize(options.src)
+      if (size) {
+        options.width = size.width
+        options.height = size.height
+      }
     }
     return {
       ...options,

@@ -3,18 +3,15 @@ import { Picture } from 'astro:assets'
 
 interface Props {
   filename: string
-  alt?: string
+  priority?: boolean
   /** Override the project slug. Defaults to Astro.locals.project set by the works/[id] page. */
   project?: string
-  /** Mark the above-the-fold hero image: sets eager loading and high fetch priority for LCP. */
-  priority?: boolean
 }
 
 const {
   filename,
-  alt = '',
-  project = Astro.locals.project ?? '',
   priority = false,
+  project = Astro.locals.project ?? '',
 } = Astro.props
 ---
 
@@ -22,11 +19,10 @@ const {
   <Picture
     src={`projects/${project}/images/${filename}`}
     formats={['avif', 'webp']}
-    width={1200}
-    height={800}
-    alt={alt}
-    loading={priority ? 'eager' : 'lazy'}
-    fetchpriority={priority ? 'high' : 'auto'}
+    layout="full-width"
+    inferSize
+    priority={priority}
+    alt=""
   />
 </div>
 
@@ -36,8 +32,6 @@ const {
   }
 
   .project-single :global(img) {
-    width: 100%;
-    height: auto;
     display: block;
   }
 </style>

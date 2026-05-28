@@ -12,6 +12,7 @@ const { title, hideFooter = false } = Astro.props
 ---
 
 <Layout title={title}>
+  <slot name="head" slot="head" />
   <div class="page">
     <SiteHeader />
     <slot />

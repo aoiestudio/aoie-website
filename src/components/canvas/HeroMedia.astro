@@ -11,12 +11,6 @@ const images = projects
   )
 ---
 
-{
-  images[0] && (
-    <link rel="preload" as="image" href={images[0]} fetchpriority="high" />
-  )
-}
-
 <div class="hero-stage" id="hero-stage" data-images={JSON.stringify(images)}>
   <canvas id="hero-canvas"></canvas>
 </div>

@@ -1,14 +1,35 @@
 ---
+import { getCollection } from 'astro:content'
 import ApproachCanvas from '../components/canvas/ApproachCanvas.astro'
 import HeroMedia from '../components/canvas/HeroMedia.astro'
 import InfoClock from '../components/InfoClock.astro'
 import ItemCard from '../components/ItemCard.astro'
 import ItemRow from '../components/ItemRow.astro'
+import { buildImageUrl } from '../lib/imgproxy-service'
 import PageLayout from '../layouts/PageLayout.astro'
 import PageSection from '../components/PageSection.astro'
+
+const projects = await getCollection('projects')
+const firstHeroImage = projects
+  .filter(p => p.data.hero?.length)
+  .toSorted((a, b) => a.data.order - b.data.order)
+  .flatMap(p =>
+    p.data.hero!.map(f => buildImageUrl(`projects/${p.id}/images/${f}`)),
+  )[0]
 ---
 
 <PageLayout title="aoie — design studio">
+  {
+    firstHeroImage && (
+      <link
+        rel="preload"
+        slot="head"
+        as="image"
+        href={firstHeroImage}
+        fetchpriority="high"
+      />
+    )
+  }
   <!-- Top: hero + hero-media grouped with 16lh gap (Figma "Top" node) -->
   <div class="hero-top">
     <section class="hero page-wrap">

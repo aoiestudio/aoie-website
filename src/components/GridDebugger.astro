@@ -7,54 +7,67 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', () => {
-    const debugger_ = document.querySelector('#debugger') as HTMLElement
-    const debuggerCols = document.querySelector('#debugger-cols') as HTMLElement
+  let controller: AbortController | null = null
 
-    const mqTablet = window.matchMedia('(min-width: 769px)')
-    const mqDesktop = window.matchMedia('(min-width: 1025px)')
-    const mqWide = window.matchMedia('(min-width: 1441px)')
+  document.addEventListener('astro:page-load', () => {
+    controller?.abort()
+    controller = new AbortController()
+    const { signal } = controller
+
+    const grid = document.querySelector<HTMLElement>('#debugger')
+    const cols = document.querySelector<HTMLElement>('#debugger-cols')
+
+    if (!grid || !cols) {
+      return
+    }
+
+    const tablet = window.matchMedia('(min-width: 769px)')
+    const desktop = window.matchMedia('(min-width: 1025px)')
+    const wide = window.matchMedia('(min-width: 1441px)')
 
     function updateCols() {
-      let cols = 4
-      if (mqTablet.matches) {
-        cols = 8
+      let count = 4
+      if (tablet.matches) {
+        count = 8
       }
-      if (mqDesktop.matches) {
-        cols = 14
+      if (desktop.matches) {
+        count = 14
       }
-      if (mqWide.matches) {
-        cols = 18
+      if (wide.matches) {
+        count = 18
       }
-      debuggerCols.innerHTML = Array.from({ length: cols })
+      cols!.innerHTML = Array.from({ length: count })
         .map(() => '<div></div>')
         .join('')
     }
 
     function updateHeight() {
-      debugger_.style.height = document.documentElement.scrollHeight + 'px'
+      grid!.style.height = document.documentElement.scrollHeight + 'px'
     }
 
-    mqTablet.addEventListener('change', updateCols)
-    mqDesktop.addEventListener('change', updateCols)
-    mqWide.addEventListener('change', updateCols)
-    new ResizeObserver(() => {
+    tablet.addEventListener('change', updateCols, { signal })
+    desktop.addEventListener('change', updateCols, { signal })
+    wide.addEventListener('change', updateCols, { signal })
+
+    const ro = new ResizeObserver(() => {
       updateHeight()
       updateCols()
-    }).observe(document.documentElement)
+    })
+    ro.observe(document.documentElement)
+    signal.addEventListener('abort', () => ro.disconnect())
 
     updateHeight()
     updateCols()
+  })
 
-    document.addEventListener('keydown', e => {
-      const tag = (e.target as HTMLElement).tagName
-      if (tag === 'INPUT' || tag === 'TEXTAREA') {
-        return
-      }
-      if (e.code === 'KeyG' && e.ctrlKey && !e.metaKey && !e.altKey) {
-        debugger_.classList.toggle('--active')
-      }
-    })
+  document.addEventListener('keydown', e => {
+    const tag = (e.target as HTMLElement).tagName
+    if (tag === 'INPUT' || tag === 'TEXTAREA') {
+      return
+    }
+    if (e.code === 'KeyG' && e.ctrlKey && !e.metaKey && !e.altKey) {
+      document.querySelector('#debugger')?.classList.toggle('--active')
+    }
   })
 </script>
 

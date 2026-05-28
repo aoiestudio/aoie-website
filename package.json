@@ -21,12 +21,14 @@
     "astro": "astro",
     "prepare": "simple-git-hooks",
     "images:push": "node --env-file=.env --experimental-strip-types scripts/images-push.ts",
-    "images:pull": "node --env-file=.env --experimental-strip-types scripts/images-pull.ts"
+    "images:pull": "node --env-file=.env --experimental-strip-types scripts/images-pull.ts",
+    "images:meta": "node --experimental-strip-types scripts/generate-metadata.ts"
   },
   "dependencies": {
     "@astrojs/mdx": "catalog:",
     "@imgproxy/imgproxy-node": "catalog:",
     "@nanostores/persistent": "catalog:",
+    "blurhash": "^2.0.5",
     "ogl": "catalog:",
     "typograf": "^7.7.0"
   },

@@ -14,15 +14,6 @@ const MIME: Record<string, string> = {
 }
 
 export const GET: APIRoute = async ({ params }) => {
-  // Guard: serve files only in local mode (no imgproxy configured).
-  // Mirrors isLocalMode() in imgproxy-service.ts.
-  if (
-    import.meta.env.PUBLIC_IMAGE_MODE === 'imgproxy' &&
-    import.meta.env.IMGPROXY_ENDPOINT
-  ) {
-    return new Response('Not found', { status: 404 })
-  }
-
   const filePath = join(process.cwd(), 'content', params.path ?? '')
   try {
     const file = await readFile(filePath)

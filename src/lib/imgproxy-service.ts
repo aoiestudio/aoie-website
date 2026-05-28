@@ -121,4 +121,20 @@ const service: ExternalImageService = {
   },
 }
 
+export function buildImageUrl(path: string, width = 1920): string {
+  if (isLocalMode() || import.meta.env.DEV) {
+    return `/img/${path}`
+  }
+  return generateImageUrl({
+    endpoint: import.meta.env.IMGPROXY_ENDPOINT,
+    key: import.meta.env.IMGPROXY_KEY,
+    salt: import.meta.env.IMGPROXY_SALT,
+    url: `s3://${import.meta.env.S3_BUCKET}/${path}`,
+    options: {
+      resize: { width, height: 0, resizing_type: 'fill' },
+      format: 'webp',
+    },
+  })
+}
+
 export default service

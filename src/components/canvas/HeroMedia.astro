@@ -130,7 +130,10 @@ const images = projects
 
     const mesh = new Mesh(gl, { geometry, program })
 
-    new ResizeObserver(entries => {
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const resizeObserver = new ResizeObserver(entries => {
       const { width, height } = entries[0]!.contentRect
       if (!width || !height) {
         return
@@ -139,7 +142,8 @@ const images = projects
       Object.assign(canvas.style, { width: '', height: '' })
       program.uniforms.uRes.value = [width, height]
       program.uniforms.uDpr.value = renderer.dpr
-    }).observe(stage)
+    })
+    resizeObserver.observe(stage)
 
     let hovering = false,
       my = 0,
@@ -162,24 +166,32 @@ const images = projects
 
     let intervalId = 0
     if (imgs.length > 1) {
-      canvas.addEventListener('click', cycleImage)
+      canvas.addEventListener('click', cycleImage, { signal })
       intervalId = window.setInterval(cycleImage, 5000)
     }
 
-    canvas.addEventListener('mousemove', e => {
-      const r = canvas.getBoundingClientRect()
-      prevMy = my
-      my = e.clientY - r.top
-      hovering = true
-      if (prevMyTimeout <= 0) {
+    canvas.addEventListener(
+      'mousemove',
+      e => {
+        const r = canvas.getBoundingClientRect()
         prevMy = my
-      }
-      prevMyTimeout = 10
-    })
+        my = e.clientY - r.top
+        hovering = true
+        if (prevMyTimeout <= 0) {
+          prevMy = my
+        }
+        prevMyTimeout = 10
+      },
+      { signal },
+    )
 
-    canvas.addEventListener('mouseleave', () => {
-      hovering = false
-    })
+    canvas.addEventListener(
+      'mouseleave',
+      () => {
+        hovering = false
+      },
+      { signal },
+    )
 
     let rafId = 0
 
@@ -220,14 +232,15 @@ const images = projects
 
     rafId = requestAnimationFrame(render)
 
-    document.addEventListener(
-      'astro:before-swap',
-      () => {
-        cancelAnimationFrame(rafId)
-        clearInterval(intervalId)
-      },
-      { once: true },
-    )
+    signal.addEventListener('abort', () => {
+      cancelAnimationFrame(rafId)
+      clearInterval(intervalId)
+      resizeObserver.disconnect()
+    })
+
+    document.addEventListener('astro:before-swap', () => controller.abort(), {
+      once: true,
+    })
   }
 
   document.addEventListener('astro:page-load', init)

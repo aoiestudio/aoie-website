@@ -71,7 +71,10 @@
     })
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program })
 
-    new ResizeObserver(entries => {
+    const controller = new AbortController()
+    const { signal } = controller
+
+    const resizeObserver = new ResizeObserver(entries => {
       const { width, height } = entries[0]!.contentRect
       if (!width || !height) {
         return
@@ -86,7 +89,8 @@
       aspScale = Math.min(1, asp / REF_ASP)
       pA[0] = -asp / 4
       pB[0] = asp / 4
-    }).observe(canvas)
+    })
+    resizeObserver.observe(canvas)
 
     let t = 0,
       tgt = 0
@@ -102,21 +106,29 @@
       tgt = Math.max(0, Math.min(1, (mx - pA[0]) / (pB[0] - pA[0])))
     }
 
-    canvas.addEventListener('mousemove', e => updateTgt(e.clientX))
-    canvas.addEventListener('mouseleave', () => {
-      tgt = 0
-    })
+    canvas.addEventListener('mousemove', e => updateTgt(e.clientX), { signal })
+    canvas.addEventListener(
+      'mouseleave',
+      () => {
+        tgt = 0
+      },
+      { signal },
+    )
     canvas.addEventListener(
       'touchmove',
       e => {
         e.preventDefault()
         updateTgt(e.touches[0]!.clientX)
       },
-      { passive: false },
+      { passive: false, signal },
     )
-    canvas.addEventListener('touchend', () => {
-      tgt = 0
-    })
+    canvas.addEventListener(
+      'touchend',
+      () => {
+        tgt = 0
+      },
+      { signal },
+    )
 
     let rafId = 0
 
@@ -136,17 +148,22 @@
     rafId = requestAnimationFrame(render)
 
     const mq = window.matchMedia('(prefers-color-scheme: light)')
-    mq.addEventListener('change', () => {
-      program.uniforms.uColor.value = getCircleColor()
+    mq.addEventListener(
+      'change',
+      () => {
+        program.uniforms.uColor.value = getCircleColor()
+      },
+      { signal },
+    )
+
+    signal.addEventListener('abort', () => {
+      cancelAnimationFrame(rafId)
+      resizeObserver.disconnect()
     })
 
-    document.addEventListener(
-      'astro:before-swap',
-      () => {
-        cancelAnimationFrame(rafId)
-      },
-      { once: true },
-    )
+    document.addEventListener('astro:before-swap', () => controller.abort(), {
+      once: true,
+    })
   }
 
   document.addEventListener('astro:page-load', init)

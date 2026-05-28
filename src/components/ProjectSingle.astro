@@ -6,9 +6,16 @@ interface Props {
   alt?: string
   /** Override the project slug. Defaults to Astro.locals.project set by the works/[id] page. */
   project?: string
+  /** Mark the above-the-fold hero image: sets eager loading and high fetch priority for LCP. */
+  priority?: boolean
 }
 
-const { filename, alt = '', project = Astro.locals.project ?? '' } = Astro.props
+const {
+  filename,
+  alt = '',
+  project = Astro.locals.project ?? '',
+  priority = false,
+} = Astro.props
 ---
 
 <div class="project-single">
@@ -18,6 +25,8 @@ const { filename, alt = '', project = Astro.locals.project ?? '' } = Astro.props
     width={1200}
     height={800}
     alt={alt}
+    loading={priority ? 'eager' : 'lazy'}
+    fetchpriority={priority ? 'high' : 'auto'}
   />
 </div>
 

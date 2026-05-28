@@ -32,13 +32,6 @@ function toImgproxyFormat(format: string | undefined): ImgproxyFormat {
   return 'webp'
 }
 
-function isLocalMode(): boolean {
-  return (
-    import.meta.env.PUBLIC_IMAGE_MODE !== 'imgproxy' ||
-    !import.meta.env.IMGPROXY_ENDPOINT
-  )
-}
-
 // Cached metadata per project — loaded once from metadata.json at build time.
 const metadataCache = new Map<string, Record<string, ImageMeta>>()
 
@@ -129,11 +122,6 @@ const service: ExternalImageService = {
     const width = options.width ?? 1920
     const format = toImgproxyFormat(options.format)
 
-    if (isLocalMode()) {
-      // Dev: /img/[...path].ts serves originals from disk — no resize needed.
-      return `/img/${src}`
-    }
-
     return generateImageUrl({
       endpoint: import.meta.env.IMGPROXY_ENDPOINT,
       key: import.meta.env.IMGPROXY_KEY,
@@ -147,12 +135,6 @@ const service: ExternalImageService = {
   },
 
   getSrcSet(options, imageConfig) {
-    // Local mode: /img/ serves the original file at any "size" — srcset would
-    // produce identical URLs with different descriptors, which is pointless.
-    if (isLocalMode()) {
-      return []
-    }
-
     const { widths, densities } = options
 
     // densities: e.g. <Image densities={[1, 2, 3]} /> → 1x 2x 3x descriptors
@@ -185,9 +167,6 @@ const service: ExternalImageService = {
 }
 
 export function buildImageUrl(path: string, width = 1920): string {
-  if (isLocalMode() || import.meta.env.DEV) {
-    return `/img/${path}`
-  }
   return generateImageUrl({
     endpoint: import.meta.env.IMGPROXY_ENDPOINT,
     key: import.meta.env.IMGPROXY_KEY,

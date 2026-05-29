@@ -2,6 +2,7 @@
 import { getCollection, render } from 'astro:content'
 import Layout from '@/layouts/PageLayout.astro'
 import WorksImage from '@/components/works/WorksImage.astro'
+import WorksAlso from '@/components/works/WorksAlso.astro'
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects')
@@ -11,7 +12,13 @@ export async function getStaticPaths() {
 const { id } = Astro.params
 Astro.locals.project = id
 const projects = await getCollection('projects')
-const project = projects.find(p => p.id === id)!
+const sorted = projects.toSorted((a, b) => a.data.order - b.data.order)
+const project = sorted.find(p => p.id === id)!
+const idx = sorted.findIndex(p => p.id === id)
+const nextProjects = [
+  sorted[(idx + 1) % sorted.length],
+  sorted[(idx + 2) % sorted.length],
+]
 
 const { Content } = await render(project)
 const { title, description, year } = project.data
@@ -33,6 +40,8 @@ const { title, description, year } = project.data
     <main class="project-content page-wrap">
       <Content components={{ Single: WorksImage }} />
     </main>
+
+    <WorksAlso projects={nextProjects} />
   </div>
 </Layout>
 
@@ -77,7 +86,7 @@ const { title, description, year } = project.data
 
   .project-content {
     padding-top: var(--4-lh);
-    padding-bottom: var(--space-3xl);
+    padding-bottom: var(--space-2xl);
     display: flex;
     flex-direction: column;
     gap: var(--col-gap);

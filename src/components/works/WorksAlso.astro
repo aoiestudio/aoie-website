@@ -1,0 +1,98 @@
+---
+import type { CollectionEntry } from 'astro:content'
+import BaseImage from '@/components/base/BaseImage.astro'
+
+interface Props {
+  projects: CollectionEntry<'projects'>[]
+}
+
+const { projects } = Astro.props
+---
+
+<div class="works-next page-wrap">
+  <hr class="works-next__divider" />
+  <div class="section-grid works-next__head">
+    <span class="col-label text-heading">Also</span>
+  </div>
+  <div class="works-next__grid">
+    {
+      projects.map(project => (
+        <a class="works-next__item" href={`/works/${project.id}`}>
+          <BaseImage
+            src={`projects/${project.id}/images/${project.data.images[0]}`}
+            width={640}
+            densities={[1, 2]}
+          />
+          <div class="works-next__meta">
+            <span class="text-body works-next__title">
+              {project.data.title}
+            </span>
+            {project.data.description && (
+              <span class="text-body works-next__desc">
+                {project.data.description}
+              </span>
+            )}
+          </div>
+        </a>
+      ))
+    }
+  </div>
+</div>
+
+<style>
+  @import '../../styles/media.css';
+
+  .works-next {
+    padding-bottom: var(--space-3xl);
+  }
+
+  .works-next__divider {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: 0 0 var(--2-lh);
+  }
+
+  .works-next__head {
+    height: var(--space-2xl);
+    align-items: flex-start;
+  }
+
+  .works-next__grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--col-gap);
+  }
+
+  .works-next__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--2-lh);
+    text-decoration: none;
+  }
+
+  .works-next__item :global(img) {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+  }
+
+  .works-next__meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .works-next__title {
+    color: var(--color-text);
+  }
+
+  .works-next__desc {
+    color: var(--color-text-secondary);
+  }
+
+  @media (--mobile) {
+    .works-next__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

@@ -22,12 +22,6 @@ export default defineConfig({
   image: {
     service: {
       entrypoint: './src/lib/imgproxy-service.ts',
-      config: {
-        endpoint: import.meta.env.IMGPROXY_ENDPOINT,
-        key: import.meta.env.IMGPROXY_KEY,
-        salt: import.meta.env.IMGPROXY_SALT,
-        baseUrl: `s3://${import.meta.env.S3_BUCKET}`,
-      },
     },
   },
 

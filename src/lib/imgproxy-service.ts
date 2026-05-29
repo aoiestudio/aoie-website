@@ -2,9 +2,6 @@ import type { ExternalImageService, ImageTransform } from 'astro'
 import { generateImageUrl } from '@imgproxy/imgproxy-node'
 import { baseService } from 'astro/assets'
 
-// Last-resort fallback when imageConfig.service.config.sizes is not set.
-const DEFAULT_SIZES = [640, 750, 828, 1080, 1200, 1920, 2048, 3840] as const
-
 // Astro uses 'jpeg'; imgproxy uses 'jpg' — normalise here.
 type ImgproxyFormat = 'avif' | 'webp' | 'png' | 'jpg'
 
@@ -43,16 +40,21 @@ const service: ExternalImageService = {
   getHTMLAttributes: baseService.getHTMLAttributes,
 
   getURL(options, imageConfig) {
-    const config = imageConfig.service.config
+    const config = imageConfig.service.config ?? {}
+    const endpoint = config.endpoint ?? import.meta.env.IMGPROXY_ENDPOINT
+    const key = config.key ?? import.meta.env.IMGPROXY_KEY
+    const salt = config.salt ?? import.meta.env.IMGPROXY_SALT
+    const baseUrl = config.baseUrl ?? `s3://${import.meta.env.S3_BUCKET}`
+
     const src = typeof options.src === 'string' ? options.src : options.src.src
     const width = options.width ?? 1920
     const format = toImgproxyFormat(options.format)
 
     return generateImageUrl({
-      endpoint: config.endpoint,
-      key: config.key,
-      salt: config.salt,
-      url: `${config.baseUrl}/${src}`,
+      endpoint,
+      key,
+      salt,
+      url: `${baseUrl}/${src}`,
       options: {
         resize: { width, height: 0, resizing_type: 'fill' },
         format,
@@ -60,33 +62,7 @@ const service: ExternalImageService = {
     })
   },
 
-  getSrcSet(options, imageConfig) {
-    const { widths, densities } = options
-
-    if (densities) {
-      const base = options.width ?? 1920
-      const parsed = densities
-        .map(d => (typeof d === 'number' ? d : Number.parseFloat(d)))
-        .toSorted((a, b) => a - b)
-      return parsed.map(d => ({
-        transform: { ...options, width: Math.round(base * d) },
-        descriptor: `${d}x`,
-      }))
-    }
-
-    const configSizes = imageConfig.service.config?.sizes
-    const fallback: number[] = Array.isArray(configSizes)
-      ? configSizes
-      : [...DEFAULT_SIZES]
-    const resolvedWidths: number[] = widths?.length
-      ? widths.toSorted((a, b) => a - b)
-      : fallback
-
-    return resolvedWidths.map(w => ({
-      transform: { ...options, width: w },
-      descriptor: `${w}w`,
-    }))
-  },
+  getSrcSet: baseService.getSrcSet,
 }
 
 export default service

@@ -15,6 +15,18 @@ export default defineConfig({
   server: {
     host: '0.0.0.0',
   },
+
+  vite: {
+    server: {
+      proxy: {
+        '/_img': {
+          target: 'https://aoiestudio.ru',
+          changeOrigin: true,
+        },
+      },
+    },
+  },
+
   devToolbar: {
     enabled: false,
   },

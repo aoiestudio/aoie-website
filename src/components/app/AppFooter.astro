@@ -1,6 +1,7 @@
 ---
 import SectionContact from '@/components/sections/SectionContact.astro'
 import SectionConnect from '@/components/sections/SectionConnect.astro'
+import FooterCanvas from '@/components/canvas/FooterCanvas.astro'
 ---
 
 <footer class="footer" data-site-footer>
@@ -8,7 +9,9 @@ import SectionConnect from '@/components/sections/SectionConnect.astro'
     <SectionConnect />
     <SectionContact />
   </div>
-  <div class="footer-canvas" data-footer-canvas></div>
+  <div class="footer-canvas" data-footer-canvas>
+    <FooterCanvas />
+  </div>
 </footer>
 
 <style>
@@ -24,6 +27,7 @@ import SectionConnect from '@/components/sections/SectionConnect.astro'
   }
 
   .footer-canvas {
+    position: relative;
     --footer-canvas-gap: var(--12-lh);
     --footer-bar-h: 0px;
     --footer-header-h: 0px;
@@ -31,7 +35,6 @@ import SectionConnect from '@/components/sections/SectionConnect.astro'
       100vh - var(--footer-bar-h) - var(--footer-header-h) -
         var(--footer-canvas-gap)
     );
-    background: var(--color-surface);
     margin-inline: var(--page-pad);
   }
 </style>

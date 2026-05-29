@@ -146,6 +146,10 @@ const images = projects
     })
     resizeObserver.observe(stage)
 
+    const isTouch = window.matchMedia(
+      '(hover: none) and (pointer: coarse)',
+    ).matches
+
     let hovering = false,
       my = 0,
       prevMy = 0,
@@ -207,7 +211,17 @@ const images = projects
         rowEnergy[i] *= decayFactor
       }
 
-      if (hovering) {
+      if (isTouch) {
+        // On touch devices there is no cursor to drive the effect, so the row
+        // sitting at the vertical center of the viewport is the active one.
+        // As the page scrolls, the centered row changes and lights up in turn.
+        const rect = canvas!.getBoundingClientRect()
+        const centerY = window.innerHeight / 2 - rect.top
+        if (centerY >= 0 && centerY < rect.height) {
+          const row = Math.min(Math.floor(centerY / CELL), MAX_ROWS - 1)
+          rowEnergy[row] = 1
+        }
+      } else if (hovering) {
         const r0 = Math.min(Math.floor(prevMy / CELL), MAX_ROWS - 1)
         const r1 = Math.min(Math.floor(my / CELL), MAX_ROWS - 1)
         const lo = Math.min(r0, r1)

@@ -1,6 +1,6 @@
 ---
-import SiteFooter from '../components/SiteFooter.astro'
-import SiteHeader from '../components/SiteHeader.astro'
+import AppFooter from '@/components/app/AppFooter.astro'
+import AppHeader from '@/components/app/AppHeader.astro'
 import Layout from './Layout.astro'
 
 interface Props {
@@ -14,9 +14,9 @@ const { title, hideFooter = false } = Astro.props
 <Layout title={title}>
   <slot name="head" slot="head" />
   <div class="page">
-    <SiteHeader />
+    <AppHeader />
     <slot />
-    {!hideFooter && <SiteFooter />}
+    {!hideFooter && <AppFooter />}
   </div>
 </Layout>
 

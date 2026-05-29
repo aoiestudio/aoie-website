@@ -1,9 +1,9 @@
 ---
 import { getCollection } from 'astro:content'
 import { Picture } from 'astro:assets'
-import BookCallButton from '../components/BookCallButton.astro'
-import HireButton from '../components/HireButton.astro'
-import PageLayout from '../layouts/PageLayout.astro'
+import BookCallButton from '@/components/buttons/BookCallButton.astro'
+import HireButton from '@/components/buttons/HireButton.astro'
+import PageLayout from '@/layouts/PageLayout.astro'
 
 const projects = await getCollection('projects')
 const allImages = projects.flatMap(entry =>

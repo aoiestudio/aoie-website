@@ -1,13 +1,13 @@
 ---
 import { getCollection } from 'astro:content'
-import ApproachCanvas from '../components/canvas/ApproachCanvas.astro'
-import HeroMedia from '../components/canvas/HeroMedia.astro'
-import InfoClock from '../components/InfoClock.astro'
-import ItemCard from '../components/ItemCard.astro'
-import ItemRow from '../components/ItemRow.astro'
-import { buildImageUrl } from '../lib/build-image-url'
-import PageLayout from '../layouts/PageLayout.astro'
-import PageSection from '../components/PageSection.astro'
+import ApproachCanvas from '@/components/canvas/ApproachCanvas.astro'
+import HeroCanvas from '@/components/canvas/HeroCanvas.astro'
+import BaseClock from '@/components/base/BaseClock.astro'
+import BaseCard from '@/components/base/BaseCard.astro'
+import BaseRow from '@/components/base/BaseRow.astro'
+import { buildImageUrl } from '@/lib/build-image-url'
+import PageLayout from '@/layouts/PageLayout.astro'
+import BaseSection from '@/components/base/BaseSection.astro'
 
 const projects = await getCollection('projects')
 const firstHeroImage = projects
@@ -42,29 +42,29 @@ const firstHeroImage = projects
       </p>
     </section>
     <div class="hero-media page-wrap">
-      <HeroMedia />
+      <HeroCanvas />
     </div>
   </div>
 
   <!-- Information -->
-  <PageSection title="Information">
+  <BaseSection title="Information">
     <div class="info-content">
-      <ItemRow borderTop={false}>
+      <BaseRow borderTop={false}>
         <div class="info-block info-block--first">
-          <ItemCard title="Working globally" tight>
+          <BaseCard title="Working globally" tight>
             <span id="info-clock">
-              <InfoClock />
+              <BaseClock />
               <span class="info-clock-tz">CET</span>
             </span>
-          </ItemCard>
+          </BaseCard>
         </div>
         <div class="info-block info-block--first">
-          <ItemCard title="Ownership" description="Independent" tight />
-          <ItemCard title="Founded" description="2025" tight />
+          <BaseCard title="Ownership" description="Independent" tight />
+          <BaseCard title="Founded" description="2025" tight />
         </div>
-      </ItemRow>
-      <ItemRow>
-        <ItemCard title="Capabilities">
+      </BaseRow>
+      <BaseRow>
+        <BaseCard title="Capabilities">
           <ul class="info-list text-body">
             <li>Creative Direction</li>
             <li>Strategy</li>
@@ -75,35 +75,35 @@ const firstHeroImage = projects
             <li>Campaign</li>
             <li>Narrative</li>
           </ul>
-        </ItemCard>
-        <ItemCard
+        </BaseCard>
+        <BaseCard
           title="Experience"
           description="With over 12 years of experience, we collaborate with e-commerce, art foundations, and media platforms. Based in Barcelona, work worldwide. We are eager to partner with international brands and share our passion for creating extraordinary things."
         />
-      </ItemRow>
-      <ItemRow>
+      </BaseRow>
+      <BaseRow>
         <div class="info-person">
-          <ItemCard title="Anna Sharapova">
+          <BaseCard title="Anna Sharapova">
             <span class="text-body"
               >Co-Founder, Designer Director<br />16 years experience</span
             >
-          </ItemCard>
+          </BaseCard>
           <div class="info-photo"></div>
         </div>
         <div class="info-person">
-          <ItemCard title="Eduard Aksamitov">
+          <BaseCard title="Eduard Aksamitov">
             <span class="text-body"
               >Co-Founder, Art Director<br />10 years experience</span
             >
-          </ItemCard>
+          </BaseCard>
           <div class="info-photo"></div>
         </div>
-      </ItemRow>
+      </BaseRow>
     </div>
-  </PageSection>
+  </BaseSection>
 
   <!-- Approach -->
-  <PageSection title="Approach" mode="full-width">
+  <BaseSection title="Approach" mode="full-width">
     <p class="text-heading approach-text prose-indent">
       Acting at the intersection of strategy and visual design, our work spans
       from research to finished product and everything in between. An officeless
@@ -117,32 +117,32 @@ const firstHeroImage = projects
     <ApproachCanvas />
     <div class="section-grid">
       <div class="col-content approach-content">
-        <ItemRow>
-          <ItemCard
+        <BaseRow>
+          <BaseCard
             title="Sense"
             description="Before anything takes shape, we need to understand what we're actually solving. We ask questions about your business, your audience, and the gap between where you are and where you want to be. Sometimes that's a single conversation. Sometimes it's a structured session. Either way, it ends with something most projects skip: clarity you can actually build from."
           />
-          <ItemCard
+          <BaseCard
             title="Shape"
             description="This is where the brand gets its form — the mark, the system, the visual language. We build from intention, not intuition alone. Every decision has a reason, and the result is something that holds together under pressure: across formats, across teams, across time. We work from scratch or on top of what exists — in full or with precision."
           />
-        </ItemRow>
-        <ItemRow>
-          <ItemCard
+        </BaseRow>
+        <BaseRow>
+          <BaseCard
             title="Press"
             description="Design doesn't end at the file handoff. We see it through — guiding developers, tightening details, catching what gets lost between intent and implementation. And when the brand needs to exist beyond the screen, we know how to get it there. We work closely with print production, understand material constraints, and make sure what was designed survives contact with the real world."
           />
-          <ItemCard
+          <BaseCard
             title="Stay"
             description="Some clients need a partner who's just there. For questions, reviews, small refinements, and strategic moments — even after another studio's work. We're available on retainer, hourly, or by the task. No long commitments required. We stay as long as we're useful."
           />
-        </ItemRow>
+        </BaseRow>
       </div>
     </div>
-  </PageSection>
+  </BaseSection>
 
   <!-- Offers -->
-  <PageSection title="Offers" mode="full-width">
+  <BaseSection title="Offers" mode="full-width">
     <p class="text-heading offers-intro prose-indent">
       We don't do rush jobs or undefined scopes. Good design takes time, and
       good collaboration takes structure. Depending on what you need, we work
@@ -151,25 +151,25 @@ const firstHeroImage = projects
     </p>
     <div class="section-grid">
       <div class="col-content offers-content">
-        <ItemRow>
-          <ItemCard
+        <BaseRow>
+          <BaseCard
             title="Retainers"
             description="In close collaboration with you and your internal team, we work a set number of days per week over an extended period, where the length of it varies according to needs and deliverables. Through conversations tasks are defined and planned weekly."
           />
-          <ItemCard
+          <BaseCard
             title="Projects"
             description="One project at a time with a fixed total cost based on deliverables. The project is planned, estimated, and deliverables specified before the project starts up."
           />
-        </ItemRow>
-        <ItemRow>
-          <ItemCard
+        </BaseRow>
+        <BaseRow>
+          <BaseCard
             title="Consultancy"
             description="A focused conversation, not a deliverable. We help you understand a problem, evaluate a direction, or get unstuck. One or several sessions, depending on what you need. Suitable when you have a team but need an outside perspective, or when you're not sure yet what kind of help you actually need."
           />
-        </ItemRow>
+        </BaseRow>
       </div>
     </div>
-  </PageSection>
+  </BaseSection>
 </PageLayout>
 
 <style>

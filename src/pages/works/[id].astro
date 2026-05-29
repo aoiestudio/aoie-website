@@ -1,7 +1,7 @@
 ---
 import { getCollection, render } from 'astro:content'
-import Layout from '../../layouts/PageLayout.astro'
-import ProjectSingle from '../../components/ProjectSingle.astro'
+import Layout from '@/layouts/PageLayout.astro'
+import WorksImage from '@/components/works/WorksImage.astro'
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects')
@@ -31,7 +31,7 @@ const { title, description, year } = project.data
     </div>
 
     <main class="project-content page-wrap">
-      <Content components={{ Single: ProjectSingle }} />
+      <Content components={{ Single: WorksImage }} />
     </main>
   </div>
 </Layout>

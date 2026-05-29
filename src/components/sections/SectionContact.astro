@@ -1,10 +1,10 @@
 ---
-import PageSection from './PageSection.astro'
-import HireButton from './HireButton.astro'
-import BookCallButton from './BookCallButton.astro'
+import BaseSection from '@/components/base/BaseSection.astro'
+import HireButton from '@/components/buttons/HireButton.astro'
+import BookCallButton from '@/components/buttons/BookCallButton.astro'
 ---
 
-<PageSection
+<BaseSection
   title="Do you want to talk about branding?"
   mode="bottom"
   class="branding-section"
@@ -24,7 +24,7 @@ import BookCallButton from './BookCallButton.astro'
     </div>
     <span class="text-body footer-copy">©</span>
   </div>
-</PageSection>
+</BaseSection>
 
 <style>
   :global(.branding-section) {

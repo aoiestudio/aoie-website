@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content'
-import BaseImage from './BaseImage.astro'
-import { seededShuffle } from '../lib/seededShuffle'
+import BaseImage from '@/components/base/BaseImage.astro'
+import { seededShuffle } from '@/lib/seededShuffle'
 
 const projects = await getCollection('projects')
 projects.sort((a, b) => a.data.order - b.data.order)
@@ -47,9 +47,9 @@ const shuffledRows = seededShuffle(rows, 42)
     loadScrollOffset,
     saveHoverPositions,
     saveScrollOffset,
-  } from '../lib/positionStore'
-  import { initVirtualScroll } from '../lib/worksVirtualScroll'
-  import { initHover } from '../lib/worksHover'
+  } from '@/lib/positionStore'
+  import { initVirtualScroll } from '@/lib/worksVirtualScroll'
+  import { initHover } from '@/lib/worksHover'
 
   function init() {
     const grid = document.querySelector<HTMLElement>('.works-grid')
@@ -104,7 +104,7 @@ const shuffledRows = seededShuffle(rows, 42)
 </script>
 
 <style>
-  @import '../styles/media.css';
+  @import '../../styles/media.css';
 
   .works-grid {
     --col-width: calc(

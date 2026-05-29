@@ -146,9 +146,15 @@ const images = projects
     })
     resizeObserver.observe(stage)
 
-    const isTouch = window.matchMedia(
-      '(hover: none) and (pointer: coarse)',
-    ).matches
+    const touchQuery = window.matchMedia('(hover: none) and (pointer: coarse)')
+    let isTouch = touchQuery.matches
+    touchQuery.addEventListener(
+      'change',
+      e => {
+        isTouch = e.matches
+      },
+      { signal },
+    )
 
     let hovering = false,
       my = 0,

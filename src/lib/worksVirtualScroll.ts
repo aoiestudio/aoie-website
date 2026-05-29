@@ -35,10 +35,14 @@ export function initVirtualScroll(
 
   // Start at mid-spacer so both directions are infinite
   const initialScrollTop = N * Math.floor(MULTIPLIER / 2) * rowStride
-  const startScrollTop =
+  // Cap saved offset to ±¼ of the spacer range so there are always at least
+  // MULTIPLIER/4 spans of headroom on each side after restore.
+  const maxOffset = Math.floor(MULTIPLIER / 4) * span
+  const clampedOffset =
     savedScrollOffset === null || savedScrollOffset === undefined
-      ? initialScrollTop
-      : initialScrollTop + savedScrollOffset
+      ? 0
+      : Math.max(-maxOffset, Math.min(maxOffset, savedScrollOffset))
+  const startScrollTop = initialScrollTop + clampedOffset
 
   // Seek scroll BEFORE positioning rows so first paint shows them in place.
   grid.scrollTop = startScrollTop

@@ -147,14 +147,14 @@
 
     rafId = requestAnimationFrame(render)
 
-    const mq = window.matchMedia('(prefers-color-scheme: light)')
+    /* const mq = window.matchMedia('(prefers-color-scheme: light)')
     mq.addEventListener(
       'change',
       () => {
         program.uniforms.uColor.value = getCircleColor()
       },
       { signal },
-    )
+    ) */
 
     signal.addEventListener('abort', () => {
       cancelAnimationFrame(rafId)

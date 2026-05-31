@@ -1,12 +1,14 @@
 import mdx from '@astrojs/mdx'
 import node from '@astrojs/node'
+import sitemap from '@astrojs/sitemap'
 import { defineConfig, fontProviders } from 'astro/config'
 import typograf from './src/integrations/typograf'
 
 export default defineConfig({
+  site: 'https://aoiestudio.ru',
   output: 'static',
   adapter: node({ mode: 'standalone' }),
-  integrations: [mdx(), typograf()],
+  integrations: [mdx(), sitemap(), typograf()],
 
   prefetch: {
     defaultStrategy: 'hover',

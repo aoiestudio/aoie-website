@@ -26,6 +26,7 @@
   },
   "dependencies": {
     "@astrojs/mdx": "catalog:",
+    "@astrojs/sitemap": "^3.7.3",
     "@imgproxy/imgproxy-node": "catalog:",
     "@nanostores/persistent": "catalog:",
     "blurhash": "^2.0.5",

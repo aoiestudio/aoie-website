@@ -6,12 +6,12 @@ allowBuilds:
 catalog:
   '@imgproxy/imgproxy-node': ^1.1.0
   '@astrojs/check': ^0.9.9
-  '@astrojs/mdx': ^5.0.6
-  '@astrojs/node': ^10.1.1
+  '@astrojs/mdx': ^6.0.1
+  '@astrojs/node': ^10.1.2
   '@nanostores/persistent': ^1.3.4
   '@csstools/postcss-global-data': ^4.0.0
   '@types/node': ^25.9.1
-  astro: ^6.3.8
+  astro: ^6.4.2
   nano-staged: ^1.0.2
   ogl: ^1.0.11
   oxc-config-fans: ^0.0.6

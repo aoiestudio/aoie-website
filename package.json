@@ -29,6 +29,7 @@
     "@astrojs/sitemap": "^3.7.3",
     "@imgproxy/imgproxy-node": "catalog:",
     "@nanostores/persistent": "catalog:",
+    "@plausible-analytics/tracker": "^0.4.5",
     "blurhash": "^2.0.5",
     "ogl": "catalog:",
     "typograf": "^7.7.0"

@@ -42,6 +42,14 @@ const { title } = Astro.props
     </script>
     <Font cssVariable="--font-geist" preload />
     <slot name="head" />
+    <script>
+      import { init } from '@plausible-analytics/tracker'
+      init({
+        domain: 'aoiestudio.ru',
+        endpoint: 'https://plausible.aoiestudio.ru/api/event',
+        outboundLinks: true,
+      })
+    </script>
     <script is:inline>
       /* oxlint-disable */
       ;(function (C, A, L) {

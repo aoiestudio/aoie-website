@@ -68,17 +68,7 @@ import FooterCanvas from '@/components/canvas/FooterCanvas.astro'
     ro.observe(bar)
     ro.observe(branding)
     ro.observe(header)
-
-    document.addEventListener(
-      'astro:before-swap',
-      () => {
-        window.removeEventListener('resize', update)
-        ro.disconnect()
-      },
-      { once: true },
-    )
   }
 
   setupFooterCanvas()
-  document.addEventListener('astro:page-load', setupFooterCanvas)
 </script>

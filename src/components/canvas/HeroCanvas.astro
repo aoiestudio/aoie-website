@@ -258,11 +258,7 @@ const images = projects
       clearInterval(intervalId)
       resizeObserver.disconnect()
     })
-
-    document.addEventListener('astro:before-swap', () => controller.abort(), {
-      once: true,
-    })
   }
 
-  document.addEventListener('astro:page-load', init)
+  await init()
 </script>

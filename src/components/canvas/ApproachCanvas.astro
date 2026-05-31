@@ -160,11 +160,7 @@
       cancelAnimationFrame(rafId)
       resizeObserver.disconnect()
     })
-
-    document.addEventListener('astro:before-swap', () => controller.abort(), {
-      once: true,
-    })
   }
 
-  document.addEventListener('astro:page-load', init)
+  init()
 </script>

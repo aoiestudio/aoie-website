@@ -7,25 +7,15 @@
 </div>
 
 <script>
-  let controller: AbortController | null = null
+  const grid = document.querySelector<HTMLElement>('#debugger')
+  const cols = document.querySelector<HTMLElement>('#debugger-cols')
 
-  document.addEventListener('astro:page-load', () => {
-    controller?.abort()
-    controller = new AbortController()
-    const { signal } = controller
-
-    const grid = document.querySelector<HTMLElement>('#debugger')
-    const cols = document.querySelector<HTMLElement>('#debugger-cols')
-
-    if (!grid || !cols) {
-      return
-    }
-
+  if (grid && cols) {
     const tablet = window.matchMedia('(min-width: 769px)')
     const desktop = window.matchMedia('(min-width: 1025px)')
     const wide = window.matchMedia('(min-width: 1441px)')
 
-    function updateCols() {
+    const updateCols = () => {
       let count = 4
       if (tablet.matches) {
         count = 8
@@ -41,24 +31,23 @@
         .join('')
     }
 
-    function updateHeight() {
+    const updateHeight = () => {
       grid!.style.height = document.documentElement.scrollHeight + 'px'
     }
 
-    tablet.addEventListener('change', updateCols, { signal })
-    desktop.addEventListener('change', updateCols, { signal })
-    wide.addEventListener('change', updateCols, { signal })
+    tablet.addEventListener('change', updateCols)
+    desktop.addEventListener('change', updateCols)
+    wide.addEventListener('change', updateCols)
 
     const ro = new ResizeObserver(() => {
       updateHeight()
       updateCols()
     })
     ro.observe(document.documentElement)
-    signal.addEventListener('abort', () => ro.disconnect())
 
     updateHeight()
     updateCols()
-  })
+  }
 
   document.addEventListener('keydown', e => {
     const tag = (e.target as HTMLElement).tagName

@@ -1,6 +1,5 @@
 ---
 import { Font } from 'astro:assets'
-import { ClientRouter } from 'astro:transitions'
 import '../styles/preflight.css'
 import '../styles/media.css'
 import '../styles/tokens.css'
@@ -43,7 +42,6 @@ const { title } = Astro.props
     </script>
     <Font cssVariable="--font-geist" preload />
     <slot name="head" />
-    <ClientRouter />
     <script is:inline>
       /* oxlint-disable */
       ;(function (C, A, L) {

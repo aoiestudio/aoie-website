@@ -4,7 +4,11 @@ const { class: className, ...rest } = Astro.props
 
 <button
   type="button"
-  class:list={['book-call-btn', className]}
+  class:list={[
+    'book-call-btn',
+    'plausible-event-name--click-book-a-call',
+    className,
+  ]}
   data-cal-link="euaaaio/studio"
   data-cal-namespace="studio"
   data-cal-config='{"layout":"month_view","useSlotsViewOnSmallScreen":"true"}'

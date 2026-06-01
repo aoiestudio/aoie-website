@@ -2,6 +2,8 @@
 const { class: className, ...rest } = Astro.props
 ---
 
-<button type="button" class:list={['hire-btn', className]} {...rest}
-  >Hire us</button
+<button
+  type="button"
+  class:list={['hire-btn', 'plausible-event-name--click-hire-us', className]}
+  {...rest}>Hire us</button
 >

@@ -1,3 +1,6 @@
+dedupePeers: true
+minimumReleaseAgeStrict: true
+
 allowBuilds:
   esbuild: true
   sharp: true
@@ -14,7 +17,7 @@ catalog:
   astro: ^6.4.2
   nano-staged: ^1.0.2
   ogl: ^1.0.11
-  oxc-config-fans: ^0.0.6
+  oxc-config-fans: ^1.0.0
   oxfmt: ^0.52.0
   prettier: ^3.8.3
   prettier-plugin-astro: ^0.14.1
@@ -31,3 +34,6 @@ onlyBuiltDependencies:
   - sharp
   - simple-git-hooks
   - unrs-resolver
+
+minimumReleaseAgeExclude:
+  - oxc-config-fans@1.0.0

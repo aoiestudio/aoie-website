@@ -69,7 +69,7 @@ const allImages = projects.flatMap(entry =>
       idx = next
       imgs[idx]?.classList.add('is-active')
     }
-    const intervalId = window.setInterval(tick, 1000)
+    window.setInterval(tick, 1000)
   }
 
   init()

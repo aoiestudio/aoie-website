@@ -24,12 +24,12 @@ const { Content } = await render(project)
 const { title, description, year } = project.data
 ---
 
-<Layout title={`${title} — aoie`}>
+<Layout title={`${title} — aoie studio`} description={description}>
   <div class="project-page">
     <div class="project-header">
       <hr class="project-divider page-wrap" />
       <div class="project-meta page-wrap section-grid">
-        <span class="col-label text-body project-meta__title">{title}</span>
+        <h1 class="col-label text-body project-meta__title">{title}</h1>
         <div class="col-content project-meta__right text-body">
           {description && <span class="project-meta__desc">{description}</span>}
           {year && <span class="project-meta__year">{year}</span>}

@@ -18,7 +18,10 @@ const firstHeroImage = projects
   )[0]
 ---
 
-<PageLayout title="aoie — design studio">
+<PageLayout
+  title="aoie — design studio"
+  description="Independent design studio. We absorb visual noise and build clear brand identities — from concept to implementation."
+>
   {
     firstHeroImage && (
       <link
@@ -34,13 +37,13 @@ const firstHeroImage = projects
   <!-- Top: hero + hero-media grouped with 16lh gap (Figma "Top" node) -->
   <div class="hero-top">
     <section class="hero page-wrap">
-      <p class="text-heading hero-text prose-indent">
+      <h1 class="text-heading hero-text prose-indent">
         is a design studio that absorbs visual noise and builds a clear identity
         from concept to implementation. We are a response to a world where
         attention has become scarce and visual noise is the norm. Independence
         and flexibility over diffused responsibility. Direct dialogue over
         chains of approval.
-      </p>
+      </h1>
     </section>
     <div class="hero-media page-wrap">
       <HeroCanvas />

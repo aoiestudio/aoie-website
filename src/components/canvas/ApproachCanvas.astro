@@ -9,7 +9,6 @@
 </style>
 
 <script>
-  import { Renderer, Program, Mesh, Triangle } from 'ogl'
   import vert from './approach.vert?raw'
   import frag from './approach.frag?raw'
 
@@ -29,7 +28,8 @@
     return hexToVec3(val)
   }
 
-  function init() {
+  async function init() {
+    const { Renderer, Program, Mesh, Triangle } = await import('ogl')
     const canvas = document.querySelector<HTMLCanvasElement>('#approach-canvas')
     if (!canvas) {
       return
@@ -162,5 +162,5 @@
     })
   }
 
-  init()
+  await init()
 </script>

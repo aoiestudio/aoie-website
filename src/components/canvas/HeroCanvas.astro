@@ -33,7 +33,6 @@ const images = projects
 </style>
 
 <script>
-  import { Renderer, Program, Mesh, Triangle, Texture } from 'ogl'
   import vert from './hero-media.vert?raw'
   import frag from './hero-media.frag?raw'
 
@@ -52,6 +51,7 @@ const images = projects
   }
 
   async function init() {
+    const { Renderer, Program, Mesh, Triangle, Texture } = await import('ogl')
     const stage = document.querySelector<HTMLElement>('#hero-stage')
     const canvas = document.querySelector<HTMLCanvasElement>('#hero-canvas')
     if (!stage || !canvas) {

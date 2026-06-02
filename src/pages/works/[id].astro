@@ -16,8 +16,8 @@ const sorted = projects.toSorted((a, b) => a.data.order - b.data.order)
 const project = sorted.find(p => p.id === id)!
 const idx = sorted.findIndex(p => p.id === id)
 const nextProjects = [
-  sorted[(idx + 1) % sorted.length],
-  sorted[(idx + 2) % sorted.length],
+  sorted[(idx + 1) % sorted.length]!,
+  sorted[(idx + 2) % sorted.length]!,
 ]
 
 const { Content } = await render(project)

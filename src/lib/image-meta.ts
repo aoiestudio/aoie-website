@@ -18,7 +18,7 @@ export async function readImageMeta(
   if (parts.length < 4 || parts[0] !== 'projects') {
     return undefined
   }
-  const project = parts[1]
+  const project = parts[1]!
   const filename = parts.at(-1)!
 
   if (!cache.has(project)) {

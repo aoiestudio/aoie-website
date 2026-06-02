@@ -1,21 +1,21 @@
 {
-  "exclude": ["dist", "node_modules"],
   "compilerOptions": {
     "target": "esnext",
     "module": "esnext",
-    "moduleResolution": "bundler",
     "noEmit": true,
-    "strict": true,
     "allowJs": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "isolatedModules": true,
-    "resolveJsonModule": true,
+    "erasableSyntaxOnly": true,
+    "noImplicitOverride": true,
     "verbatimModuleSyntax": true,
+    "noUncheckedIndexedAccess": true,
     "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "bundler",
+    "lib": ["esnext", "dom", "dom.iterable"],
     "paths": {
       "@/*": ["./src/*"]
-    },
-    "lib": ["esnext", "dom", "dom.iterable"]
-  }
+    }
+  },
+  "exclude": ["dist", "node_modules"]
 }

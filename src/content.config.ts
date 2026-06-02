@@ -6,7 +6,7 @@ const projects = defineCollection({
   loader: glob({
     pattern: '*/index.mdx',
     base: './content/projects',
-    generateId: ({ entry }) => entry.split('/')[0],
+    generateId: ({ entry }) => entry.split('/')[0]!,
   }),
   schema: z.object({
     title: z.string(),

@@ -214,7 +214,8 @@ const images = projects
       const decaySpeed = 5
       const decayFactor = Math.exp(-dt * decaySpeed)
       for (let i = 0; i < MAX_ROWS; i++) {
-        rowEnergy[i] *= decayFactor
+        const v = rowEnergy[i]!
+        rowEnergy[i] = v * decayFactor
       }
 
       if (isTouch) {

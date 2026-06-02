@@ -11,7 +11,7 @@ export function seededShuffle<T>(arr: T[], seed: number): T[] {
   const rand = seededRand(seed)
   for (let i = result.length - 1; i > 0; i--) {
     const j = Math.floor(rand() * (i + 1))
-    ;[result[i], result[j]] = [result[j], result[i]]
+    ;[result[i], result[j]] = [result[j]!, result[i]!]
   }
   return result
 }

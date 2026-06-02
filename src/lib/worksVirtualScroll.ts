@@ -12,10 +12,10 @@ export function initVirtualScroll(
   const cs = getComputedStyle(grid)
   const topPad = Number.parseFloat(cs.paddingTop)
   const sidePad = Number.parseFloat(cs.paddingLeft)
-  const rowHeight = rows[0].offsetHeight
+  const rowHeight = rows[0]!.offsetHeight
   const rowGap =
     rows.length > 1
-      ? rows[1].offsetTop - rows[0].offsetTop - rowHeight
+      ? rows[1]!.offsetTop - rows[0]!.offsetTop - rowHeight
       : Number.parseFloat(cs.rowGap) || 0
   const rowStride = rowHeight + rowGap
   const rowWidth = grid.clientWidth - 2 * sidePad
@@ -67,7 +67,7 @@ export function initVirtualScroll(
     }
     virtualYs[i] = y
 
-    const row = rows[i]
+    const row = rows[i]!
     row.style.position = 'absolute'
     row.style.top = '0'
     row.style.left = sidePad + 'px'
@@ -81,7 +81,7 @@ export function initVirtualScroll(
     const bottom = top + grid.clientHeight
 
     for (let i = 0; i < N; i++) {
-      let y = virtualYs[i]
+      let y = virtualYs[i]!
 
       if (y + rowHeight < top - buffer) {
         const steps = Math.ceil((top - buffer - y - rowHeight) / span)
@@ -93,7 +93,7 @@ export function initVirtualScroll(
 
       if (y !== virtualYs[i]) {
         virtualYs[i] = y
-        rows[i].style.transform = `translateY(${y}px)`
+        rows[i]!.style.transform = `translateY(${y}px)`
       }
     }
   }

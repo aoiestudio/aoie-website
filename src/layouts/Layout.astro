@@ -40,6 +40,7 @@ const canonicalUrl = Astro.url.href
     {description && <meta name="twitter:description" content={description} />}
     {ogImage && <meta name="twitter:image" content={ogImage} />}
     {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="preconnect" href="https://plausible.aoiestudio.ru" />
     <link rel="manifest" href="/manifest.webmanifest" />
     <link rel="icon" href="/favicon.ico" sizes="32x32" />
     <link

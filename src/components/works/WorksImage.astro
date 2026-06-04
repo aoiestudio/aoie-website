@@ -23,11 +23,11 @@ const isHighPriority = priority || imageIndex < 2
 const alt = projectData
   ? [
       projectData.data.title,
+      `by aoie studio${projectData.data.year ? `, ${projectData.data.year}` : ''}.`,
       projectData.data.description,
-      `by aoie studio${projectData.data.year ? `, ${projectData.data.year}` : ''}`,
     ]
       .filter(Boolean)
-      .join('. ')
+      .join(' ')
   : ''
 ---
 

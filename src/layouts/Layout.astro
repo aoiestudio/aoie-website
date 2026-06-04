@@ -7,6 +7,7 @@ import '../styles/base.css'
 import '../styles/typography.css'
 import '../styles/layout.css'
 import GridDebugger from '@/components/dev/GridDebugger.astro'
+import CalComEmbed from '@/components/embeds/CalComEmbed.astro'
 
 interface Props {
   title: string
@@ -68,51 +69,7 @@ const canonicalUrl = Astro.url.href
         outboundLinks: true,
       })
     </script>
-    <script is:inline>
-      /* oxlint-disable */
-      ;(function (C, A, L) {
-        if (C.Cal && C.Cal.loaded) {
-          return
-        }
-        let p = function (a, ar) {
-          a.q.push(ar)
-        }
-        let d = C.document
-        C.Cal =
-          C.Cal ||
-          function () {
-            let cal = C.Cal
-            let ar = arguments
-            if (!cal.loaded) {
-              cal.ns = {}
-              cal.q = cal.q || []
-              d.head.appendChild(d.createElement('script')).src = A
-              cal.loaded = true
-            }
-            if (ar[0] === L) {
-              /** @type {any} */
-              const api = (...args) => p(api, args)
-              const namespace = ar[1]
-              api.q = api.q || []
-              if (typeof namespace === 'string') {
-                cal.ns[namespace] = cal.ns[namespace] || api
-                p(cal.ns[namespace], ar)
-                p(cal, ['initNamespace', namespace])
-              } else {
-                p(cal, ar)
-              }
-              return
-            }
-            p(cal, ar)
-          }
-      })(window, 'https://app.cal.com/embed/embed.js', 'init')
-      Cal('init', 'studio', { origin: 'https://app.cal.com' })
-      Cal.ns.studio('ui', {
-        hideEventTypeDetails: false,
-        layout: 'month_view',
-      })
-      /* oxlint-enable */
-    </script>
+    <CalComEmbed />
     <script is:inline>
       // Apply saved works-grid positions before first paint to prevent FOUC
       ;(function () {

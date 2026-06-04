@@ -11,7 +11,6 @@ interface Props {
   layout?: ImageLayout
   width?: number
   height?: number
-  densities?: number[]
   widths?: number[]
   sizes?: string
   class?: string
@@ -24,7 +23,6 @@ const {
   layout,
   width: inputWidth,
   height: inputHeight,
-  densities,
   widths,
   sizes,
   class: className,
@@ -43,19 +41,7 @@ if (meta && !height) {
 
 <div data-blurhash-container class:list={['base-image', className]}>
   {
-    densities ? (
-      <Picture
-        src={src}
-        formats={['avif', 'webp']}
-        alt={alt}
-        width={width}
-        height={height ?? 0}
-        densities={densities}
-        sizes={sizes}
-        priority={priority}
-        data-blurhash={blurhash}
-      />
-    ) : widths ? (
+    widths ? (
       <Picture
         src={src}
         formats={['avif', 'webp']}

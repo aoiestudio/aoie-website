@@ -4,6 +4,7 @@ import HireButton from '@/components/buttons/HireButton.astro'
 const pathname = Astro.url.pathname.replace(/\/$/, '') || '/'
 const isStudio = pathname === '/'
 const isWorks = pathname === '/works' || pathname.startsWith('/works/')
+const isExplore = pathname === '/explore'
 ---
 
 <header class="nav page-wrap section-grid">
@@ -24,12 +25,16 @@ const isWorks = pathname === '/works' || pathname.startsWith('/works/')
       </a>
     </nav>
     <HireButton class="nav-hire link" />
-    <a href="/explore" class="nav-burger" aria-label="Explore">
-      <div class="nav-burger__icon" aria-hidden="true">
-        <div class="nav-burger__line"></div>
-        <div class="nav-burger__line"></div>
-      </div>
-    </a>
+    {
+      !isExplore && (
+        <a href="/explore" class="nav-burger" aria-label="Explore">
+          <div class="nav-burger__icon" aria-hidden="true">
+            <div class="nav-burger__line" />
+            <div class="nav-burger__line" />
+          </div>
+        </a>
+      )
+    }
   </div>
 </header>
 

@@ -7,7 +7,7 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "node --experimental-strip-types scripts/generate-metadata.ts && astro build",
+    "build": "astro build",
     "preview": "astro preview",
     "test:types": "astro check",
     "test:lint": "oxlint",

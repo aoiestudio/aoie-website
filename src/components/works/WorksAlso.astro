@@ -21,7 +21,9 @@ const { projects } = Astro.props
           <BaseImage
             src={`projects/${project.id}/images/${project.data.images[0]}`}
             width={640}
-            densities={[1, 2]}
+            widths={[400, 700, 1440]}
+            sizes="(max-width: 768px) calc(100vw - 40px), calc(50vw - 30px)"
+            alt={project.data.title}
           />
           <div class="works-next__meta">
             <span class="text-body works-next__title">

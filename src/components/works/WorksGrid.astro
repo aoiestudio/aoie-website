@@ -5,6 +5,7 @@ import { seededShuffle } from '@/lib/seededShuffle'
 
 const projects = await getCollection('projects')
 projects.sort((a, b) => a.data.order - b.data.order)
+const titleMap = Object.fromEntries(projects.map(p => [p.id, p.data.title]))
 
 type Row = { projectId: string; filename: string }
 
@@ -20,13 +21,16 @@ const shuffledRows = seededShuffle(rows, 42)
 
 <div class="works-grid is-initializing" aria-label="Works">
   {
-    shuffledRows.map(row => (
+    shuffledRows.map((row, i) => (
       <div class="wg-row">
         <a class="wg-item" href={`/works/${row.projectId}`}>
           <BaseImage
             src={`projects/${row.projectId}/images/${row.filename}`}
             width={320}
-            densities={[1, 2]}
+            widths={[320, 640, 1080]}
+            sizes="(max-width: 768px) 253px, (max-width: 1279px) 545px, 347px"
+            alt={titleMap[row.projectId] ?? row.projectId}
+            priority={i < 6}
           />
         </a>
       </div>

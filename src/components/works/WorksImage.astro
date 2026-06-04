@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content'
 import BaseImage from '@/components/base/BaseImage.astro'
 
 interface Props {
@@ -13,13 +14,29 @@ const {
   priority = false,
   project = Astro.locals.project ?? '',
 } = Astro.props
+
+const projects = await getCollection('projects')
+const projectData = projects.find(p => p.id === project)
+const imageIndex = projectData?.data.images.indexOf(filename) ?? -1
+const isHighPriority = priority || imageIndex < 2
+
+const alt = projectData
+  ? [
+      projectData.data.title,
+      projectData.data.description,
+      `by aoie studio${projectData.data.year ? `, ${projectData.data.year}` : ''}`,
+    ]
+      .filter(Boolean)
+      .join('. ')
+  : ''
 ---
 
 <BaseImage
   class="project-single"
   src={`projects/${project}/images/${filename}`}
   layout="full-width"
-  priority={priority}
+  priority={isHighPriority}
+  alt={alt}
 />
 
 <style>

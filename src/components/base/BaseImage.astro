@@ -6,22 +6,26 @@ type ImageLayout = 'constrained' | 'fixed' | 'full-width' | 'none'
 
 interface Props {
   src: string
+  alt?: string
   priority?: boolean
   layout?: ImageLayout
   width?: number
   height?: number
   densities?: number[]
+  widths?: number[]
   sizes?: string
   class?: string
 }
 
 const {
   src,
+  alt = '',
   priority,
   layout,
   width: inputWidth,
   height: inputHeight,
   densities,
+  widths,
   sizes,
   class: className,
 } = Astro.props
@@ -43,10 +47,22 @@ if (meta && !height) {
       <Picture
         src={src}
         formats={['avif', 'webp']}
-        alt=""
+        alt={alt}
         width={width}
         height={height ?? 0}
         densities={densities}
+        sizes={sizes}
+        priority={priority}
+        data-blurhash={blurhash}
+      />
+    ) : widths ? (
+      <Picture
+        src={src}
+        formats={['avif', 'webp']}
+        alt={alt}
+        width={width}
+        height={height ?? 0}
+        widths={widths}
         sizes={sizes}
         priority={priority}
         data-blurhash={blurhash}
@@ -55,7 +71,7 @@ if (meta && !height) {
       <Picture
         src={src}
         formats={['avif', 'webp']}
-        alt=""
+        alt={alt}
         layout={layout}
         width={width}
         height={height ?? 0}

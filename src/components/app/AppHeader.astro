@@ -23,21 +23,10 @@ const isWorks = pathname === '/works' || pathname.startsWith('/works/')
     </nav>
     <HireButton class="nav-hire link" />
     <a href="/explore" class="nav-burger" aria-label="Explore">
-      <svg
-        class="nav-burger__icon"
-        width="49"
-        height="6"
-        viewBox="0 0 49 6"
-        fill="currentColor"
-        xmlns="http://www.w3.org/2000/svg"
-        aria-hidden="true"
-      >
-        {
-          Array.from({ length: 12 }, (_, index) => (
-            <rect x={1.5 + index * 4} y="0" width="2" height="6" rx="1" />
-          ))
-        }
-      </svg>
+      <div class="nav-burger__icon" aria-hidden="true">
+        <div class="nav-burger__line"></div>
+        <div class="nav-burger__line"></div>
+      </div>
     </a>
   </div>
 </header>
@@ -93,7 +82,18 @@ const isWorks = pathname === '/works' || pathname.startsWith('/works/')
   }
 
   .nav-burger__icon {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: calc(
+      (100vw - 2 * var(--page-pad) - (var(--cols) - 1) * var(--col-gap)) /
+        var(--cols)
+    );
+  }
+
+  .nav-burger__line {
+    height: 1px;
+    background: currentColor;
   }
 
   .nav-links {

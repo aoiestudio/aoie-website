@@ -3,6 +3,7 @@ dist/
 .astro/
 
 content/**/*.png
+content/**/*.jpg
 
 .env*
 !.env.example

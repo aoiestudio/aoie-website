@@ -6,23 +6,26 @@ import HireButton from '@/components/buttons/HireButton.astro'
 import PageLayout from '@/layouts/PageLayout.astro'
 
 const projects = await getCollection('projects')
-const allImages = projects.flatMap(entry =>
-  entry.data.images.map(filename => ({ projectId: entry.id, filename })),
-)
+const allImages = projects
+  .filter(p => p.data.selected?.length)
+  .toSorted((a, b) => a.data.order - b.data.order)
+  .flatMap(p =>
+    p.data.selected!.map(filename => ({ projectId: p.id, filename })),
+  )
 ---
 
 <PageLayout title="Explore — aoie studio" hideFooter noindex>
-  <section class="explore page-wrap">
-    <nav class="explore-nav" aria-label="Explore">
-      <a href="/" class="explore-link">Studio</a>
-      <a href="/works" class="explore-link">Works</a>
+  <section class="selected page-wrap">
+    <nav class="selected-nav" aria-label="Explore">
+      <a href="/" class="selected-link">Studio</a>
+      <a href="/works" class="selected-link">Works</a>
       <a
         href="https://www.cosmos.so/aoiestudio"
-        class="explore-link explore-link--lab"
+        class="selected-link selected-link--lab"
         target="_blank"
         rel="noopener"
         >Laboratory<svg
-          class="explore-star"
+          class="selected-star"
           width="18"
           height="18"
           viewBox="0 0 18 18"
@@ -37,13 +40,13 @@ const allImages = projects.flatMap(entry =>
       >
     </nav>
 
-    <div class="explore-media-wrap">
-      <div class="explore-media" id="explore-media">
+    <div class="selected-media-wrap">
+      <div class="selected-media" id="selected-media">
         {
           allImages.map((item, index) => (
             <div
-              class:list={['explore-media__slide', index === 0 && 'is-active']}
-              data-explore-img
+              class:list={['selected-media__slide', index === 0 && 'is-active']}
+              data-selected-img
             >
               <Picture
                 src={`projects/${item.projectId}/images/${item.filename}`}
@@ -60,20 +63,20 @@ const allImages = projects.flatMap(entry =>
       </div>
     </div>
 
-    <div class="explore-actions">
-      <HireButton class="explore-link" />
-      <BookCallButton class="explore-link" />
+    <div class="selected-actions">
+      <HireButton class="selected-link" />
+      <BookCallButton class="selected-link" />
     </div>
   </section>
 </PageLayout>
 
 <script>
   function init() {
-    const stage = document.querySelector<HTMLElement>('#explore-media')
+    const stage = document.querySelector<HTMLElement>('#selected-media')
     if (!stage) {
       return
     }
-    const imgs = [...stage.querySelectorAll<HTMLElement>('[data-explore-img]')]
+    const imgs = [...stage.querySelectorAll<HTMLElement>('[data-selected-img]')]
     if (imgs.length < 2) {
       return
     }
@@ -95,7 +98,7 @@ const allImages = projects.flatMap(entry =>
 </script>
 
 <style>
-  .explore {
+  .selected {
     padding-top: var(--space-2xl);
     padding-bottom: var(--space-xl);
     display: flex;
@@ -105,12 +108,12 @@ const allImages = projects.flatMap(entry =>
     box-sizing: border-box;
   }
 
-  .explore-nav {
+  .selected-nav {
     display: flex;
     flex-direction: column;
   }
 
-  .explore-link {
+  .selected-link {
     font-family: var(--font-family);
     font-weight: 600;
     font-size: 55px;
@@ -126,44 +129,44 @@ const allImages = projects.flatMap(entry =>
     text-decoration: none;
   }
 
-  .explore-link:hover {
+  .selected-link:hover {
     color: var(--color-text);
   }
 
-  .explore-link--lab {
+  .selected-link--lab {
     position: relative;
     align-self: flex-start;
   }
 
-  .explore-star {
+  .selected-star {
     position: absolute;
     left: 100%;
     top: 0;
     margin-left: 5px;
     margin-top: 5px;
     color: var(--color-text-secondary);
-    animation: explore-star-spin 12s linear infinite;
+    animation: selected-star-spin 12s linear infinite;
   }
 
-  @keyframes explore-star-spin {
+  @keyframes selected-star-spin {
     to {
       transform: rotate(360deg);
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .explore-star {
+    .selected-star {
       animation: none;
     }
   }
 
-  .explore-media-wrap {
+  .selected-media-wrap {
     display: grid;
     grid-template-columns: repeat(var(--cols), 1fr);
     column-gap: var(--col-gap);
   }
 
-  .explore-media {
+  .selected-media {
     position: relative;
     grid-column: 1 / 3;
     aspect-ratio: 16 / 9;
@@ -171,30 +174,30 @@ const allImages = projects.flatMap(entry =>
     background: var(--color-surface);
   }
 
-  .explore-media__slide {
+  .selected-media__slide {
     position: absolute;
     inset: 0;
     opacity: 0;
   }
 
-  .explore-media__slide.is-active {
+  .selected-media__slide.is-active {
     opacity: 1;
   }
 
-  .explore-media__slide :global(img) {
+  .selected-media__slide :global(img) {
     width: 100%;
     height: 100%;
     object-fit: cover;
     display: block;
   }
 
-  .explore-actions {
+  .selected-actions {
     display: flex;
     flex-direction: column;
     margin-top: auto;
   }
 
-  .explore-actions :global(.explore-link) {
+  .selected-actions :global(.selected-link) {
     font-size: var(--font-size-heading);
   }
 </style>

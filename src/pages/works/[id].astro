@@ -3,6 +3,7 @@ import { getCollection, render } from 'astro:content'
 import Layout from '@/layouts/PageLayout.astro'
 import WorksImage from '@/components/works/WorksImage.astro'
 import WorksAlso from '@/components/works/WorksAlso.astro'
+import { buildImageUrl } from '@/lib/build-image-url'
 
 export async function getStaticPaths() {
   const projects = await getCollection('projects')
@@ -21,10 +22,18 @@ const nextProjects = [
 ]
 
 const { Content } = await render(project)
-const { title, description, year } = project.data
+const { title, description, year, ogImage, images } = project.data
+const ogImageFilename = ogImage ?? images[1]
+const ogImageUrl = ogImageFilename
+  ? buildImageUrl(`projects/${id}/images/${ogImageFilename}`, 1200, 'webp')
+  : undefined
 ---
 
-<Layout title={`${title} — aoie studio`} description={description}>
+<Layout
+  title={`${title} — aoie studio`}
+  description={description}
+  ogImage={ogImageUrl}
+>
   <div class="project-page">
     <div class="project-header">
       <hr class="project-divider page-wrap" />
